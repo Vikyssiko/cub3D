@@ -20,6 +20,7 @@ t_map	*create_map(void)
 	map->map = NULL;
 	map->start = 0;
 	map->length = 0;
+//	map->width = 0;
 //	if (!game)
 //		exit_with_error("Error of malloc");
 //	game->map_name = map_name;
@@ -66,10 +67,21 @@ void	creating_map_array(t_game **game)
 	stack = (*game)->stack;
 	while (stack)
 	{
-		(*game)->map->map[i] = strdupn(stack->str);
+		(*game)->map->map[i] = malloc((*game)->map_width);
+		ft_memset((*game)->map->map[i], ' ', (*game)->map_width - 1);
+		(*game)->map->map[i][(*game)->map_width - 1] = '\0';
+		ft_strcpy((*game)->map->map[i], stack->str);
+//		(*game)->map->map[i] = strdupn(stack->str);
 		stack = stack->next;
 		i++;
 	}
+}
+
+int		find_max(int a, int b)
+{
+	if (a >= b)
+		return (a);
+	return (b);
 }
 
 void	parse_map(t_game **game)
@@ -77,15 +89,18 @@ void	parse_map(t_game **game)
 	char	*line;
 
 	line = skip_empty_lines(game);
+	(*game)->map_width = find_max((*game)->map_width, ft_strlen(line));
 	(*game)->stack = ft_stcknew(line);
 	check_symbol(line, game);
 //	free(line);
 	line = get_next_line((*game)->fd);
 	while (line)
 	{
+		(*game)->map_width = find_max((*game)->map_width, ft_strlen(line));
 		check_symbol(line, game);
 		ft_stckadd_back((&(*game)->stack), ft_stcknew(line));
 		line = get_next_line((*game)->fd);
 	}
+//	printf("%i\n", (*game)->map_width);
 	creating_map_array(game);
 }

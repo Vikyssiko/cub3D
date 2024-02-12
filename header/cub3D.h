@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <fcntl.h>
+# include <math.h>
 # include "../libft/header/libft.h"
 
 typedef struct s_stack
@@ -32,6 +33,7 @@ typedef struct s_map {
 
 typedef struct s_game {
 	int		fd;
+	int		map_width;
 	char	*north;
 	char	*south;
 	char	*west;
@@ -51,8 +53,12 @@ void	clean_and_exit(char *message, t_game **game);
 void	exit_with_error(char *message, int fd);
 void	parse_map(t_game **game);
 void	check_symbol(char *line, t_game **game);
-void	check_map(t_game **game);
+void	check_first_last_wall(t_game **game);
 char	*strdupn(const char *s1);
+void	ft_strcpy(char *dst, const char *src);
+void	check_surrounding_walls(t_game **game);
+void	check_corners(t_game **game);
+void	check_map(t_game **game);
 
 t_stack	*ft_stcknew(char *content);
 void	ft_stckadd_front(t_stack **stck, t_stack *new);

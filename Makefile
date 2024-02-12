@@ -33,7 +33,7 @@ SRCS		=	$(SRC_DIR)/cardinal_directions.c \
 				$(SRC_DIR)/stack.c \
 				$(SRC_DIR)/check_line.c \
 				$(SRC_DIR)/map.c \
-				$(SRC_DIR)/strdupn.c
+				$(SRC_DIR)/parsing_utils.c
 
 OBJS		=	$(SRCS:.c=.o)
 

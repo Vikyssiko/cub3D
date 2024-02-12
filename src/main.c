@@ -20,6 +20,7 @@ t_game	*create_game(int fd)
 	game = malloc(sizeof(t_game));
 //	if (!game)
 //		exit_with_error("Error of malloc");
+	game->map_width = 0;
 	game->stack = NULL;
 	game->fd = fd;
 	game->west = NULL;

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strdupn.c                                          :+:      :+:    :+:   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkozlova <vkozlova@student.42wolfsburg.d>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:07:15 by vkozlova          #+#    #+#             */
-/*   Updated: 2024/02/11 23:07:33 by vkozlova         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:28:10 by vkozlova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,20 @@ char	*strdupn(const char *s1)
 	}
 	s2[index] = '\0';
 	return (s2);
+}
+
+void	ft_strcpy(char *dst, const char *src)
+{
+	int		i;
+	int 	src_len;
+
+	i = 0;
+	src_len = ft_strlen((char *)src);
+	if (src[src_len - 1] == '\n')
+		src_len--;
+	while (i < src_len)
+	{
+		dst[i] = src[i];
+		i++;
+	}
 }
