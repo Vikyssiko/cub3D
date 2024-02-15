@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/cub3D.h"
+#include "../../header/cub3D.h"
 
 t_map	*create_map(void)
 {
@@ -71,7 +71,6 @@ void	creating_map_array(t_game **game)
 		ft_memset((*game)->map->map[i], ' ', (*game)->map_width - 1);
 		(*game)->map->map[i][(*game)->map_width - 1] = '\0';
 		ft_strcpy((*game)->map->map[i], stack->str);
-//		(*game)->map->map[i] = strdupn(stack->str);
 		stack = stack->next;
 		i++;
 	}
@@ -101,6 +100,5 @@ void	parse_map(t_game **game)
 		ft_stckadd_back((&(*game)->stack), ft_stcknew(line));
 		line = get_next_line((*game)->fd);
 	}
-//	printf("%i\n", (*game)->map_width);
 	creating_map_array(game);
 }

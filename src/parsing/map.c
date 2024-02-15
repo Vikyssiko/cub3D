@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/cub3D.h"
+#include "../../header/cub3D.h"
 
 void	check_first_last_line(char *line, t_game **game)
 {
@@ -67,6 +67,21 @@ void	check_surrounding_walls(t_game **game)
 			{
 				if (array[i - 1][j] == ' ' || array[i + 1][j] == ' ')
 					clean_and_exit("Map has to be surrounded by walls", game);
+			}
+			if (array[i][j] == 'N' || array[i][j] == 'S'
+				|| array[i][j] == 'E' || array[i][j] == 'W')
+			{
+				if (array[i][j] == 'N')
+					(*game)->player_angle = 90;
+				if (array[i][j] == 'S')
+					(*game)->player_angle = 270;
+				if (array[i][j] == 'W')
+					(*game)->player_angle = 0;
+				if (array[i][j] == 'E')
+					(*game)->player_angle = 180;
+//				printf("i: %i, player_y: %i\n", i, i * 64 + 32);
+				(*game)->player_y = i * 64 + 32;
+				(*game)->player_x = j * 64 + 32;
 			}
 			j++;
 		}

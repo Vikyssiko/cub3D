@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/cub3D.h"
+#include "../../header/cub3D.h"
 
 void	check_floor(t_game **game, char **instructions)
 {
@@ -19,6 +19,7 @@ void	check_floor(t_game **game, char **instructions)
 		if ((*game)->floor == NULL) {
 			(*game)->floor = ft_strtrim(instructions[1], "\n");
 		} else {
+//			printf("%s\n", (*game)->floor);
 			clean_and_exit("Invalid floor instruction", game);
 		}
 	}

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include "../header/cub3D.h"
+#include "../../header/cub3D.h"
 
 t_stack	*ft_stcknew(char *content)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/cub3D.h"
+#include "../../header/cub3D.h"
 
 void	check_symbol(char *line, t_game **game)
 {
@@ -18,11 +18,7 @@ void	check_symbol(char *line, t_game **game)
 	int	width;
 
 	i = 0;
-//	(void)game;
 	width = ft_strlen(line) - 1;
-//	printf("%c", *line);
-//	if (line[0] != '1' || line[width - 1] != '1')
-//		clean_and_exit("Map should be surrounded by walls", game);
 	while (i < width)
 	{
 		if (line[i] != '1' && line[i] != '0' && line[i] != 'N'

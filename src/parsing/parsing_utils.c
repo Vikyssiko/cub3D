@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/cub3D.h"
+#include "../../header/cub3D.h"
 
 char	*strdupn(const char *s1)
 {
@@ -51,3 +51,5 @@ void	ft_strcpy(char *dst, const char *src)
 		i++;
 	}
 }
+
+

@@ -5,6 +5,8 @@ LIBFT		=	libft.a
 LIBFT_DIR	=	libft
 
 #MLX_DIR		=	minilibx-linux
+MLX_FLAGS = -Lminilibx -lmlx -framework OpenGL -framework AppKit
+MLX_DIR = minilibx
 
 BONUS_DIR	=	src_bonus
 
@@ -24,16 +26,19 @@ BONUS_OBJS	=	$(BONUS_SRCS:.c=.o)
 
 SRC_DIR		=	src
 
-SRCS		=	$(SRC_DIR)/cardinal_directions.c \
-				$(SRC_DIR)/exit.c \
-				$(SRC_DIR)/floor_ceiling.c \
+SRCS		=	$(SRC_DIR)/parsing/cardinal_directions.c \
+				$(SRC_DIR)/parsing/exit.c \
+				$(SRC_DIR)/parsing/floor_ceiling.c \
 				$(SRC_DIR)/main.c \
-				$(SRC_DIR)/instructions_parsing.c \
-				$(SRC_DIR)/map_parsing.c \
-				$(SRC_DIR)/stack.c \
-				$(SRC_DIR)/check_line.c \
-				$(SRC_DIR)/map.c \
-				$(SRC_DIR)/parsing_utils.c
+				$(SRC_DIR)/parsing/instructions_parsing.c \
+				$(SRC_DIR)/parsing/map_parsing.c \
+				$(SRC_DIR)/parsing/stack.c \
+				$(SRC_DIR)/parsing/check_line.c \
+				$(SRC_DIR)/parsing/map.c \
+				$(SRC_DIR)/parsing/parsing_utils.c \
+				$(SRC_DIR)/horizontal_distance.c \
+				$(SRC_DIR)/vertical_distance.c \
+				$(SRC_DIR)/cos.c
 
 OBJS		=	$(SRCS:.c=.o)
 
@@ -44,23 +49,23 @@ CFLAGS		+=	-Wall \
 				-Wextra \
 				-I$(DEPS)
 
-MLX_FLAGS	=	-Lminilibx-linux \
-				-lmlx_Linux \
-				-lX11 \
-				-lXext
+#MLX_FLAGS	=	-Lminilibx-linux \
+#				-lmlx_Linux \
+#				-lX11 \
+#				-lXext
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-		@make -C $(LIBFT_DIR)
-		@make bonus -C $(LIBFT_DIR)
-		@cc $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) -o $(NAME)
-
 #$(NAME): $(OBJS)
 #		@make -C $(LIBFT_DIR)
-#		@make -C $(MLX_DIR)
 #		@make bonus -C $(LIBFT_DIR)
-#		@cc $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) -o $(NAME) $(MLX_FLAGS)
+#		@cc $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) -o $(NAME)
+
+$(NAME): $(OBJS)
+		@make -C $(LIBFT_DIR)
+		@make -C $(MLX_DIR)
+		@make bonus -C $(LIBFT_DIR)
+		@cc $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) -o $(NAME) $(MLX_FLAGS)
 
 clean:
 		@make clean -C $(LIBFT_DIR)

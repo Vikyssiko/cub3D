@@ -17,6 +17,13 @@
 # include <fcntl.h>
 # include <math.h>
 # include "../libft/header/libft.h"
+# include "../minilibx/mlx.h"
+
+# define FOV					60
+# define WALL					64
+# define PLAYER					32
+# define PROJECTION_HEIGHT		1000
+# define PROJECTION_WIDTH		1600
 
 typedef struct s_stack
 {
@@ -31,18 +38,38 @@ typedef struct s_map {
 	int		length;
 }	t_map;
 
+typedef struct s_player {
+	int	x;
+	int	y;
+}	t_player;
+
 typedef struct s_game {
-	int		fd;
-	int		map_width;
-	char	*north;
-	char	*south;
-	char	*west;
-	char	*east;
-	char	*floor;
-	char	*ceiling;
-	t_map	*map;
-	t_stack	*stack;
+	int			player_x;
+	int			player_y;
+	int			player_angle;
+	int			fd;
+	int			map_width;
+	char		*north;
+	char		*south;
+	char		*west;
+	char		*east;
+	char		*floor;
+	char		*ceiling;
+	t_map		*map;
+	t_stack		*stack;
+	void		*mlx_ptr;
+	void		*window_ptr;
+	double		cos_array[360];
 }	t_game;
+
+typedef struct s_img
+{
+	void	*img_ptr;
+	char	*img_pixels_ptr;
+	int		bits_per_pixel;
+	int		endian;
+	int		line_len;
+}	t_img;
 
 t_game	*parse_textures(char *map_name);
 t_game	*create_game(int fd);
@@ -59,6 +86,10 @@ void	ft_strcpy(char *dst, const char *src);
 void	check_surrounding_walls(t_game **game);
 void	check_corners(t_game **game);
 void	check_map(t_game **game);
+double	horizont_hit_dist(t_game **game, int angle);
+double	vertical_hit_dist(t_game **game, int angle);
+int		find_min(int a, int b);
+void	create_cos_array(t_game **game);
 
 t_stack	*ft_stcknew(char *content);
 void	ft_stckadd_front(t_stack **stck, t_stack *new);

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/cub3D.h"
+#include "../../header/cub3D.h"
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
@@ -64,7 +64,6 @@ t_game	*parse_textures(char *map_name)
 			}
 			if (instruction[2] != NULL || instruction[0] == NULL || instruction[1] == NULL)
 				clean_and_exit("Invalid instruction: only instruction and texture required", &game);
-//			printf("instruction: %s - %s\n", instruction[0], instruction[1]);
 			check_cardinal_directions(&game, instruction);
 			check_floor_ceiling(&game, instruction);
 			if (check_all_instructions(game))
@@ -74,12 +73,6 @@ t_game	*parse_textures(char *map_name)
 		free(line);
 		line = get_next_line(fd);
 	}
-//	printf("north: %s\n", game->north);
-//	printf("south: %s\n", game->south);
-//	printf("east: %s\n", game->east);
-//	printf("west: %s\n", game->west);
-//	printf("floor: %s\n", game->floor);
-//	printf("ceiling: %s\n", game->ceiling);
 	if (!check_all_instructions(game))
 		clean_and_exit("Invalid instruction: not all instructions present", &game);
 	return (game);
