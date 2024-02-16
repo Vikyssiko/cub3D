@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <math.h>
+//# include <mathcalls.h>
 # include "../libft/header/libft.h"
 # include "../minilibx/mlx.h"
 
@@ -24,6 +25,7 @@
 # define PLAYER					32
 # define PROJECTION_HEIGHT		1000
 # define PROJECTION_WIDTH		1600
+# define PI						3.1415926
 
 typedef struct s_stack
 {
@@ -38,15 +40,34 @@ typedef struct s_map {
 	int		length;
 }	t_map;
 
+typedef struct s_ray {
+	double	x;
+	double 	y;
+}	t_ray;
+
 typedef struct s_player {
 	int	x;
 	int	y;
+	int	angle;
+	int	xd;
+	int	yd;
 }	t_player;
+
+typedef struct s_img
+{
+	void	*img_ptr;
+	char	*img_pixels_ptr;
+	int		bits_per_pixel;
+	int		endian;
+	int		line_len;
+}	t_img;
 
 typedef struct s_game {
 	int			player_x;
 	int			player_y;
-	int			player_angle;
+	double		player_angle;
+	double		player_xd;
+	double		player_yd;
 	int			fd;
 	int			map_width;
 	char		*north;
@@ -58,25 +79,18 @@ typedef struct s_game {
 	t_map		*map;
 	t_stack		*stack;
 	void		*mlx_ptr;
+	t_img		*img;
 	void		*window_ptr;
 	double		cos_array[360];
 }	t_game;
-
-typedef struct s_img
-{
-	void	*img_ptr;
-	char	*img_pixels_ptr;
-	int		bits_per_pixel;
-	int		endian;
-	int		line_len;
-}	t_img;
 
 t_game	*parse_textures(char *map_name);
 t_game	*create_game(int fd);
 int		ft_strcmp(const char *s1, const char *s2);
 void	check_cardinal_directions(t_game **game, char **instructions);
 void	check_floor_ceiling(t_game **game, char **instructions);
-void	clean_and_exit(char *message, t_game **game);
+void 	clean_and_exit(char *message, t_game **game);
+int		clean_and_exit_no_error(t_game **game);
 void	exit_with_error(char *message, int fd);
 void	parse_map(t_game **game);
 void	check_symbol(char *line, t_game **game);

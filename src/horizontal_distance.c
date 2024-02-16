@@ -64,6 +64,8 @@ double 	horizont_hit_dist(t_game **game, int angle)
 		if ((*game)->map->map[y / 64][x / 64] == '1')
 			break ;
 	}
+//	(*ray).x = x;
+//	(*ray).y = y;
 	dist = abs(x - (*game)->player_x) / (*game)->cos_array[angle];
 //	printf("x: %i, player_x: %i, angle: %i\n", x, (*game)->player_x, angle);
 //	printf("dist hor: %f\n", dist);

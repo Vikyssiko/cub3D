@@ -5,8 +5,13 @@ LIBFT		=	libft.a
 LIBFT_DIR	=	libft
 
 #MLX_DIR		=	minilibx-linux
-MLX_FLAGS = -Lminilibx -lmlx -framework OpenGL -framework AppKit
-MLX_DIR = minilibx
+#MLX_FLAGS = -Lminilibx -lmlx -framework OpenGL -framework AppKit
+MLX_FLAGS	=	-Lminilibx-linux \
+				-lmlx_Linux \
+				-lX11 \
+				-lXext
+
+MLX_DIR = minilibx-linux
 
 BONUS_DIR	=	src_bonus
 
@@ -65,7 +70,7 @@ $(NAME): $(OBJS)
 		@make -C $(LIBFT_DIR)
 		@make -C $(MLX_DIR)
 		@make bonus -C $(LIBFT_DIR)
-		@cc $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) -o $(NAME) $(MLX_FLAGS)
+		@cc $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT) -o $(NAME) $(MLX_FLAGS) -lm
 
 clean:
 		@make clean -C $(LIBFT_DIR)

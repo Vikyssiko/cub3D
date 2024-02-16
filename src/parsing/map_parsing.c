@@ -88,14 +88,14 @@ void	parse_map(t_game **game)
 	char	*line;
 
 	line = skip_empty_lines(game);
-	(*game)->map_width = find_max((*game)->map_width, ft_strlen(line));
+	(*game)->map_width = find_max((*game)->map_width, ft_strlen(line) - 1);
 	(*game)->stack = ft_stcknew(line);
 	check_symbol(line, game);
 //	free(line);
 	line = get_next_line((*game)->fd);
 	while (line)
 	{
-		(*game)->map_width = find_max((*game)->map_width, ft_strlen(line));
+		(*game)->map_width = find_max((*game)->map_width, ft_strlen(line) - 1);
 		check_symbol(line, game);
 		ft_stckadd_back((&(*game)->stack), ft_stcknew(line));
 		line = get_next_line((*game)->fd);
