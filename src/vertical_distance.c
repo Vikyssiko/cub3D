@@ -39,11 +39,27 @@ double	find_y_diff_vert(double angle)
 	return (diff);
 }
 
+double	find_dist(t_game **game, t_ray *ray, double angle)
+{
+	double	dist;
+
+	dist = 2147483648;
+	while (1)
+	{
+		if (ray->y < 0 || ray->y >= (*game)->map->length || (*game)->map->map[(int)(ray->y) >> 6][(int)(ray->x) >> 6] == '1')
+		{
+			dist = find_min(dist, cos(angle) * (ray->x - (*game)->player_x) - sin(angle) * (ray->y - (*game)->player_y));
+			break ;
+		}
+		ray->x += ray->x_diff;
+		ray->y += ray->y_diff;
+	}
+	return (dist);
+}
+
 double 	vertical_hit_dist(t_game **game, double angle)
 {
 	t_ray	ray;
-	double	dist;
-
 	double	tang;
 
 	tang = tan(angle);
@@ -51,75 +67,64 @@ double 	vertical_hit_dist(t_game **game, double angle)
 	{
 		ray.x = (((int)(*game)->player_x >> 6) << 6) + 64;
 		ray.x_diff = 64;
-		ray.y = ((*game)->player_x - rx) * tang + (*game)->player_y;
-		ray.y_diff = -xo * tang;
+		ray.y = ((*game)->player_x - ray.x) * tang + (*game)->player_y;
+		ray.y_diff = -ray.x_diff * tang;
 	}
 	else if (cos(angle) < -0.001)
 	{
 		ray.x = (((int)(*game)->player_x >> 6) << 6) - 0.0001;
 		ray.x_diff = -64;
-		ray.y = ((*game)->player_x - rx) * tang + (*game)->player_y;
-		ray.y_diff = -xo * tang;
+		ray.y = ((*game)->player_x - ray.x) * tang + (*game)->player_y;
+		ray.y_diff = -ray.x_diff * tang;
 	}
 	else
 	{
 		ray.x = (*game)->player_x;
 		ray.y = (*game)->player_y;
 	}
-	while ()
-	{
-		if (ray.y < 0 || ray.y >= (*game)->map->length || (*game)->map->map[(int)(ray.y) >> 6][(int)(ray.x) >> 6] == '1')
-		{
+	return (find_dist(game, &ray, angle));
 
-		}
-	}
-
-
-	if (angle > M_PI_2 && angle < M_PI_4 * 3)
-
-
-
-	int	x;
-	int	y;
-	double 	dist;
-
-	x = find_first_x_vert(game, angle);
-	y = (*game)->player_y + ((*game)->player_x - x) * tan(angle);
-//	if (y > (*game)->map->length * 64)
-//		return (MAXFLOAT);
-//	printf("vertical x: %i, y: %i\n", x, y);
-//	printf("%c\n", (*game)->map->map[y / 64][x / 64]);
-	if (x < 0)
-		x = 0;
-	if (y < 0)
-		y = 0;
-	if ((*game)->map->map[y / 64][x / 64] == '1')
-		return (abs(x - (*game)->player_x) / (*game)->cos_array[(int)(angle * 57.2958)]);
-	while (1)
-	{
-//		printf("here1\n");
-		x = x + find_x_diff_vert(angle);
-//		printf("x_diff_vert: %d\n", find_x_diff_vert(angle));
-		y = y + find_y_diff_vert(angle);
-//		printf("y_diff_vert: %f\n", find_y_diff_vert(angle));
-//		printf("here3\n");
-//		printf("vertical x: %i, y: %i\n", x, y);
-		if (x < 0)
-			x = 0;
-		if (y < 0)
-			y = 0;
-		if ((*game)->map->map[y / 64][x / 64] == '1')
-			break ;
-	}
-//	printf("here4\n");
-	dist = abs(x - (*game)->player_x) / (*game)->cos_array[(int)(angle * 57.2958)];
-	printf("dist vert: %f\n", dist);
-//	printf("vertical x: %i, y: %i\n", x, y);
-	printf("vertical x: %i, y: %i\n", x / 64, y / 64);
+//	int	x;
+//	int	y;
+//	double 	dist;
+//
+//	x = find_first_x_vert(game, angle);
+//	y = (*game)->player_y + ((*game)->player_x - x) * tan(angle);
+////	if (y > (*game)->map->length * 64)
+////		return (MAXFLOAT);
+////	printf("vertical x: %i, y: %i\n", x, y);
+////	printf("%c\n", (*game)->map->map[y / 64][x / 64]);
+//	if (x < 0)
+//		x = 0;
+//	if (y < 0)
+//		y = 0;
+//	if ((*game)->map->map[y / 64][x / 64] == '1')
+//		return (abs(x - (*game)->player_x) / (*game)->cos_array[(int)(angle * 57.2958)]);
+//	while (1)
+//	{
+////		printf("here1\n");
+//		x = x + find_x_diff_vert(angle);
+////		printf("x_diff_vert: %d\n", find_x_diff_vert(angle));
+//		y = y + find_y_diff_vert(angle);
+////		printf("y_diff_vert: %f\n", find_y_diff_vert(angle));
+////		printf("here3\n");
+////		printf("vertical x: %i, y: %i\n", x, y);
+//		if (x < 0)
+//			x = 0;
+//		if (y < 0)
+//			y = 0;
+//		if ((*game)->map->map[y / 64][x / 64] == '1')
+//			break ;
+//	}
+////	printf("here4\n");
+//	dist = abs(x - (*game)->player_x) / (*game)->cos_array[(int)(angle * 57.2958)];
+//	printf("dist vert: %f\n", dist);
+////	printf("vertical x: %i, y: %i\n", x, y);
+//	printf("vertical x: %i, y: %i\n", x / 64, y / 64);
 	return (dist);
 }
 
-int		find_min(int a, int b)
+double		find_min(double a, double b)
 {
 	if (a <= b)
 		return (a);

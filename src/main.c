@@ -49,55 +49,79 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 	*((unsigned int *)(offset + img->img_pixels_ptr)) = color;
 }
 
+double fix_angle(double angle)
+{
+	double	radian;
+
+	radian = 0.0174533;
+	if(angle > 2 * M_PI - radian)
+		angle -= 2 * M_PI;
+	if(angle < 0)
+		angle += 2 * M_PI;
+	return (angle);
+}
+
 void	draw_rays(t_game **game)
 {
-	int x = 200;
-	double angle = (*game)->player_angle;
-	while (angle <= 75)
+	double	ray_angle;
+	int		i;
+	int 	dist;
+	int		line_height;
+	int		y_start;
+	int		x;
+
+	i = 0;
+	ray_angle = fix_angle((*game)->player_angle + M_PI_2 / 3);
+	x = 100;
+	while (i < 60)
 	{
-		double dist = find_min(vertical_hit_dist(game, angle * 57.2958), horizont_hit_dist(game, angle * 57.2958));
-//		double 	correct_dist = dist * cos((90 - angle) * 0.0174533);
-//		printf("correct dist: %i\n", correct_dist);
-		int wall_height = 64 * 554 / dist;
-		int start_height = 200 - wall_height / 2;
-		while (wall_height)
+		dist = find_min(vertical_hit_dist(game, (*game)->player_angle),
+						horizont_hit_dist(game, (*game)->player_angle));
+		dist = dist * cos(fix_angle((*game)->player_angle - ray_angle));
+		line_height = 64 * 320 / dist;
+		if (line_height > 320)
+			line_height = 320;
+		y_start = 160 - (line_height >> 1);
+
+		while (y_start <= line_height)
 		{
-//		printf("here\n");
-//			printf("here 3\n");
-			my_mlx_pixel_put((*game)->img, x, start_height++, 0x00FFFFFF);
-//			printf("here 5\n");
-			wall_height--;
+
+//			int x_end = (*game)->player_x - 4;
+//			while (x_end <= x_start)
+//			{
+				my_mlx_pixel_put((*game)->img, x, y_start, 0xFF00FF);
+//				x_end++;
+//			}
+			y_start++;
 		}
-//		printf("wall height: %i\n", wall_height);
-//		printf("start height: %i\n", start_height);
-//		printf("angle: %i\n", angle);
-		angle++;
-		x--;
+		x += i * 3;
+
+		ray_angle = fix_angle(ray_angle - 0.0174533);
+		i++;
 	}
-//	int r;
-//	int mx;
-//	int my;
-//	int mp;
-//	int dof;
-//	double rx;
-//	double ry;
-//	double ra;
-//	double xo;
-//	double yo;
-//	ra = (*game)->player_angle;
-//	t_ray ray;
-//	double dist = horizont_hit_dist(game, ra * 57.2958, &ray);
-//	rx = ray.x;
-//	ry = ray.y;
-//	int	i = 0;
-//	double y = (*game)->player_y;
-//	double x = (*game)->player_x;
-//	while (i < 50)
+
+//	int x = 200;
+//	double angle = (*game)->player_angle;
+//	while (angle <= 75)
 //	{
-//		my_mlx_pixel_put((*game)->img, x, y, 0x000FFF);
-//		y += (*game)->player_yd / 5;
-//		x += (*game)->player_xd / 5;
-//		i++;
+//		double dist = find_min(vertical_hit_dist(game, angle * 57.2958), horizont_hit_dist(game, angle * 57.2958));
+////		double 	correct_dist = dist * cos((90 - angle) * 0.0174533);
+////		printf("correct dist: %i\n", correct_dist);
+//		int wall_height = 64 * 554 / dist;
+//		int start_height = 200 - wall_height / 2;
+//		while (wall_height)
+//		{
+////		printf("here\n");
+////			printf("here 3\n");
+//			my_mlx_pixel_put((*game)->img, x, start_height++, 0x00FFFFFF);
+////			printf("here 5\n");
+//			wall_height--;
+//		}
+////		printf("wall height: %i\n", wall_height);
+////		printf("start height: %i\n", start_height);
+////		printf("angle: %i\n", angle);
+//		angle++;
+//		x--;
 //	}
 }
 
@@ -296,6 +320,7 @@ int main(int args, char *argv[]) {
 	game->player_angle = PI * 1.5;
 	game->player_yd = sin((game)->player_angle) * 5;
 	game->player_xd = cos((game)->player_angle) * 5;
+
 //	double i = 1.5;
 //	modf(i, &i);
 //	printf("%f\n", cos(0));

@@ -109,8 +109,9 @@ void	check_corners(t_game **game);
 void	check_map(t_game **game);
 double	horizont_hit_dist(t_game **game, double angle);
 double	vertical_hit_dist(t_game **game, double angle);
-int		find_min(int a, int b);
+double	find_min(double a, double b);
 void	create_cos_array(t_game **game);
+double	find_dist(t_game **game, t_ray *ray, double angle);
 
 t_stack	*ft_stcknew(char *content);
 void	ft_stckadd_front(t_stack **stck, t_stack *new);
