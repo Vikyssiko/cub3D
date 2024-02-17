@@ -46,7 +46,8 @@ double	find_dist(t_game **game, t_ray *ray, double angle)
 	dist = 2147483648;
 	while (1)
 	{
-		if (ray->y < 0 || ray->y >= (*game)->map->length || (*game)->map->map[(int)(ray->y) >> 6][(int)(ray->x) >> 6] == '1')
+//		printf("here\n");
+		if (((int)(ray->y) >> 6) < 0 || ((int)(ray->y) >> 6) >= (*game)->map->length || (*game)->map->map[(int)(ray->y) >> 6][(int)(ray->x) >> 6] == '1')
 		{
 			dist = find_min(dist, cos(angle) * (ray->x - (*game)->player_x) - sin(angle) * (ray->y - (*game)->player_y));
 			break ;
@@ -79,9 +80,11 @@ double 	vertical_hit_dist(t_game **game, double angle)
 	}
 	else
 	{
+//		printf("in else\n");
 		ray.x = (*game)->player_x;
 		ray.y = (*game)->player_y;
 	}
+//	printf("vertical: %f\n",find_dist(game, &ray, angle));
 	return (find_dist(game, &ray, angle));
 
 //	int	x;
@@ -121,7 +124,7 @@ double 	vertical_hit_dist(t_game **game, double angle)
 //	printf("dist vert: %f\n", dist);
 ////	printf("vertical x: %i, y: %i\n", x, y);
 //	printf("vertical x: %i, y: %i\n", x / 64, y / 64);
-	return (dist);
+//	return (dist);
 }
 
 double		find_min(double a, double b)

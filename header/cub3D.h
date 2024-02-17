@@ -26,6 +26,8 @@
 # define PROJECTION_HEIGHT		1000
 # define PROJECTION_WIDTH		1600
 # define PI						3.1415926
+# define MAP_HEIGHT				1000
+# define MAP_WIDTH				1800
 
 typedef struct s_stack
 {
