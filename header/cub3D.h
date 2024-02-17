@@ -40,9 +40,16 @@ typedef struct s_map {
 	int		length;
 }	t_map;
 
+//typedef struct s_ray {
+//	double	x;
+//	double 	y;
+//}	t_ray;
+
 typedef struct s_ray {
 	double	x;
 	double 	y;
+	double 	x_diff;
+	double 	y_diff;
 }	t_ray;
 
 typedef struct s_player {
@@ -100,8 +107,8 @@ void	ft_strcpy(char *dst, const char *src);
 void	check_surrounding_walls(t_game **game);
 void	check_corners(t_game **game);
 void	check_map(t_game **game);
-double	horizont_hit_dist(t_game **game, int angle);
-double	vertical_hit_dist(t_game **game, int angle);
+double	horizont_hit_dist(t_game **game, double angle);
+double	vertical_hit_dist(t_game **game, double angle);
 int		find_min(int a, int b);
 void	create_cos_array(t_game **game);
 

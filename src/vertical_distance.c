@@ -12,41 +12,79 @@
 
 #include "../header/cub3D.h"
 
-int	find_first_x_vert(t_game **game, int angle)
+int	find_first_x_vert(t_game **game, double angle)
 {
 	int	x_coordinate;
 
 	x_coordinate = (int)((*game)->player_x / 64);
-	if (angle < 90 || angle >= 270)
+	if (angle < PI / 2 || angle >= PI * 1.5)
 		return (x_coordinate * 64 + 64);
 	return (x_coordinate * 64 - 1);
 }
 
-int	find_x_diff_vert(int angle)
+int	find_x_diff_vert(double angle)
 {
-	if (angle < 90 || angle >= 270)
+	if (angle < PI / 2 || angle >= PI * 1.5)
 		return (64);
 	return (-64);
 }
 
-double	find_y_diff_vert(int angle)
+double	find_y_diff_vert(double angle)
 {
 	double	diff;
 
-	diff = 64 * tan(angle * 0.0174533);
-	if (angle < 180)
+	diff = 64 * tan(angle);
+	if (angle < PI)
 		return (-diff);
 	return (diff);
 }
 
-double 	vertical_hit_dist(t_game **game, int angle)
+double 	vertical_hit_dist(t_game **game, double angle)
 {
+	t_ray	ray;
+	double	dist;
+
+	double	tang;
+
+	tang = tan(angle);
+	if (cos(angle) > 0.001)
+	{
+		ray.x = (((int)(*game)->player_x >> 6) << 6) + 64;
+		ray.x_diff = 64;
+		ray.y = ((*game)->player_x - rx) * tang + (*game)->player_y;
+		ray.y_diff = -xo * tang;
+	}
+	else if (cos(angle) < -0.001)
+	{
+		ray.x = (((int)(*game)->player_x >> 6) << 6) - 0.0001;
+		ray.x_diff = -64;
+		ray.y = ((*game)->player_x - rx) * tang + (*game)->player_y;
+		ray.y_diff = -xo * tang;
+	}
+	else
+	{
+		ray.x = (*game)->player_x;
+		ray.y = (*game)->player_y;
+	}
+	while ()
+	{
+		if (ray.y < 0 || ray.y >= (*game)->map->length || (*game)->map->map[(int)(ray.y) >> 6][(int)(ray.x) >> 6] == '1')
+		{
+
+		}
+	}
+
+
+	if (angle > M_PI_2 && angle < M_PI_4 * 3)
+
+
+
 	int	x;
 	int	y;
 	double 	dist;
 
 	x = find_first_x_vert(game, angle);
-	y = (*game)->player_y + ((*game)->player_x - x) * tan(angle * 0.0174533);
+	y = (*game)->player_y + ((*game)->player_x - x) * tan(angle);
 //	if (y > (*game)->map->length * 64)
 //		return (MAXFLOAT);
 //	printf("vertical x: %i, y: %i\n", x, y);
@@ -56,7 +94,7 @@ double 	vertical_hit_dist(t_game **game, int angle)
 	if (y < 0)
 		y = 0;
 	if ((*game)->map->map[y / 64][x / 64] == '1')
-		return (abs(x - (*game)->player_x) / (*game)->cos_array[angle]);
+		return (abs(x - (*game)->player_x) / (*game)->cos_array[(int)(angle * 57.2958)]);
 	while (1)
 	{
 //		printf("here1\n");
@@ -74,7 +112,7 @@ double 	vertical_hit_dist(t_game **game, int angle)
 			break ;
 	}
 //	printf("here4\n");
-	dist = abs(x - (*game)->player_x) / (*game)->cos_array[angle];
+	dist = abs(x - (*game)->player_x) / (*game)->cos_array[(int)(angle * 57.2958)];
 	printf("dist vert: %f\n", dist);
 //	printf("vertical x: %i, y: %i\n", x, y);
 	printf("vertical x: %i, y: %i\n", x / 64, y / 64);
