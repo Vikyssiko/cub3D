@@ -39,31 +39,45 @@ double	find_y_diff_vert(double angle)
 	return (diff);
 }
 
-double	find_dist(t_game **game, t_ray *ray, double angle)
+t_dist 	find_dist(t_game **game, t_ray *ray, double angle)
 {
-	double	dist;
+//	double	dist;
+	t_dist	dist;
 
-	dist = 2147483648;
+	dist.dist = 2147483648;
 	while (1)
 	{
 //		printf("here\n");
 		if (((int)(ray->y) >> 6) < 0 || ((int)(ray->y) >> 6) >= (*game)->map->length || (*game)->map->map[(int)(ray->y) >> 6][(int)(ray->x) >> 6] == '1')
 		{
-			dist = find_min(dist, cos(angle) * (ray->x - (*game)->player_x) - sin(angle) * (ray->y - (*game)->player_y));
+			double distance = cos(angle) * (ray->x - (*game)->player_x) - sin(angle) * (ray->y - (*game)->player_y);
+//			if (distance < -1)
+//				distance = -distance;
+			dist.dist = find_min(dist.dist, distance);
+//			dist.dist = find_min(dist.dist, cos(angle) * (ray->x - (*game)->player_x) - sin(angle) * (ray->y - (*game)->player_y));
+			if (dist.dist < 0)
+				printf("%f\n", dist.dist);
 			break ;
 		}
 		ray->x += ray->x_diff;
 		ray->y += ray->y_diff;
 	}
+	dist.color = 0xFF00FF;
 	return (dist);
 }
 
-double 	vertical_hit_dist(t_game **game, double angle)
+t_dist 	vertical_hit_dist(t_game **game, double angle)
 {
 	t_ray	ray;
 	double	tang;
 
 	tang = tan(angle);
+//	if (tang > 100)
+//		tang = 75.204309;
+//	else if (tang < -100)
+//		tang = -75.204309;
+//	else if (tang > 100)
+//		tang =
 	if (cos(angle) > 0.001)
 	{
 		ray.x = (((int)(*game)->player_x >> 6) << 6) + 64;
@@ -132,4 +146,11 @@ double		find_min(double a, double b)
 	if (a <= b)
 		return (a);
 	return (b);
+}
+
+t_dist		find_min_dist(t_dist vert, t_dist hor)
+{
+	if (vert.dist <= hor.dist)
+		return (vert);
+	return (hor);
 }
