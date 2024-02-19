@@ -73,6 +73,8 @@ void	draw_rays(t_game **game)
 	i = 0;
 	ray_angle = fix_angle((*game)->player_angle + M_PI_2 / 3);
 	x = 0;
+	dist.color = 0xCCB3FF;
+//	printf("here 1\n");
 	while (i < 1800)
 	{
 //		printf("here 1\n");
@@ -86,8 +88,12 @@ void	draw_rays(t_game **game)
 		if (fix_angle((*game)->player_angle - ray_angle) != M_PI_2 && fix_angle((*game)->player_angle - ray_angle) != M_PI_2 * 3)
 			dist.dist = dist.dist * cos(fix_angle((*game)->player_angle - ray_angle));
 //		if (dist.dist < 0)
+//		{
+//			ray_angle = fix_angle(ray_angle - 0.001745);
+////			i++;
+//			continue ;
+//		}
 		line_height = 64 * (MAP_WIDTH / 2 / tan(M_PI_2 / 3)) / dist.dist;
-//		printf("here 4\n");
 //		printf("height: %d\n", line_height);
 		if (line_height > MAP_HEIGHT)
 			line_height = MAP_HEIGHT;
@@ -96,13 +102,7 @@ void	draw_rays(t_game **game)
 //		printf("height: %d\n", line_height);
 		while (y_start <= line_height)
 		{
-//			printf("drawing\n");
-//			int x_end = (*game)->player_x - 4;
-//			while (x_end <= x_start)
-//			{
-				my_mlx_pixel_put((*game)->img, x, y_start, dist.color);
-//				x_end++;
-//			}
+			my_mlx_pixel_put((*game)->img, x, y_start, dist.color);
 			y_start++;
 		}
 		x += MAP_WIDTH / 1800;
@@ -114,27 +114,30 @@ void	draw_rays(t_game **game)
 
 void	draw_player(t_game **game)
 {
-	int y_start = (*game)->player_y + 4;
-	int y_end = (*game)->player_y - 4;
-	int x_start = (*game)->player_x + 4;
-	while (y_end <= y_start)
+
+	int y_start = (*game)->player_y / 64 * CELL_SIZE;
+	int y_end = (*game)->player_y / 64 * CELL_SIZE + CELL_SIZE - 1;
+	int x_start = (*game)->player_x / 64 * CELL_SIZE;
+	while (y_end >= y_start)
 	{
-		int x_end = (*game)->player_x - 4;
-		while (x_end <= x_start)
+		int x_end = (*game)->player_x / 64 * CELL_SIZE + CELL_SIZE - 1;
+//		printf("x_end: %i, x_start: %i\n", x_end, x_start);
+		while (x_end >= x_start)
 		{
+//			printf("drawing player\n");
 			my_mlx_pixel_put((*game)->img, x_end, y_end, 0x0000FF);
-			x_end++;
+			x_end--;
 		}
-		y_end++;
+		y_end--;
 	}
 //	int	i = 0;
-//	double y = (*game)->player_y;
-//	double x = (*game)->player_x;
-//	while (i < 20)
+//	while (i < 10)
 //	{
+//		int	y = (*game)->player_y - sin((*game)->player_angle) * 5;
+//		int	x = (*game)->player_x + cos((*game)->player_angle) * 5;
 //		my_mlx_pixel_put((*game)->img, x, y, 0x0000FF);
-//		y += (*game)->player_yd / 5;
-//		x += (*game)->player_xd / 5;
+////		y += (*game)->player_y * sin;
+////		x += (*game)->player_xd / 5;
 //		i++;
 //	}
 //	draw_rays(game);
@@ -143,10 +146,13 @@ void	draw_player(t_game **game)
 void	draw_cell(t_game **game, int x, int y)
 {
 //	printf("x: %i, y: %i\n", x, y);
-	int y_end = y * 64 + 63;
-	int x_end = x * 64 + 63;
+	int y_end = y * CELL_SIZE + CELL_SIZE - 1;
+	int x_end = x * CELL_SIZE + CELL_SIZE - 1;
+//	int y_end = y * CELL_SIZE + CELL_SIZE / 2;
+//	int x_end = x * CELL_SIZE + CELL_SIZE / 2;
 	int x_start;
-	int y_start = y * 64;
+//	int y_start = y * CELL_SIZE - CELL_SIZE / 2;
+	int y_start = y * CELL_SIZE;
 	int	color;
 //	if ((*game)->map->map[y][x] == '1')
 		color = 0xFF9933;
@@ -154,9 +160,11 @@ void	draw_cell(t_game **game, int x, int y)
 //		color = 0xFFFFFF;
 //	else
 //		color = 0x778899;
+//	printf("draw cell start\n");
 	while (y_start < y_end)
 	{
-		x_start = x * 64;
+//		x_start = x * CELL_SIZE - CELL_SIZE / 2;
+		x_start = x * CELL_SIZE;
 		while (x_start < x_end)
 		{
 //			printf("x: %i, y: %i\n", x, y);
@@ -165,6 +173,7 @@ void	draw_cell(t_game **game, int x, int y)
 		}
 		y_start++;
 	}
+//	printf("draw cell end\n");
 }
 
 void	draw_black(t_game **game)
@@ -173,7 +182,8 @@ void	draw_black(t_game **game)
 	while (y < MAP_HEIGHT)
 	{
 		int x = 0;
-		while (x < (*game)->map_width * MAP_WIDTH)
+//		while (x < (*game)->map_width * MAP_WIDTH)
+		while (x < MAP_WIDTH)
 		{
 			my_mlx_pixel_put((*game)->img, x, y, 0xFDEE00);
 			x++;
@@ -189,10 +199,13 @@ void	draw_map(t_game **game)
 	while (y < (*game)->map->length)
 	{
 		x = 0;
+//		printf("%s\n", (*game)->map->map[y]);
 		while (x < (*game)->map_width)
 		{
+//			printf("here 2\n");
 			if ((*game)->map->map[y][x] == '1')
 				draw_cell(game, x, y);
+//			printf("here 2\n");
 			x++;
 		}
 		y++;
@@ -200,12 +213,21 @@ void	draw_map(t_game **game)
 	draw_player(game);
 }
 
-void	draw(t_game **game)
+static int i;
+
+int	draw(t_game **game)
 {
-	draw_black(game);
-	draw_rays(game);
-	draw_map(game);
-	mlx_put_image_to_window((*game)->mlx_ptr, (*game)->window_ptr, (*(*game)->img).img_ptr, 0, 0);
+	if (i % 100 == 0)
+	{
+		i = 0;
+		draw_black(game);
+		draw_rays(game);
+		draw_map(game);
+//		printf("here\n");
+		mlx_put_image_to_window((*game)->mlx_ptr, (*game)->window_ptr, (*(*game)->img).img_ptr, 0, 0);
+	}
+	i++;
+	return (0);
 }
 
 int	handle_input(int key, t_game **game)
@@ -217,24 +239,19 @@ int	handle_input(int key, t_game **game)
 		(*game)->player_angle += 0.1;
 		if ((*game)->player_angle > 2 * M_PI)
 			(*game)->player_angle -= M_PI * 2;
-//		(*game)->player_xd = cos((*game)->player_angle) * 5;
-//		(*game)->player_yd = sin((*game)->player_angle) * 5;
 	}
 	else if (key == XK_Right)
 	{
 		(*game)->player_angle -= 0.1;
 		if ((*game)->player_angle < 0)
 			(*game)->player_angle += 2 * M_PI;
-//		(*game)->player_xd = cos((*game)->player_angle);
-//		(*game)->player_yd = sin((*game)->player_angle);
+//		printf("angle: %f\n", (*game)->player_angle);
 	}
 	else if (key == XK_w)
 	{
-//		int	y = (*game)->player_y - 12;
-//		printf("yd: %f\n", (*game)->player_yd);
 		int	y = (*game)->player_y - sin((*game)->player_angle) * 5;
 		int	x = (*game)->player_x + cos((*game)->player_angle) * 5;
-		if ((*game)->map->map[(y - 10) / 64][(x + 10) / 64] != '1')
+		if ((*game)->map->map[(y) / 64][(x) / 64] == '0' || (*game)->map->map[(y) / 64][(x) / 64] == 'N')
 		{
 			(*game)->player_y = y;
 			(*game)->player_x = x;
@@ -244,47 +261,33 @@ int	handle_input(int key, t_game **game)
 	{
 		int	y = (*game)->player_y + sin((*game)->player_angle) * 5;
 		int	x = (*game)->player_x - cos((*game)->player_angle) * 5;
-		if ((*game)->map->map[(y + 10) / 64][(x - 10) / 64] != '1')
+		if ((*game)->map->map[(y) / 64][(x) / 64] == '0' || (*game)->map->map[(y) / 64][(x) / 64] == 'N')
 		{
 			(*game)->player_y = y;
 			(*game)->player_x = x;
 		}
-//		int	y = (*game)->player_y + 12;
-////		int	y = (*game)->player_y + (*game)->player_yd;
-//		if ((*game)->map->map[y / 64][(*game)->player_x / 64] != '1')
-//			(*game)->player_y += 8;
 	}
 	else if (key == XK_d)
 	{
 		int	y = (*game)->player_y + cos((*game)->player_angle) * 5;
 		int	x = (*game)->player_x + sin((*game)->player_angle) * 5;
-		if ((*game)->map->map[(y + 10) / 64][(x + 10) / 64] != '1')
+		if ((*game)->map->map[(y) / 64][(x) / 64] == '0' || (*game)->map->map[(y) / 64][(x) / 64] == 'N')
 		{
 			(*game)->player_y = y;
 			(*game)->player_x = x;
 		}
-//		int	x = (*game)->player_x + 12;
-////		int	x = (*game)->player_x + (*game)->player_xd;
-//		if ((*game)->map->map[(*game)->player_y / 64][x / 64] != '1')
-////			(*game)->player_x += x;
-//			(*game)->player_x += 8;
 	}
 	else if (key == XK_a)
 	{
 		int	y = (*game)->player_y - cos((*game)->player_angle) * 5;
 		int	x = (*game)->player_x - sin((*game)->player_angle) * 5;
-		if ((*game)->map->map[(y - 10) / 64][(x - 10) / 64] != '1')
+		if ((*game)->map->map[(y) / 64][(x) / 64] == '0' || (*game)->map->map[(y) / 64][(x) / 64] == 'N')
 		{
 			(*game)->player_y = y;
 			(*game)->player_x = x;
 		}
-//		int	x = (*game)->player_x - 12;
-////		int	x = (*game)->player_x - (*game)->player_xd;
-//		if ((*game)->map->map[(*game)->player_y / 64][x / 64] != '1')
-////			(*game)->player_x -= x;
-//			(*game)->player_x -= 8;
 	}
-	draw(game);
+//	draw(game);
 	return (0);
 }
 
@@ -303,10 +306,8 @@ int main(int args, char *argv[]) {
 	game = parse_textures(argv[1]);
 	parse_map(&game);
 	check_map(&game);
-	create_cos_array(&game);
-	game->player_angle = M_PI_2;
-	game->player_yd = sin((game)->player_angle) * 5;
-	game->player_xd = cos((game)->player_angle) * 5;
+//	create_cos_array(&game);
+//	game->player_angle = M_PI_2;
 
 	game->mlx_ptr = mlx_init();
 	t_img	img;
@@ -317,16 +318,11 @@ int main(int args, char *argv[]) {
 								 &img.endian);
 	game->window_ptr = mlx_new_window(game->mlx_ptr, MAP_WIDTH, MAP_HEIGHT, "cub3D");
 	draw(&game);
-
 //	mlx_put_image_to_window(game->mlx_ptr, game->window_ptr, img.img_ptr, 0, 0);
-//	mlx_pixel_put(game->mlx_ptr, game->window_ptr, 300, 300, 0x00FFFFFF);
-//	mlx_hook(game->mlx_ptr, 2, 1L << 0, keydown_hook, game);
-//	mlx_hook(game->mlx_ptr, 3, 1L << 1, keyup_hook, game);
-//	mlx_hook(game->mlx_ptr, 53, 1L << 0, escape, game);
-//	mlx_key_hook(game->mlx_ptr, keydown_hook, &game);
 	mlx_hook(game->window_ptr, KeyPress, KeyPressMask, handle_input, &game);
-//	mlx_hook(game->window_ptr,
-//			 DestroyNotify, ButtonPressMask, clean_and_exit("", &game), game);
+	mlx_loop_hook(game->mlx_ptr, draw, &game);
+	mlx_hook(game->window_ptr,
+			 DestroyNotify, ButtonPressMask, clean_and_exit_no_error, &game);
 	mlx_loop(game->mlx_ptr);
 //	int i = 0;
 //	t_stack	*stack = game->stack;

@@ -52,12 +52,14 @@ t_dist 	horizont_hit_dist(t_game **game, double angle)
 //		tang = -0.001;
 //		printf("tang: %f\n", tang);
 	dist.dist = 2147483648;
+	dist.color = 0xFA8072;
 	if (sin(angle) > 0.001)
 	{
 		ray.y = (((int)(*game)->player_y >> 6) << 6) - 0.0001;
 		ray.y_diff = -64;
 		ray.x = ((*game)->player_y - ray.y) * tang + (*game)->player_x;
 		ray.x_diff = -ray.y_diff * tang;
+//		dist.direction = 'N';
 	}
 	else if (sin(angle) < -0.001)
 	{
@@ -65,6 +67,8 @@ t_dist 	horizont_hit_dist(t_game **game, double angle)
 		ray.y_diff = 64;
 		ray.x = ((*game)->player_y - ray.y) * tang + (*game)->player_x;
 		ray.x_diff = -ray.y_diff * tang;
+		dist.color = 0xCCB3FF;
+//		dist.direction = 'S';
 	}
 	else
 	{
@@ -73,9 +77,16 @@ t_dist 	horizont_hit_dist(t_game **game, double angle)
 	}
 	while (1)
 	{
-		if (((int)(ray.x) >> 6) < 0 || ((int)(ray.x) >> 6) >= (*game)->map_width || (*game)->map->map[(int)(ray.y) >> 6][(int)(ray.x) >> 6] == '1')
+		if (((int)(ray.x) >> 6) < 0 || ((int)(ray.x) >> 6) >= (*game)->map_width
+			|| (*game)->map->map[(int)(ray.y) >> 6][(int)(ray.x) >> 6] == '1'
+			|| (*game)->map->map[(int)(ray.y) >> 6][(int)(ray.x) >> 6] == ' ')
 		{
 			double distance = cos(angle) * (ray.x - (*game)->player_x) - sin(angle) * (ray.y - (*game)->player_y);
+//			while (distance < 0)
+//			{
+//				angle -= 0.00058177;
+//				distance = cos(angle) * (ray.x - (*game)->player_x) - sin(angle) * (ray.y - (*game)->player_y);
+//			}
 //			if (distance < -1)
 //				distance = -distance;
 			dist.dist = find_min(dist.dist, distance);
@@ -86,7 +97,7 @@ t_dist 	horizont_hit_dist(t_game **game, double angle)
 		ray.y += ray.y_diff;
 	}
 //	printf("horizontal: %f\n", dist);
-	dist.color = 0xFA8072;
+//	dist.color = 0xFA8072;
 	return (dist);
 
 ////	(*ray).x = x;

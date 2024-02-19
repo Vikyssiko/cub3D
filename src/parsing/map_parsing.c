@@ -67,10 +67,13 @@ void	creating_map_array(t_game **game)
 	stack = (*game)->stack;
 	while (stack)
 	{
-		(*game)->map->map[i] = malloc((*game)->map_width);
-		ft_memset((*game)->map->map[i], ' ', (*game)->map_width - 1);
-		(*game)->map->map[i][(*game)->map_width - 1] = '\0';
+//		printf("%s", stack->str);
+		(*game)->map->map[i] = malloc((*game)->map_width + 1);
+		(*game)->map->map[i][(*game)->map_width] = '\0';
+		ft_memset((*game)->map->map[i], ' ', (*game)->map_width);
+//		printf("%s.\n", (*game)->map->map[i]);
 		ft_strcpy((*game)->map->map[i], stack->str);
+//		printf("%s.\n", (*game)->map->map[i]);
 		stack = stack->next;
 		i++;
 	}
@@ -86,19 +89,29 @@ int		find_max(int a, int b)
 void	parse_map(t_game **game)
 {
 	char	*line;
+	int		width;
 
 	line = skip_empty_lines(game);
-	(*game)->map_width = find_max((*game)->map_width, ft_strlen(line) - 1);
+	width = ft_strlen(line);
+	if (line[width - 1] == '\n')
+		width -= 1;
+	(*game)->map_width = find_max((*game)->map_width, width);
 	(*game)->stack = ft_stcknew(line);
 	check_symbol(line, game);
 //	free(line);
 	line = get_next_line((*game)->fd);
 	while (line)
 	{
-		(*game)->map_width = find_max((*game)->map_width, ft_strlen(line) - 1);
+		width = ft_strlen(line);
+		if (line[width - 1] == '\n')
+			width -= 1;
+//		printf("width: %i\n", width);
+		(*game)->map_width = find_max((*game)->map_width, width);
+//		(*game)->map_width = find_max((*game)->map_width, ft_strlen(line) - 1);
 		check_symbol(line, game);
 		ft_stckadd_back((&(*game)->stack), ft_stcknew(line));
 		line = get_next_line((*game)->fd);
 	}
+//	printf("game width: %i\n", (*game)->map_width);
 	creating_map_array(game);
 }

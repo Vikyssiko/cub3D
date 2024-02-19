@@ -28,6 +28,7 @@
 # define PI						3.1415926
 # define MAP_HEIGHT				1000
 # define MAP_WIDTH				1800
+# define CELL_SIZE				8
 
 typedef struct s_stack
 {
@@ -44,6 +45,7 @@ typedef struct s_map {
 
 typedef struct s_dist {
 	double	dist;
+	char	direction;
 	int		color;
 }	t_dist;
 
@@ -80,8 +82,8 @@ typedef struct s_game {
 	int			player_x;
 	int			player_y;
 	double		player_angle;
-	double		player_xd;
-	double		player_yd;
+//	double		player_xd;
+//	double		player_yd;
 	int			fd;
 	int			map_width;
 	char		*north;
@@ -118,7 +120,7 @@ t_dist 	horizont_hit_dist(t_game **game, double angle);
 t_dist 	vertical_hit_dist(t_game **game, double angle);
 double	find_min(double a, double b);
 void	create_cos_array(t_game **game);
-t_dist 	find_dist(t_game **game, t_ray *ray, double angle);
+t_dist 	find_dist(t_game **game, t_ray *ray, double angle, t_dist dist);
 t_dist	find_min_dist(t_dist vert, t_dist hor);
 
 t_stack	*ft_stcknew(char *content);
