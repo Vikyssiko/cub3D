@@ -73,11 +73,11 @@ void	check_surrounding_walls(t_game **game)
 			{
 				if (array[i][j] == 'N')
 					(*game)->player_angle = M_PI_2;
-				if (array[i][j] == 'S')
+				else if (array[i][j] == 'S')
 					(*game)->player_angle = M_PI_2 * 3;
-				if (array[i][j] == 'W')
-					(*game)->player_angle = 0;
-				if (array[i][j] == 'E')
+				else if (array[i][j] == 'W')
+					(*game)->player_angle = 0.008;
+				else if (array[i][j] == 'E')
 					(*game)->player_angle = M_PI_2 * 2;
 //				printf("i: %i, player_y: %i\n", i, i * 64 + 32);
 				(*game)->player_y = i * 64 + 32;

@@ -23,12 +23,13 @@
 # define FOV					60
 # define WALL					64
 # define PLAYER					32
-# define PROJECTION_HEIGHT		1000
-# define PROJECTION_WIDTH		1600
+//# define PROJECTION_HEIGHT		1000
+//# define PROJECTION_WIDTH		1600
 # define PI						3.1415926
 # define MAP_HEIGHT				1000
 # define MAP_WIDTH				1800
 # define CELL_SIZE				8
+# define MINIMAP_COLOR			0xFF9933
 
 typedef struct s_stack
 {
@@ -90,8 +91,10 @@ typedef struct s_game {
 	char		*south;
 	char		*west;
 	char		*east;
-	char		*floor;
-	char		*ceiling;
+//	char		*floor;
+//	char		*ceiling;
+	int			floor;
+	int			ceiling;
 	t_map		*map;
 	t_stack		*stack;
 	void		*mlx_ptr;
@@ -122,6 +125,7 @@ double	find_min(double a, double b);
 void	create_cos_array(t_game **game);
 t_dist 	find_dist(t_game **game, t_ray *ray, double angle, t_dist dist);
 t_dist	find_min_dist(t_dist vert, t_dist hor);
+int 	rgb_to_decimal(char *color_rgb, t_game **game);
 
 t_stack	*ft_stcknew(char *content);
 void	ft_stckadd_front(t_stack **stck, t_stack *new);

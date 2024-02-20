@@ -45,7 +45,10 @@ t_dist 	horizont_hit_dist(t_game **game, double angle)
 	t_dist 	dist;
 	double	tang;
 
-	tang = 1.0 / tan(angle);
+//	if (tan(angle) > 1000)
+//		tang = 1.0 / 75;
+//	else
+		tang = 1.0 / tan(angle);
 //	if ((tang < 0.001 && tang > 0))
 //		tang = 0.001;
 //	else if ((tang > -0.001 && tang < 0))
@@ -72,6 +75,7 @@ t_dist 	horizont_hit_dist(t_game **game, double angle)
 	}
 	else
 	{
+//		printf("gfdf\n");
 		ray.x = (*game)->player_x;
 		ray.y = (*game)->player_y;
 	}
@@ -96,6 +100,8 @@ t_dist 	horizont_hit_dist(t_game **game, double angle)
 		ray.x += ray.x_diff;
 		ray.y += ray.y_diff;
 	}
+//	if (angle > M_PI - 0.001 && angle < M_PI + 0.001)
+//		printf("dist: %f\n", dist.dist);
 //	printf("horizontal: %f\n", dist);
 //	dist.color = 0xFA8072;
 	return (dist);

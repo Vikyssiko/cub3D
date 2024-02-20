@@ -37,6 +37,37 @@ int	check_all_instructions(t_game *game)
 //
 //}
 
+int rgb_to_decimal(char *color_rgb, t_game **game)
+{
+	char	**rgb;
+	int		i;
+	int 	color;
+	int		multiplier;
+	int		num;
+
+	i = 0;
+	multiplier = 1;
+	color = 0;
+	rgb = ft_split(color_rgb, ',');
+	while (rgb[i])
+		i++;
+	if (i != 3)
+		clean_and_exit("Colors in the map are not correct", game);
+	i = 2;
+	while (i >= 0)
+	{
+		num = ft_atoi(rgb[i]);
+		if (num < 0 || num > 255)
+			clean_and_exit("Colors in the map are not correct", game);
+		color += num % 16 * multiplier;
+		multiplier *= 16;
+		color += num / 16 * multiplier;
+		multiplier *= 16;
+		i--;
+	}
+	return (color);
+}
+
 t_game	*parse_textures(char *map_name)
 {
 	int		fd;
@@ -46,7 +77,7 @@ t_game	*parse_textures(char *map_name)
 
 	fd = open(map_name, O_RDONLY);
 	if (fd < 0)
-		exit_with_error("Couldn't open file", 0);
+		exit_with_error("Error\nCouldn't open file\n", 0);
 	line = get_next_line(fd);
 	if (!line)
 		exit_with_error("Map is empty", fd);

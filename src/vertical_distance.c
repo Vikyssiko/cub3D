@@ -83,7 +83,7 @@ t_dist 	vertical_hit_dist(t_game **game, double angle)
 	t_dist	dist;
 
 	tang = tan(angle);
-//	if (tang > 100)
+//	if (tang > 1000)
 //		tang = 75.204309;
 //	else if (tang < -100)
 //		tang = -75.204309;
