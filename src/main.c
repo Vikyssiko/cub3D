@@ -34,11 +34,6 @@ t_game	*create_game(int fd)
 	return (game);
 }
 
-//void find_players_pos(t_game **game)
-//{
-//	while ()
-//}
-
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 {
 	int	offset;
@@ -236,7 +231,7 @@ int	draw(t_game **game)
 	if (i % 100 == 0)
 	{
 		i = 0;
-		draw_black(game);
+//		draw_black(game);
 //		draw_rays(game);
 //		draw_map(game);
 //		printf("here\n");
@@ -301,6 +296,32 @@ int	handle_input(int key, t_game **game)
 //	return (0);
 //}
 
+int get_pixel_color(int x, int y, char *data_addr, t_img *img) {
+	// Calculate the offset of the pixel in the image data
+	int offset = (y * img->line_len) + (x * (img->bits_per_pixel / 8));
+
+	// Depending on the endian format, adjust the byte order
+	int red_offset, green_offset, blue_offset;
+
+	if (img->endian == 0) {  // Little-endian
+		red_offset = 0;
+		green_offset = 1;
+		blue_offset = 2;
+	} else {  // Big-endian
+		red_offset = 2;
+		green_offset = 1;
+		blue_offset = 0;
+	}
+
+	// Retrieve color components
+	int red = (unsigned char)data_addr[(unsigned int)offset + red_offset];
+	int green = (unsigned char)data_addr[(unsigned int)offset + green_offset];
+	int blue = (unsigned char)data_addr[(unsigned int)offset + blue_offset];
+
+	// Assuming 8 bits per channel, you might need to scale the values based on the actual image format
+	return (blue << 16) | (green << 8) | red;
+}
+
 int main(int args, char *argv[]) {
 	t_game	*game;
 
@@ -313,21 +334,45 @@ int main(int args, char *argv[]) {
 //	game->player_angle = M_PI_2;
 
 	game->mlx_ptr = mlx_init();
+	init_textures(&game);
 	t_img	img;
 
 	game->img = &img;
 //	img.img_ptr = mlx_new_image(game->mlx_ptr, MAP_WIDTH, MAP_HEIGHT);
 	int a = 563;
 	img.img_ptr = mlx_xpm_file_to_image(game->mlx_ptr, "texture.xpm", &a, &a);
+//	img.img_ptr.
 //	if (img.img_ptr)
 //		printf("aa\n");
+
 	img.img_pixels_ptr = mlx_get_data_addr(img.img_ptr, &img.bits_per_pixel, &img.line_len,
 								 &img.endian);
+
+	int	color;
+	int y;
+	int x;
+
+	y = 0;
+	while (y < a)
+	{
+		x = 0;
+		while (x < a)
+		{
+			color = get_pixel_color(x, y, img.img_pixels_ptr, &img);
+			my_mlx_pixel_put((game)->img, x, y, color);
+			x++;
+		}
+		y++;
+	}
+//	mlx_put_image_to_window(game->mlx_ptr, game->window_ptr, game->img, 0, 0);
+
+//	printf("%s", img.img_pixels_ptr);
 //	printf("%s\n", img.img_pixels_ptr);
 //	printf("dd\n");
 	game->window_ptr = mlx_new_window(game->mlx_ptr, MAP_WIDTH, MAP_HEIGHT, "cub3D");
-	draw(&game);
-//	mlx_put_image_to_window(game->mlx_ptr, game->window_ptr, img.img_ptr, 0, 0);
+//	mlx_put_image_to_window(game->mlx_ptr, game->window_ptr, game->img, 0, 0);
+//	draw(&game);
+	mlx_put_image_to_window(game->mlx_ptr, game->window_ptr, img.img_ptr, 0, 0);
 	mlx_hook(game->window_ptr, KeyPress, KeyPressMask, handle_input, &game);
 //	mlx_loop_hook(game->mlx_ptr, draw, &game);
 	mlx_hook(game->window_ptr,

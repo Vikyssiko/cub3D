@@ -25,7 +25,8 @@ BONUS_SRCS	=	$(BONUS_DIR)/anim_bonus.c \
 				$(BONUS_DIR)/print_movements_bonus.c \
 				$(BONUS_DIR)/stack_bonus.c \
 				$(BONUS_DIR)/valid_path_bonus.c \
-				$(BONUS_DIR)/window_bonus.c
+				$(BONUS_DIR)/window_bonus.c \
+				$(BONUS_DIR)/textures.c
 
 BONUS_OBJS	=	$(BONUS_SRCS:.c=.o)
 
@@ -43,7 +44,8 @@ SRCS		=	$(SRC_DIR)/parsing/cardinal_directions.c \
 				$(SRC_DIR)/parsing/parsing_utils.c \
 				$(SRC_DIR)/horizontal_distance.c \
 				$(SRC_DIR)/vertical_distance.c \
-				$(SRC_DIR)/cos.c
+				$(SRC_DIR)/cos.c \
+				$(SRC_DIR)/textures.c
 
 OBJS		=	$(SRCS:.c=.o)
 

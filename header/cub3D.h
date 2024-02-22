@@ -30,6 +30,7 @@
 # define MAP_WIDTH				1800
 # define CELL_SIZE				8
 # define MINIMAP_COLOR			0xFF9933
+# define TEXTURE_SIZE			520;
 
 typedef struct s_stack
 {
@@ -88,9 +89,13 @@ typedef struct s_game {
 	int			fd;
 	int			map_width;
 	char		*north;
+	t_img		*north_img;
 	char		*south;
+	t_img		*south_img;
 	char		*west;
+	t_img		*west_img;
 	char		*east;
+	t_img		*east_img;
 //	char		*floor;
 //	char		*ceiling;
 	int			floor;
@@ -126,6 +131,7 @@ void	create_cos_array(t_game **game);
 t_dist 	find_dist(t_game **game, t_ray *ray, double angle, t_dist dist);
 t_dist	find_min_dist(t_dist vert, t_dist hor);
 int 	rgb_to_decimal(char *color_rgb, t_game **game);
+void	init_textures(t_game **game);
 
 t_stack	*ft_stcknew(char *content);
 void	ft_stckadd_front(t_stack **stck, t_stack *new);
