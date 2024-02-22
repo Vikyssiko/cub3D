@@ -1,8 +1,8 @@
-NO ./texture.xpm
-SO ./texture.xpm
+NO ./lines.xpm
+SO ./lines.xpm
 WE   ./texture.xpm
 
-EA ./texture.xpm
+EA ./lines.xpm
 
 
 F 245,181,207

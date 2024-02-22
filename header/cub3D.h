@@ -30,7 +30,7 @@
 # define MAP_WIDTH				1800
 # define CELL_SIZE				8
 # define MINIMAP_COLOR			0xFF9933
-# define TEXTURE_SIZE			520;
+# define TEXTURE_SIZE			510.0
 
 typedef struct s_stack
 {
@@ -45,10 +45,20 @@ typedef struct s_map {
 	int		length;
 }	t_map;
 
+typedef struct s_img
+{
+	void	*img_ptr;
+	char	*img_pixels_ptr;
+	int		bits_per_pixel;
+	int		endian;
+	int		line_len;
+}	t_img;
+
 typedef struct s_dist {
 	double	dist;
 	char	direction;
 	int		color;
+//    t_img	*texture;
 }	t_dist;
 
 //typedef struct s_ray {
@@ -70,15 +80,6 @@ typedef struct s_player {
 	int	xd;
 	int	yd;
 }	t_player;
-
-typedef struct s_img
-{
-	void	*img_ptr;
-	char	*img_pixels_ptr;
-	int		bits_per_pixel;
-	int		endian;
-	int		line_len;
-}	t_img;
 
 typedef struct s_game {
 	int			player_x;

@@ -55,23 +55,26 @@ t_dist 	horizont_hit_dist(t_game **game, double angle)
 //		tang = -0.001;
 //		printf("tang: %f\n", tang);
 	dist.dist = 2147483648;
+//	dist.texture = (*game)->north_img;
 	dist.color = 0xFA8072;
-	if (sin(angle) > 0.001)
+	if (sin(angle) > 0.001) //up
 	{
 		ray.y = (((int)(*game)->player_y >> 6) << 6) - 0.0001;
 		ray.y_diff = -64;
 		ray.x = ((*game)->player_y - ray.y) * tang + (*game)->player_x;
 		ray.x_diff = -ray.y_diff * tang;
-//		dist.direction = 'N';
+//        dist.texture = (*game)->north_img;
+		dist.direction = 'N';
 	}
-	else if (sin(angle) < -0.001)
+	else if (sin(angle) < -0.001) //down
 	{
 		ray.y = (((int)(*game)->player_y >> 6) << 6) + 64;
 		ray.y_diff = 64;
 		ray.x = ((*game)->player_y - ray.y) * tang + (*game)->player_x;
 		ray.x_diff = -ray.y_diff * tang;
+//        dist.texture = (*game)->south_img;
 		dist.color = 0xCCB3FF;
-//		dist.direction = 'S';
+		dist.direction = 'S';
 	}
 	else
 	{

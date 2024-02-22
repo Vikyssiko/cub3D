@@ -90,22 +90,25 @@ t_dist 	vertical_hit_dist(t_game **game, double angle)
 //	else if (tang > 100)
 //		tang =
 	dist.color = 0x03CEA4;
-	if (cos(angle) > 0.001)
+//	dist.texture = (*game)->west_img;
+	if (cos(angle) > 0.001) //right
 	{
 		ray.x = (((int)(*game)->player_x >> 6) << 6) + 64;
 		ray.x_diff = 64;
 		ray.y = ((*game)->player_x - ray.x) * tang + (*game)->player_y;
 		ray.y_diff = -ray.x_diff * tang;
-//		dist.direction = 'E';
+//        dist.texture = (*game)->west_img;
+		dist.direction = 'E';
 	}
-	else if (cos(angle) < -0.001)
+	else if (cos(angle) < -0.001) //left
 	{
 		ray.x = (((int)(*game)->player_x >> 6) << 6) - 0.0001;
 		ray.x_diff = -64;
 		ray.y = ((*game)->player_x - ray.x) * tang + (*game)->player_y;
 		ray.y_diff = -ray.x_diff * tang;
 		dist.color = 0xE5F8F4;
-//		dist.direction = 'W';
+//        dist.texture = (*game)->east_img;
+		dist.direction = 'W';
 	}
 	else
 	{

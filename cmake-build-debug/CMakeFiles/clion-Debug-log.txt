@@ -1,1 +1,1 @@
-CMakeLists.txt not found in /home/victoria/CLionProjects/cub3D Select CMakeLists.txt
+CMakeLists.txt not found in /home/vkozlova/CLionProjects/cub3D Select CMakeLists.txt
