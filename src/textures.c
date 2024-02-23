@@ -79,4 +79,5 @@ void	init_textures(t_game **game)
 	create_south_texture_img(game);
 	create_west_texture_img(game);
 	create_east_texture_img(game);
+	create_array_of_pixels(game);
 }

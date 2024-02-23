@@ -91,6 +91,7 @@ t_dist 	vertical_hit_dist(t_game **game, double angle)
 //		tang =
 	dist.color = 0x03CEA4;
 //	dist.texture = (*game)->west_img;
+	dist.direction = 'E';
 	if (cos(angle) > 0.001) //right
 	{
 		ray.x = (((int)(*game)->player_x >> 6) << 6) + 64;
@@ -98,7 +99,7 @@ t_dist 	vertical_hit_dist(t_game **game, double angle)
 		ray.y = ((*game)->player_x - ray.x) * tang + (*game)->player_y;
 		ray.y_diff = -ray.x_diff * tang;
 //        dist.texture = (*game)->west_img;
-		dist.direction = 'E';
+//		dist.direction = 'E';
 	}
 	else if (cos(angle) < -0.001) //left
 	{

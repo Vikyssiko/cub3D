@@ -57,6 +57,7 @@ t_dist 	horizont_hit_dist(t_game **game, double angle)
 	dist.dist = 2147483648;
 //	dist.texture = (*game)->north_img;
 	dist.color = 0xFA8072;
+	dist.direction = 'N';
 	if (sin(angle) > 0.001) //up
 	{
 		ray.y = (((int)(*game)->player_y >> 6) << 6) - 0.0001;
@@ -64,7 +65,7 @@ t_dist 	horizont_hit_dist(t_game **game, double angle)
 		ray.x = ((*game)->player_y - ray.y) * tang + (*game)->player_x;
 		ray.x_diff = -ray.y_diff * tang;
 //        dist.texture = (*game)->north_img;
-		dist.direction = 'N';
+//		dist.direction = 'N';
 	}
 	else if (sin(angle) < -0.001) //down
 	{
