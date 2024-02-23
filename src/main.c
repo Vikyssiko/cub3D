@@ -108,14 +108,6 @@ void	draw_rays(t_game **game)
 //	t_img s = *((*game)->south_img);
 //	t_img w = *((*game)->west_img);
 //	t_img e = *((*game)->east_img);
-//	n.img_ptr = mlx_xpm_file_to_image((*game)->mlx_ptr, (*game)->north, &size, &size);
-//	n.img_pixels_ptr = mlx_get_data_addr(n.img_ptr, &n.bits_per_pixel, &n.line_len, &n.endian);
-//	s.img_ptr = mlx_xpm_file_to_image((*game)->mlx_ptr, (*game)->south, &size, &size);
-//	s.img_pixels_ptr = mlx_get_data_addr(s.img_ptr, &s.bits_per_pixel, &s.line_len, &s.endian);
-//	w.img_ptr = mlx_xpm_file_to_image((*game)->mlx_ptr, (*game)->west, &size, &size);
-//	w.img_pixels_ptr = mlx_get_data_addr(w.img_ptr, &w.bits_per_pixel, &w.line_len, &w.endian);
-//	e.img_ptr = mlx_xpm_file_to_image((*game)->mlx_ptr, (*game)->east, &size, &size);
-//	e.img_pixels_ptr = mlx_get_data_addr(e.img_ptr, &e.bits_per_pixel, &e.line_len, &e.endian);
 //	printf("here 1\n");
 	while (i < MAP_WIDTH)
 	{
@@ -145,25 +137,22 @@ void	draw_rays(t_game **game)
 //		printf("height: %d\n", line_height);
 //		if (line_height > MAP_HEIGHT)
 //			line_height = MAP_HEIGHT;
-		if (line_height > MAP_HEIGHT)
-			line_height = MAP_HEIGHT;
+		int color;
+		double ratio = line_height / (double)TEXTURE_SIZE;
 		y_start = MAP_HEIGHT / 2 - (line_height / 2);
 		int y_end = MAP_HEIGHT / 2 + (line_height / 2);
-
-//		if (y_start < 0)
-//			y_start = 0;
+//		if (line_height > MAP_HEIGHT)
+//			line_height = MAP_HEIGHT;
+		if (y_start < 0)
+			y_start = 0;
 //		if (y_end > MAP_HEIGHT)
 //			y_end = MAP_HEIGHT;
 //		printf("height: %d\n", line_height);
-        int color;
-		double ratio = line_height / (double)TEXTURE_SIZE;
+
 //
 
 //		t_img texture;
-		int	*array;
-//		texture.img_ptr = mlx_xpm_file_to_image((*game)->mlx_ptr, (*game)->south, &size, &size);
-//		texture.img_pixels_ptr = mlx_get_data_addr(texture.img_ptr, &texture.bits_per_pixel, &texture.line_len,
-//											   &texture.endian);
+		int	**array;
 //		if (dist.direction == 'N')
 //			texture = n;
 //		else if (dist.direction == 'S')
@@ -180,18 +169,20 @@ void	draw_rays(t_game **game)
 			array = (*game)->w_pixels;
 		else if (dist.direction == 'E')
 			array = (*game)->e_pixels;
-		while (y_start <= y_end)
+		while (y_start <= MAP_HEIGHT && y_start < y_end)
 		{
 //			printf("%s\n", texture.img_pixels_ptr);
 //			if ((texture.img_pixels_ptr))
 //				printf("here 1\n");
-			if (line >= TEXTURE_SIZE)
+			if (line >= MAP_HEIGHT)
 				line = 0;
 //			double y = y_start * 1.0;
-//			printf("%f\n", y / (line_height / TEXTURE_SIZE));
+//			if ((int)((y_end - y_start) / ratio) > 510 || (int)((y_end - y_start) / ratio) < 0 || line < 0)
+//				printf("%i, %i\n", (int)((y_end - y_start) / ratio), line);
 //			color = get_pixel_color(line, (y_end - y_start) / ratio, texture.img_pixels_ptr, &texture);
 //			printf("%f\n", (y_end - y_start) / ratio * TEXTURE_SIZE + line);
-			color = array[(int)(((y_end - y_start) / ratio) * (double)TEXTURE_SIZE + line)];
+//			color = array[(int)((double)((y_end - y_start) / ratio) * (double)TEXTURE_SIZE + line) - 1];
+			color = array[(int)((y_end - y_start) / ratio)][(int)(line / ratio)];
 //			color = array[700];
 			my_mlx_pixel_put((*game)->img, x, y_start, color);
 			y_start++;

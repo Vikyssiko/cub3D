@@ -97,10 +97,10 @@ typedef struct s_game {
 	t_img		*west_img;
 	char		*east;
 	t_img		*east_img;
-	int			*n_pixels;
-	int			*s_pixels;
-	int			*w_pixels;
-	int			*e_pixels;
+	int			**n_pixels;
+	int			**s_pixels;
+	int			**w_pixels;
+	int			**e_pixels;
 //	char		*floor;
 //	char		*ceiling;
 	int			floor;
@@ -138,6 +138,8 @@ t_dist	find_min_dist(t_dist vert, t_dist hor);
 int 	rgb_to_decimal(char *color_rgb, t_game **game);
 void	init_textures(t_game **game);
 void	create_array_of_pixels(t_game **game);
+
+int get_pixel_color(int x, int y, char *data_addr, t_img *img);
 
 t_stack	*ft_stcknew(char *content);
 void	ft_stckadd_front(t_stack **stck, t_stack *new);

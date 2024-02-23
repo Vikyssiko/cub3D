@@ -12,7 +12,8 @@
 
 #include "../header/cub3D.h"
 
-int get_pixel_color(int x, int y, char *data_addr, t_img *img) {
+int get_pixel_color(int x, int y, char *data_addr, t_img *img)
+{
 	// Calculate the offset of the pixel in the image data
 	int offset = (y * img->line_len) + (x * (img->bits_per_pixel / 8));
 
@@ -45,19 +46,31 @@ void	create_array_of_pixels(t_game **game)
 
 	x = 0;
 	y = 0;
-	(*game)->n_pixels = malloc(sizeof(int) * (TEXTURE_SIZE * TEXTURE_SIZE) + 1);
-	(*game)->s_pixels = malloc(sizeof(int) * (TEXTURE_SIZE * TEXTURE_SIZE) + 1);
-	(*game)->w_pixels = malloc(sizeof(int) * (TEXTURE_SIZE * TEXTURE_SIZE) + 1);
-	(*game)->e_pixels = malloc(sizeof(int) * (TEXTURE_SIZE * TEXTURE_SIZE) + 1);
-	while (y < TEXTURE_SIZE)
+//	(*game)->n_pixels = malloc(sizeof(int) * (TEXTURE_SIZE * TEXTURE_SIZE) + 1);
+//	(*game)->s_pixels = malloc(sizeof(int) * (TEXTURE_SIZE * TEXTURE_SIZE) + 1);
+//	(*game)->e_pixels = malloc(sizeof(int) * (TEXTURE_SIZE * TEXTURE_SIZE) + 1);
+//	(*game)->w_pixels = malloc(sizeof(int) * (TEXTURE_SIZE * TEXTURE_SIZE) + 1);
+	(*game)->w_pixels = malloc(sizeof(int *) * (TEXTURE_SIZE) + 1);
+	(*game)->e_pixels = malloc(sizeof(int *) * (TEXTURE_SIZE) + 1);
+	(*game)->s_pixels = malloc(sizeof(int *) * (TEXTURE_SIZE) + 1);
+	(*game)->n_pixels = malloc(sizeof(int *) * (TEXTURE_SIZE) + 1);
+	while (y < TEXTURE_SIZE + 1)
 	{
 		x = 0;
-		while (x < TEXTURE_SIZE)
+		(*game)->n_pixels[y] = malloc(sizeof(int) * TEXTURE_SIZE + 1);
+		(*game)->s_pixels[y] = malloc(sizeof(int) * TEXTURE_SIZE + 1);
+		(*game)->w_pixels[y] = malloc(sizeof(int) * TEXTURE_SIZE + 1);
+		(*game)->e_pixels[y] = malloc(sizeof(int) * TEXTURE_SIZE + 1);
+		while (x < TEXTURE_SIZE + 1)
 		{
-			(*game)->n_pixels[y * TEXTURE_SIZE + x] = get_pixel_color(x, y, (*game)->north_img->img_pixels_ptr, (*game)->north_img);
-			(*game)->s_pixels[y * TEXTURE_SIZE + x] = get_pixel_color(x, y, (*game)->south_img->img_pixels_ptr, (*game)->south_img);
-			(*game)->w_pixels[y * TEXTURE_SIZE + x] = get_pixel_color(x, y, (*game)->west_img->img_pixels_ptr, (*game)->west_img);
-			(*game)->e_pixels[y * TEXTURE_SIZE + x] = get_pixel_color(x, y, (*game)->east_img->img_pixels_ptr, (*game)->east_img);
+//			(*game)->n_pixels[y * TEXTURE_SIZE + x] = get_pixel_color(x, y, (*game)->north_img->img_pixels_ptr, (*game)->north_img);
+//			(*game)->s_pixels[y * TEXTURE_SIZE + x] = get_pixel_color(x, y, (*game)->south_img->img_pixels_ptr, (*game)->south_img);
+//			(*game)->w_pixels[y * TEXTURE_SIZE + x] = get_pixel_color(x, y, (*game)->west_img->img_pixels_ptr, (*game)->west_img);
+//			(*game)->e_pixels[y * TEXTURE_SIZE + x] = get_pixel_color(x, y, (*game)->east_img->img_pixels_ptr, (*game)->east_img);
+			(*game)->n_pixels[y][x] = get_pixel_color(x, y, (*game)->north_img->img_pixels_ptr, (*game)->north_img);
+			(*game)->s_pixels[y][x] = get_pixel_color(x, y, (*game)->south_img->img_pixels_ptr, (*game)->south_img);
+			(*game)->w_pixels[y][x] = get_pixel_color(x, y, (*game)->west_img->img_pixels_ptr, (*game)->west_img);
+			(*game)->e_pixels[y][x] = get_pixel_color(x, y, (*game)->east_img->img_pixels_ptr, (*game)->east_img);
 			x++;
 		}
 		y++;
