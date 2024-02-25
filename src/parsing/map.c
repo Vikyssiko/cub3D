@@ -80,8 +80,8 @@ void	check_surrounding_walls(t_game **game)
 				else if (array[i][j] == 'E')
 					(*game)->player_angle = M_PI_2 * 2;
 //				printf("i: %i, player_y: %i\n", i, i * 64 + 32);
-				(*game)->player_y = i * 64 + 32;
-				(*game)->player_x = j * 64 + 32;
+				(*game)->player_y = i * CUBE + CUBE / 2;
+				(*game)->player_x = j * CUBE + CUBE / 2;
 			}
 			j++;
 		}

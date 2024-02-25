@@ -79,8 +79,8 @@ double fix_angle(double angle)
 		angle -= 2 * M_PI;
 	else if (angle < 0) //360
 		angle += 2 * M_PI;
-	else if (angle > M_PI - radian / 10 && angle < M_PI)
-		angle -= radian / 10;
+//	else if (angle > M_PI - radian / 10 && angle < M_PI)
+//		angle -= radian / 10;
 //	else if (angle < M_PI + radian / 10 && angle > M_PI)
 //		angle += radian / 10;
 //	else if (angle < 0)
@@ -118,11 +118,11 @@ void	draw_rays(t_game **game)
 		dist = find_min_dist(vertical_hit_dist(game, ray_angle),
 						horizont_hit_dist(game, ray_angle));
 //		printf("here 2\n");
-		double fixed_angle = fix_angle((*game)->player_angle - ray_angle);
+//		double fixed_angle = fix_angle((*game)->player_angle - ray_angle);
 //		if (fixed_angle > M_PI_2 - 0.01745 && fixed_angle < M_PI_2 + 0.01745)
 //			printf("HERE\n");
-		if ((fixed_angle > M_PI_2 && fixed_angle < M_PI_2 * 3)
-			|| fixed_angle < M_PI_2 || fixed_angle > M_PI_2 * 3)
+//		if ((fixed_angle > M_PI_2 && fixed_angle < M_PI_2 * 3)
+//			|| fixed_angle < M_PI_2 || fixed_angle > M_PI_2 * 3)
 			dist.dist = dist.dist * cos(fix_angle((*game)->player_angle - ray_angle));
 //		else
 //			printf("hello");
@@ -133,7 +133,7 @@ void	draw_rays(t_game **game)
 			ray_angle = fix_angle(ray_angle - 0.001745);
 			continue ;
 		}
-		line_height = 64 * (MAP_WIDTH / 2 / tan(M_PI_2 / 3)) / dist.dist;
+		line_height = CUBE * (MAP_WIDTH / 2 / tan(M_PI_2 / 3)) / dist.dist;
 //		printf("height: %d\n", line_height);
 //		if (line_height > MAP_HEIGHT)
 //			line_height = MAP_HEIGHT;
@@ -162,36 +162,32 @@ void	draw_rays(t_game **game)
 //		else if (dist.direction == 'E')
 //			texture = e;
 		if (dist.direction == 'E' || dist.direction == 'W')
-//			line = ((*game)->player_y - sin(ray_angle) * dist.dist) - (int)((*game)->player_y - sin(ray_angle) * dist.dist);
-//			line = (int)((((*game)->player_y - sin(ray_angle) * dist.dist))) % TEXTURE_SIZE;
 			line = (((*game)->player_y - sin(ray_angle) * dist.dist));
 		else if (dist.direction == 'S' || dist.direction == 'N')
-//			line = ((*game)->player_x + cos(ray_angle) * dist.dist) - (int)((*game)->player_y - sin(ray_angle) * dist.dist);
-//			line = (int)((((*game)->player_x + cos(ray_angle) * dist.dist))) % TEXTURE_SIZE;
 			line = (((*game)->player_x + cos(ray_angle) * dist.dist));
 //		printf("%f\n", line);
 		if (dist.direction == 'N')
 		{
 //			if (prev_dir != 'N')
-//				line = 0.0;
+//				line = ((((*game)->player_x + cos(ray_angle) * dist.dist)));
 			array = (*game)->n_pixels;
 		}
 		else if (dist.direction == 'S')
 		{
 //			if (prev_dir != 'S')
-//				line = 0.0;
+//				line = ((((*game)->player_x + cos(ray_angle) * dist.dist)));
 			array = (*game)->s_pixels;
 		}
 		else if (dist.direction == 'W')
 		{
 //			if (prev_dir != 'W')
-//				line = 0.0;
+//				line = ((((*game)->player_y - sin(ray_angle) * dist.dist)));
 			array = (*game)->w_pixels;
 		}
 		else if (dist.direction == 'E')
 		{
 //			if (prev_dir != 'E')
-//				line = 0.0;
+//				line = ((((*game)->player_y - sin(ray_angle) * dist.dist)));
 			array = (*game)->e_pixels;
 		}
 		prev_dir = dist.direction;
@@ -204,14 +200,16 @@ void	draw_rays(t_game **game)
 
 		while (y_start < y_end)
 		{
-//			if (line >= TEXTURE_SIZE)
-//				line = 0.0;
+			if (line >= (double)TEXTURE_SIZE)
+				line = (int)line % TEXTURE_SIZE;
 //			if ((int)(texture_pos) >= 510 || (int)(line) >= 510 || (int)(texture_pos) < 0 || (int)(line) < 0)
 //				printf("ratio: %f, texture position: %f, line: %f\n", ratio, texture_pos, line);
+//			if (line >= TEXTURE_SIZE)
+//				line = 0.0;
 //			color = get_pixel_color(line / ratio, (y_end - y_start) / ratio, texture.img_pixels_ptr, &texture);
 //			printf("%f\n", (y_end - y_start) / ratio * TEXTURE_SIZE + line);
 //			color = array[(int)((double)((y_end - y_start) / ratio) * (double)TEXTURE_SIZE + line) - 1];
-			color = array[(int)(texture_pos)][(int)(line) % TEXTURE_SIZE];
+			color = array[(int)(texture_pos)][(int)(line)];
 //			color = 0xFFFAAA;
 			my_mlx_pixel_put((*game)->img, x, y_start, color);
 			texture_pos += ratio;
@@ -230,17 +228,17 @@ void	draw_rays(t_game **game)
 void	draw_player(t_game **game)
 {
 
-	int y_start = (*game)->player_y / 64 * CELL_SIZE;
-	int y_end = (*game)->player_y / 64 * CELL_SIZE + CELL_SIZE - 1;
-	int x_start = (*game)->player_x / 64 * CELL_SIZE;
+	int y_start = (*game)->player_y / CUBE * CELL_SIZE;
+	int y_end = (*game)->player_y / CUBE * CELL_SIZE + CELL_SIZE - 1;
+	int x_start = (*game)->player_x / CUBE * CELL_SIZE;
 	while (y_end >= y_start)
 	{
-		int x_end = (*game)->player_x / 64 * CELL_SIZE + CELL_SIZE - 1;
+		int x_end = (*game)->player_x / CUBE * CELL_SIZE + CELL_SIZE - 1;
 //		printf("x_end: %i, x_start: %i\n", x_end, x_start);
 		while (x_end >= x_start)
 		{
 //			printf("drawing player\n");
-			my_mlx_pixel_put((*game)->img, x_end, y_end, 0x0000FF);
+			my_mlx_pixel_put((*game)->img, x_end, y_end, PLAYER);
 			x_end--;
 		}
 		y_end--;
@@ -248,9 +246,9 @@ void	draw_player(t_game **game)
 	int	i = 0;
 	while (i < 10)
 	{
-		int	y = (*game)->player_y / 64 * CELL_SIZE + CELL_SIZE / 2 - sin((*game)->player_angle) * i;
-		int	x = (*game)->player_x / 64 * CELL_SIZE + CELL_SIZE / 2 + cos((*game)->player_angle) * i;
-		my_mlx_pixel_put((*game)->img, x, y, 0x0000FF);
+		int	y = (*game)->player_y / CUBE * CELL_SIZE + CELL_SIZE / 2 - sin((*game)->player_angle) * i;
+		int	x = (*game)->player_x / CUBE * CELL_SIZE + CELL_SIZE / 2 + cos((*game)->player_angle) * i;
+		my_mlx_pixel_put((*game)->img, x, y, PLAYER);
 ////		y += (*game)->player_y * sin;
 ////		x += (*game)->player_xd / 5;
 		i++;
@@ -337,7 +335,7 @@ static int i;
 
 int	draw(t_game **game)
 {
-	if (i % 100 == 0)
+	if (i % 500 == 0)
 	{
 		i = 0;
 		draw_black(game);
@@ -353,11 +351,16 @@ int	draw(t_game **game)
 
 void	change_position(t_game **game, int x, int y)
 {
-	if ((*game)->map->map[(y) / 64][(x) / 64] == '0'
-		|| (*game)->map->map[(y) / 64][(x) / 64] == 'N'
-		|| (*game)->map->map[(y) / 64][(x) / 64] == 'S'
-		|| (*game)->map->map[(y) / 64][(x) / 64] == 'W'
-		|| (*game)->map->map[(y) / 64][(x) / 64] == 'E')
+	int	y_index;
+	int	x_index;
+
+	y_index = y >> BITS;
+	x_index = x >> BITS;
+	if ((*game)->map->map[y_index][x_index] == '0'
+		|| (*game)->map->map[y_index][x_index] == 'N'
+		|| (*game)->map->map[y_index][x_index] == 'S'
+		|| (*game)->map->map[y_index][x_index] == 'W'
+		|| (*game)->map->map[y_index][x_index] == 'E')
 	{
 		(*game)->player_y = y;
 		(*game)->player_x = x;
@@ -374,26 +377,26 @@ int	handle_input(int key, t_game **game)
 		(*game)->player_angle = fix_angle((*game)->player_angle - 0.1);
 	else if (key == XK_w)
 	{
-		int	y = (*game)->player_y - sin((*game)->player_angle) * 5;
-		int	x = (*game)->player_x + cos((*game)->player_angle) * 5;
+		int	y = (*game)->player_y - sin((*game)->player_angle) * (CUBE / 25);
+		int	x = (*game)->player_x + cos((*game)->player_angle) * (CUBE / 25);
 		change_position(game, x, y);
 	}
 	else if (key == XK_s)
 	{
-		int	y = (*game)->player_y + sin((*game)->player_angle) * 5;
-		int	x = (*game)->player_x - cos((*game)->player_angle) * 5;
+		int	y = (*game)->player_y + sin((*game)->player_angle) * (CUBE / 25);
+		int	x = (*game)->player_x - cos((*game)->player_angle) * (CUBE / 25);
 		change_position(game, x, y);
 	}
 	else if (key == XK_d)
 	{
-		int	y = (*game)->player_y + cos((*game)->player_angle) * 5;
-		int	x = (*game)->player_x + sin((*game)->player_angle) * 5;
+		int	y = (*game)->player_y + cos((*game)->player_angle) * (CUBE / 25);
+		int	x = (*game)->player_x + sin((*game)->player_angle) * (CUBE / 25);
 		change_position(game, x, y);
 	}
 	else if (key == XK_a)
 	{
-		int	y = (*game)->player_y - cos((*game)->player_angle) * 5;
-		int	x = (*game)->player_x - sin((*game)->player_angle) * 5;
+		int	y = (*game)->player_y - cos((*game)->player_angle) * (CUBE / 25);
+		int	x = (*game)->player_x - sin((*game)->player_angle) * (CUBE / 25);
 		change_position(game, x, y);
 	}
 //	draw(game);
@@ -406,6 +409,7 @@ int	handle_input(int key, t_game **game)
 //	return (0);
 //}
 
+//segfault if picture doesn't exist
 int main(int args, char *argv[]) {
 	t_game	*game;
 

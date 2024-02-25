@@ -44,7 +44,6 @@ void	create_array_of_pixels(t_game **game)
 	int	y;
 	int	x;
 
-	x = 0;
 	y = 0;
 //	(*game)->n_pixels = malloc(sizeof(int) * (TEXTURE_SIZE * TEXTURE_SIZE) + 1);
 //	(*game)->s_pixels = malloc(sizeof(int) * (TEXTURE_SIZE * TEXTURE_SIZE) + 1);
@@ -61,7 +60,7 @@ void	create_array_of_pixels(t_game **game)
 		(*game)->s_pixels[y] = malloc(sizeof(int) * TEXTURE_SIZE + 1);
 		(*game)->w_pixels[y] = malloc(sizeof(int) * TEXTURE_SIZE + 1);
 		(*game)->e_pixels[y] = malloc(sizeof(int) * TEXTURE_SIZE + 1);
-		while (x < TEXTURE_SIZE + 1)
+		while (x < TEXTURE_SIZE)
 		{
 //			(*game)->n_pixels[y * TEXTURE_SIZE + x] = get_pixel_color(x, y, (*game)->north_img->img_pixels_ptr, (*game)->north_img);
 //			(*game)->s_pixels[y * TEXTURE_SIZE + x] = get_pixel_color(x, y, (*game)->south_img->img_pixels_ptr, (*game)->south_img);

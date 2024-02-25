@@ -1,12 +1,12 @@
-NO ./wall.xpm
-SO ./lines.xpm
-WE   ./texture.xpm
+NO ./leaves.xpm
+SO ./snow.xpm
+WE   ./microbes.xpm
 
-EA ./check.xpm
+EA ./frost.xpm
 
 
-F 245,181,207
-C 169,227,245
+F 255,255,255
+C 30,30,50
 
    111  11111  11   111    11111
      1   1111 111   111  1111 11

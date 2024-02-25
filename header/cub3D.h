@@ -21,16 +21,15 @@
 # include "../minilibx/mlx.h"
 
 # define FOV					60
-# define WALL					64
-# define PLAYER					32
-//# define PROJECTION_HEIGHT		1000
-//# define PROJECTION_WIDTH		1600
+# define CUBE					512
+# define BITS					9
+# define PLAYER					0xFF0000
 # define PI						3.1415926
 # define MAP_HEIGHT				1000
 # define MAP_WIDTH				1800
 # define CELL_SIZE				8
-# define MINIMAP_COLOR			0xFF9933
-# define TEXTURE_SIZE			510
+# define MINIMAP_COLOR			0xFFFAAA
+# define TEXTURE_SIZE			512
 
 typedef struct s_stack
 {
