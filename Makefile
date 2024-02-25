@@ -44,9 +44,12 @@ SRCS		=	$(SRC_DIR)/parsing/cardinal_directions.c \
 				$(SRC_DIR)/parsing/parsing_utils.c \
 				$(SRC_DIR)/horizontal_distance.c \
 				$(SRC_DIR)/vertical_distance.c \
-				$(SRC_DIR)/cos.c \
 				$(SRC_DIR)/textures.c \
-				$(SRC_DIR)/pixel_array.c
+				$(SRC_DIR)/pixel_array.c \
+				$(SRC_DIR)/clean.c \
+				$(SRC_DIR)/keys.c \
+				$(SRC_DIR)/minimap.c \
+				$(SRC_DIR)/anim.c
 
 OBJS		=	$(SRCS:.c=.o)
 

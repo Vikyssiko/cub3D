@@ -30,7 +30,9 @@ int	clean_and_exit_no_error(t_game **game)
 
 void	exit_with_error(char *message, int fd)
 {
+	write(2, "Error\n", 6);
 	write(2, message, ft_strlen(message));
+	write(2, "\n", 1);
 	if (fd)
 		close(fd);
 	exit(1);

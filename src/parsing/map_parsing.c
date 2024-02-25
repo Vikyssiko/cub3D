@@ -20,16 +20,6 @@ t_map	*create_map(void)
 	map->map = NULL;
 	map->start = 0;
 	map->length = 0;
-//	map->width = 0;
-//	if (!game)
-//		exit_with_error("Error of malloc");
-//	game->map_name = map_name;
-//	game->west = NULL;
-//	game->ceiling = NULL;
-//	game->east = NULL;
-//	game->floor = NULL;
-//	game->north = NULL;
-//	game->south = NULL;
 	return (map);
 }
 
@@ -39,7 +29,7 @@ char	*skip_empty_lines(t_game **game)
 
 	line = get_next_line((*game)->fd);
 	if (!line)
-		exit_with_error("There is no map", (*game)->fd);
+		clean_and_exit("There is no map", game);
 	(*game)->map = create_map();
 	while (line)
 	{
@@ -52,7 +42,7 @@ char	*skip_empty_lines(t_game **game)
 			break ;
 	}
 	if (!line)
-		exit_with_error("There is no map", (*game)->fd);
+		clean_and_exit("There is no map", game);
 	return (line);
 }
 
@@ -67,16 +57,14 @@ void	creating_map_array(t_game **game)
 	stack = (*game)->stack;
 	while (stack)
 	{
-//		printf("%s", stack->str);
 		(*game)->map->map[i] = malloc((*game)->map_width + 1);
 		(*game)->map->map[i][(*game)->map_width] = '\0';
 		ft_memset((*game)->map->map[i], ' ', (*game)->map_width);
-//		printf("%s.\n", (*game)->map->map[i]);
 		ft_strcpy((*game)->map->map[i], stack->str);
-//		printf("%s.\n", (*game)->map->map[i]);
 		stack = stack->next;
 		i++;
 	}
+	free_stack(&((*game)->stack));
 }
 
 int		find_max(int a, int b)
@@ -98,20 +86,16 @@ void	parse_map(t_game **game)
 	(*game)->map_width = find_max((*game)->map_width, width);
 	(*game)->stack = ft_stcknew(line);
 	check_symbol(line, game);
-//	free(line);
 	line = get_next_line((*game)->fd);
 	while (line)
 	{
 		width = ft_strlen(line);
 		if (line[width - 1] == '\n')
 			width -= 1;
-//		printf("width: %i\n", width);
 		(*game)->map_width = find_max((*game)->map_width, width);
-//		(*game)->map_width = find_max((*game)->map_width, ft_strlen(line) - 1);
 		check_symbol(line, game);
 		ft_stckadd_back((&(*game)->stack), ft_stcknew(line));
 		line = get_next_line((*game)->fd);
 	}
-//	printf("game width: %i\n", (*game)->map_width);
 	creating_map_array(game);
 }

@@ -19,7 +19,7 @@ void	check_floor(t_game **game, char **instructions)
 		if ((*game)->floor == 0) {
 			(*game)->floor = rgb_to_decimal(ft_strtrim(instructions[1], "\n"), game);
 		} else {
-//			printf("%s\n", (*game)->floor);
+			clean_instructions(instructions);
 			clean_and_exit("Invalid floor instruction", game);
 		}
 	}
@@ -32,6 +32,7 @@ void	check_ceiling(t_game **game, char **instructions)
 		if ((*game)->ceiling == 0) {
 			(*game)->ceiling = rgb_to_decimal(ft_strtrim(instructions[1], "\n"), game);
 		} else {
+			clean_instructions(instructions);
 			clean_and_exit("Invalid ceiling instruction", game);
 		}
 	}

@@ -1,8 +1,8 @@
-NO ./leaves.xpm
-SO ./snow.xpm
-WE   ./microbes.xpm
+NO ./textures/leaves.xpm
+SO ./textures/snow.xpm
+WE   ./textures/microbes.xpm
 
-EA ./frost.xpm
+EA ./textures/frost.xpm
 
 
 F 255,255,255

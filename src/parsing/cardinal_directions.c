@@ -14,77 +14,49 @@
 
 void	check_north(t_game **game, char **instructions)
 {
-//	t_img	img;
-//	int		size;
-//
-//	size = TEXTURE_SIZE;
 	if (ft_strcmp(instructions[0], "NO") == 0) {
 		if ((*game)->north == NULL) {
 			(*game)->north = ft_strtrim(instructions[1], "\n");
 		} else {
+			clean_instructions(instructions);
 			clean_and_exit("Invalid north instruction", game);
 		}
-//		img.img_ptr = mlx_xpm_file_to_image((*game)->mlx_ptr, (*game)->north, &size, &size);
-//		if (!img.img_ptr)
-//			clean_and_exit("Check north texture", game);
-//		(*game)->north_img = &img;
 	}
 }
 
 void	check_south(t_game **game, char **instructions)
 {
-//	t_img	img;
-//	int		size;
-//
-//	size = TEXTURE_SIZE;
 	if (ft_strcmp(instructions[0], "SO") == 0) {
 		if ((*game)->south == NULL) {
 			(*game)->south = ft_strtrim(instructions[1], "\n");
 		} else {
+			clean_instructions(instructions);
 			clean_and_exit("Invalid south instruction", game);
 		}
-//		img.img_ptr = mlx_xpm_file_to_image((*game)->mlx_ptr, (*game)->south, &size, &size);
-//		if (!img.img_ptr)
-//			clean_and_exit("Check south texture", game);
-//		(*game)->south_img = &img;
 	}
 }
 
 void	check_west(t_game **game, char **instructions)
 {
-//	t_img	img;
-//	int		size;
-//
-//	size = TEXTURE_SIZE;
 	if (ft_strcmp(instructions[0], "WE") == 0) {
 		if ((*game)->west == NULL) {
 			(*game)->west = ft_strtrim(instructions[1], "\n");
 		} else {
+			clean_instructions(instructions);
 			clean_and_exit("Invalid west instruction", game);
 		}
-//		img.img_ptr = mlx_xpm_file_to_image((*game)->mlx_ptr, (*game)->west, &size, &size);
-//		if (!img.img_ptr)
-//			clean_and_exit("Check west texture", game);
-//		(*game)->west_img = &img;
 	}
 }
 
 void	check_east(t_game **game, char **instructions)
 {
-//	t_img	img;
-//	int		size;
-//
-//	size = TEXTURE_SIZE;
 	if (ft_strcmp(instructions[0], "EA") == 0) {
 		if ((*game)->east == NULL) {
 			(*game)->east = ft_strtrim(instructions[1], "\n");
 		} else {
+			clean_instructions(instructions);
 			clean_and_exit("Invalid east instruction", game);
 		}
-//		img.img_ptr = mlx_xpm_file_to_image((*game)->mlx_ptr, (*game)->east, &size, &size);
-//		if (!img.img_ptr)
-//			clean_and_exit("Check east texture", game);
-//		(*game)->south_img = &img;
 	}
 }
 

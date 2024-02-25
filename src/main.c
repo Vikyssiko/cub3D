@@ -20,8 +20,8 @@ t_game	*create_game(int fd)
 	t_game	*game;
 
 	game = malloc(sizeof(t_game));
-//	if (!game)
-//		exit_with_error("Error of malloc");
+	if (!game)
+		exit_with_error("Error of malloc", fd);
 	game->map_width = 0;
 	game->stack = NULL;
 	game->fd = fd;
@@ -31,60 +31,35 @@ t_game	*create_game(int fd)
 	game->floor = 0;
 	game->north = NULL;
 	game->south = NULL;
+	game->player_x = 0;
+	game->player_y = 0;
+	game->player_angle = 0;
+	game->north_img = NULL;
+	game->south_img = NULL;
+	game->west_img = NULL;
+	game->east_img = NULL;
+	game->n_pixels = NULL;
+	game->s_pixels = NULL;
+	game->w_pixels = NULL;
+	game->e_pixels = NULL;
+	game->map = NULL;
+	game->mlx_ptr = NULL;
+	game->img = NULL;
+	game->window_ptr = NULL;
 	return (game);
 }
-
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
-{
-	int	offset;
-
-//	printf("img->line_len: %i\n", img->line_len);
-//	img->line_len = 16384;
-	offset = (img->line_len * y) + (x * (img->bits_per_pixel / 8));
-	*((unsigned int *)(offset + img->img_pixels_ptr)) = color;
-}
-
-//int get_pixel_color(int x, int y, char *data_addr, t_img *img) {
-//    // Calculate the offset of the pixel in the image data
-//    int offset = (y * img->line_len) + (x * (img->bits_per_pixel / 8));
-//
-//    // Depending on the endian format, adjust the byte order
-//    int red_offset, green_offset, blue_offset;
-//
-//    if (img->endian == 0) {  // Little-endian
-//        red_offset = 0;
-//        green_offset = 1;
-//        blue_offset = 2;
-//    } else {  // Big-endian
-//        red_offset = 2;
-//        green_offset = 1;
-//        blue_offset = 0;
-//    }
-//
-//    // Retrieve color components
-//    int red = (unsigned char)data_addr[(unsigned int)offset + red_offset];
-//    int green = (unsigned char)data_addr[(unsigned int)offset + green_offset];
-//    int blue = (unsigned char)data_addr[(unsigned int)offset + blue_offset];
-//
-//    // Assuming 8 bits per channel, you might need to scale the values based on the actual image format
-//    return (blue << 16) | (green << 8) | red;
-//}
 
 double fix_angle(double angle)
 {
 	double	radian;
 
 	radian = 0.0174533;
-	if (angle > 2 * M_PI - radian / 10) //359
+	if (angle > 2 * M_PI - radian / 10)
 		angle -= 2 * M_PI;
-	else if (angle < 0) //360
+	else if (angle < 0)
 		angle += 2 * M_PI;
 //	else if (angle > M_PI - radian / 10 && angle < M_PI)
 //		angle -= radian / 10;
-//	else if (angle < M_PI + radian / 10 && angle > M_PI)
-//		angle += radian / 10;
-//	else if (angle < 0)
-//		angle += 2 * M_PI;
 	return (angle);
 }
 
@@ -98,45 +73,28 @@ void	draw_rays(t_game **game)
 	int		x;
 
 	double line;
-	char prev_dir = ' ';
 	line = 0.0;
 	i = 0;
 	ray_angle = fix_angle((*game)->player_angle + M_PI_2 / 3);
 	x = 0;
-	dist.color = 0xCCB3FF;
-//	int size = TEXTURE_SIZE;
 //	t_img n = *((*game)->north_img);
 //	t_img s = *((*game)->south_img);
 //	t_img w = *((*game)->west_img);
 //	t_img e = *((*game)->east_img);
-//	printf("here 1\n");
 	while (i < MAP_WIDTH)
 	{
-//		printf("here 1\n");
-//		if (ray_angle > M_PI_2 - 0.0174533 && ray_angle < M_PI_2 + 0.0349)
-//			ray_angle -= 0.0174533;
 		dist = find_min_dist(vertical_hit_dist(game, ray_angle),
-						horizont_hit_dist(game, ray_angle));
-//		printf("here 2\n");
+						horizontal_hit_dist(game, ray_angle));
 //		double fixed_angle = fix_angle((*game)->player_angle - ray_angle);
-//		if (fixed_angle > M_PI_2 - 0.01745 && fixed_angle < M_PI_2 + 0.01745)
-//			printf("HERE\n");
 //		if ((fixed_angle > M_PI_2 && fixed_angle < M_PI_2 * 3)
 //			|| fixed_angle < M_PI_2 || fixed_angle > M_PI_2 * 3)
 			dist.dist = dist.dist * cos(fix_angle((*game)->player_angle - ray_angle));
-//		else
-//			printf("hello");
-//		if (cos(fix_angle((*game)->player_angle - ray_angle)) != 0)
-//			dist.dist = dist.dist * cos(fix_angle((*game)->player_angle - ray_angle));
 		if (dist.dist < 0)
 		{
 			ray_angle = fix_angle(ray_angle - 0.001745);
 			continue ;
 		}
 		line_height = CUBE * (MAP_WIDTH / 2 / tan(M_PI_2 / 3)) / dist.dist;
-//		printf("height: %d\n", line_height);
-//		if (line_height > MAP_HEIGHT)
-//			line_height = MAP_HEIGHT;
 		int color;
 		double ratio = TEXTURE_SIZE / line_height;
 		y_start = MAP_HEIGHT / 2 - (line_height / 2);
@@ -147,10 +105,6 @@ void	draw_rays(t_game **game)
 			y_start = 0;
 		if (y_end > MAP_HEIGHT)
 			y_end = MAP_HEIGHT - 1;
-//		printf("height: %d\n", line_height);
-
-//
-
 //		t_img texture;
 		int	**array;
 //		if (dist.direction == 'N')
@@ -165,39 +119,17 @@ void	draw_rays(t_game **game)
 			line = (((*game)->player_y - sin(ray_angle) * dist.dist));
 		else if (dist.direction == 'S' || dist.direction == 'N')
 			line = (((*game)->player_x + cos(ray_angle) * dist.dist));
-//		printf("%f\n", line);
 		if (dist.direction == 'N')
-		{
-//			if (prev_dir != 'N')
-//				line = ((((*game)->player_x + cos(ray_angle) * dist.dist)));
 			array = (*game)->n_pixels;
-		}
 		else if (dist.direction == 'S')
-		{
-//			if (prev_dir != 'S')
-//				line = ((((*game)->player_x + cos(ray_angle) * dist.dist)));
 			array = (*game)->s_pixels;
-		}
 		else if (dist.direction == 'W')
-		{
-//			if (prev_dir != 'W')
-//				line = ((((*game)->player_y - sin(ray_angle) * dist.dist)));
 			array = (*game)->w_pixels;
-		}
 		else if (dist.direction == 'E')
-		{
-//			if (prev_dir != 'E')
-//				line = ((((*game)->player_y - sin(ray_angle) * dist.dist)));
 			array = (*game)->e_pixels;
-		}
-		prev_dir = dist.direction;
 		double texture_pos = (y_start - MAP_HEIGHT / 2 + line_height / 2) * ratio;
 		if (texture_pos < 0)
 			 texture_pos = 0.0;
-//		int texture_start = y_start;
-//		if (line_height > MAP_HEIGHT)
-//			texture_y = (line_height - MAP_HEIGHT) / 2;
-
 		while (y_start < y_end)
 		{
 			if (line >= (double)TEXTURE_SIZE)
@@ -206,85 +138,16 @@ void	draw_rays(t_game **game)
 //				printf("ratio: %f, texture position: %f, line: %f\n", ratio, texture_pos, line);
 //			if (line >= TEXTURE_SIZE)
 //				line = 0.0;
-//			color = get_pixel_color(line / ratio, (y_end - y_start) / ratio, texture.img_pixels_ptr, &texture);
-//			printf("%f\n", (y_end - y_start) / ratio * TEXTURE_SIZE + line);
 //			color = array[(int)((double)((y_end - y_start) / ratio) * (double)TEXTURE_SIZE + line) - 1];
 			color = array[(int)(texture_pos)][(int)(line)];
-//			color = 0xFFFAAA;
 			my_mlx_pixel_put((*game)->img, x, y_start, color);
 			texture_pos += ratio;
 			y_start++;
-//			screen_y++;
 		}
 		x += 1;
-		line += ratio;
-//		line++;
-
 		ray_angle = fix_angle(ray_angle - 0.00058177);
 		i++;
 	}
-}
-
-void	draw_player(t_game **game)
-{
-
-	int y_start = (*game)->player_y / CUBE * CELL_SIZE;
-	int y_end = (*game)->player_y / CUBE * CELL_SIZE + CELL_SIZE - 1;
-	int x_start = (*game)->player_x / CUBE * CELL_SIZE;
-	while (y_end >= y_start)
-	{
-		int x_end = (*game)->player_x / CUBE * CELL_SIZE + CELL_SIZE - 1;
-//		printf("x_end: %i, x_start: %i\n", x_end, x_start);
-		while (x_end >= x_start)
-		{
-//			printf("drawing player\n");
-			my_mlx_pixel_put((*game)->img, x_end, y_end, PLAYER);
-			x_end--;
-		}
-		y_end--;
-	}
-	int	i = 0;
-	while (i < 10)
-	{
-		int	y = (*game)->player_y / CUBE * CELL_SIZE + CELL_SIZE / 2 - sin((*game)->player_angle) * i;
-		int	x = (*game)->player_x / CUBE * CELL_SIZE + CELL_SIZE / 2 + cos((*game)->player_angle) * i;
-		my_mlx_pixel_put((*game)->img, x, y, PLAYER);
-////		y += (*game)->player_y * sin;
-////		x += (*game)->player_xd / 5;
-		i++;
-	}
-//	draw_rays(game);
-}
-
-void	draw_cell(t_game **game, int x, int y)
-{
-//	printf("x: %i, y: %i\n", x, y);
-	int y_end = y * CELL_SIZE + CELL_SIZE - 1;
-	int x_end = x * CELL_SIZE + CELL_SIZE - 1;
-//	int y_end = y * CELL_SIZE + CELL_SIZE / 2;
-//	int x_end = x * CELL_SIZE + CELL_SIZE / 2;
-	int x_start;
-//	int y_start = y * CELL_SIZE - CELL_SIZE / 2;
-	int y_start = y * CELL_SIZE;
-//	if ((*game)->map->map[y][x] == '1')
-//	else if ((*game)->map->map[y][x] != ' ')
-//		color = 0xFFFFFF;
-//	else
-//		color = 0x778899;
-//	printf("draw cell start\n");
-	while (y_start < y_end)
-	{
-//		x_start = x * CELL_SIZE - CELL_SIZE / 2;
-		x_start = x * CELL_SIZE;
-		while (x_start < x_end)
-		{
-//			printf("x: %i, y: %i\n", x, y);
-			my_mlx_pixel_put((*game)->img, x_start, y_start, MINIMAP_COLOR);
-			x_start++;
-		}
-		y_start++;
-	}
-//	printf("draw cell end\n");
 }
 
 void	draw_black(t_game **game)
@@ -298,7 +161,6 @@ void	draw_black(t_game **game)
 	while (y < MAP_HEIGHT)
 	{
 		x = 0;
-//		while (x < (*game)->map_width * MAP_WIDTH)
 		if (y > MAP_HEIGHT / 2)
 			color = (*game)->floor;
 		while (x < MAP_WIDTH)
@@ -310,38 +172,17 @@ void	draw_black(t_game **game)
 	}
 }
 
-void	draw_map(t_game **game)
-{
-	int x;
-	int y = 0;
-	while (y < (*game)->map->length)
-	{
-		x = 0;
-//		printf("%s\n", (*game)->map->map[y]);
-		while (x < (*game)->map_width)
-		{
-//			printf("here 2\n");
-			if ((*game)->map->map[y][x] == '1')
-				draw_cell(game, x, y);
-//			printf("here 2\n");
-			x++;
-		}
-		y++;
-	}
-	draw_player(game);
-}
-
 static int i;
 
 int	draw(t_game **game)
 {
+
 	if (i % 500 == 0)
 	{
 		i = 0;
 		draw_black(game);
 		draw_rays(game);
 		draw_map(game);
-//		printf("here\n");
 //		mlx_clear_window((*game)->mlx_ptr, (*game)->window_ptr);
 		mlx_put_image_to_window((*game)->mlx_ptr, (*game)->window_ptr, (*(*game)->img).img_ptr, 0, 0);
 	}
@@ -349,123 +190,62 @@ int	draw(t_game **game)
 	return (0);
 }
 
-void	change_position(t_game **game, int x, int y)
-{
-	int	y_index;
-	int	x_index;
-
-	y_index = y >> BITS;
-	x_index = x >> BITS;
-	if ((*game)->map->map[y_index][x_index] == '0'
-		|| (*game)->map->map[y_index][x_index] == 'N'
-		|| (*game)->map->map[y_index][x_index] == 'S'
-		|| (*game)->map->map[y_index][x_index] == 'W'
-		|| (*game)->map->map[y_index][x_index] == 'E')
-	{
-		(*game)->player_y = y;
-		(*game)->player_x = x;
-	}
-}
-
 int	handle_input(int key, t_game **game)
 {
+//	int mouse_x;
+//	int mouse_y;
+
+//	mouse_x = malloc(sizeof(int));
+//	mouse_y = malloc(sizeof(int));
+//	if ((*game) && (*game)->window_ptr)
+//		mlx_mouse_get_pos((*game)->window_ptr, &mouse_x, &mouse_y);
 	if (key == XK_Escape)
 		clean_and_exit_no_error(game);
-	if (key == XK_Left)
+	else if (key == XK_Left)
 		(*game)->player_angle = fix_angle((*game)->player_angle + 0.1);
 	else if (key == XK_Right)
 		(*game)->player_angle = fix_angle((*game)->player_angle - 0.1);
 	else if (key == XK_w)
-	{
-		int	y = (*game)->player_y - sin((*game)->player_angle) * (CUBE / 25);
-		int	x = (*game)->player_x + cos((*game)->player_angle) * (CUBE / 25);
-		change_position(game, x, y);
-	}
+		go_straight(game);
 	else if (key == XK_s)
-	{
-		int	y = (*game)->player_y + sin((*game)->player_angle) * (CUBE / 25);
-		int	x = (*game)->player_x - cos((*game)->player_angle) * (CUBE / 25);
-		change_position(game, x, y);
-	}
+		go_back(game);
 	else if (key == XK_d)
-	{
-		int	y = (*game)->player_y + cos((*game)->player_angle) * (CUBE / 25);
-		int	x = (*game)->player_x + sin((*game)->player_angle) * (CUBE / 25);
-		change_position(game, x, y);
-	}
+		go_right(game);
 	else if (key == XK_a)
-	{
-		int	y = (*game)->player_y - cos((*game)->player_angle) * (CUBE / 25);
-		int	x = (*game)->player_x - sin((*game)->player_angle) * (CUBE / 25);
-		change_position(game, x, y);
-	}
-//	draw(game);
+		go_left(game);
 	return (0);
 }
 
-//int	escape(t_game **game)
-//{
-//	clean_and_exit("", game);
-//	return (0);
-//}
-
-//segfault if picture doesn't exist
-int main(int args, char *argv[]) {
+int main(int args, char *argv[])
+{
 	t_game	*game;
+	t_img	img;
 
 	if (args != 2)
 		exit_with_error("Specify one map", 0);
-//	game = initialize_game(argv[1]);
 	game = parse_textures(argv[1]);
 	parse_map(&game);
 	check_map(&game);
-//	game->player_angle = M_PI_2;
-
 	game->mlx_ptr = mlx_init();
 	init_textures(&game);
-	t_img	img;
-
 	game->img = &img;
 	img.img_ptr = mlx_new_image(game->mlx_ptr, MAP_WIDTH, MAP_HEIGHT);
-//	int a = 563;
-//	img.img_ptr = mlx_xpm_file_to_image(game->mlx_ptr, "texture.xpm", &a, &a);
-//	img.img_ptr.
-//	if (img.img_ptr)
-//		printf("aa\n");
-
 	img.img_pixels_ptr = mlx_get_data_addr(img.img_ptr, &img.bits_per_pixel, &img.line_len,
 								 &img.endian);
 
-//	int	color;
-//	int y;
-//	int x;
-//
-//	y = 0;
-//	while (y < a)
-//	{
-//		x = 0;
-//		while (x < a)
-//		{
-//			color = get_pixel_color(x, y, img.img_pixels_ptr, &img);
-//			my_mlx_pixel_put((game)->img, x, y, color);
-//			x++;
-//		}
-//		y++;
-//	}
-//	mlx_put_image_to_window(game->mlx_ptr, game->window_ptr, game->img, 0, 0);
-
-//	printf("%s", img.img_pixels_ptr);
-//	printf("%s\n", img.img_pixels_ptr);
-//	printf("dd\n");
+	create_anim_array(&game);
 	game->window_ptr = mlx_new_window(game->mlx_ptr, MAP_WIDTH, MAP_HEIGHT, "cub3D");
-//	mlx_put_image_to_window(game->mlx_ptr, game->window_ptr, game->img, 0, 0);
-	draw(&game);
+//	draw(&game);
 	mlx_put_image_to_window(game->mlx_ptr, game->window_ptr, img.img_ptr, 0, 0);
+//	mou
 	mlx_hook(game->window_ptr, KeyPress, KeyPressMask, handle_input, &game);
 	mlx_loop_hook(game->mlx_ptr, draw, &game);
 	mlx_hook(game->window_ptr,
 			 DestroyNotify, ButtonPressMask, clean_and_exit_no_error, &game);
 	mlx_loop(game->mlx_ptr);
+	return (0);
+}
+
 //	int i = 0;
 //	t_stack	*stack = game->stack;
 //	while (stack)
@@ -475,6 +255,3 @@ int main(int args, char *argv[]) {
 //		stack = stack->next;
 //		i++;
 //	}
-//	game =
-	return (0);
-}

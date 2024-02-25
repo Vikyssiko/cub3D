@@ -32,6 +32,4 @@ void	check_symbol(char *line, t_game **game)
 		}
 		i++;
 	}
-	if (line[i] == ' ')
-		clean_and_exit("There has to be one starting position", game);
 }

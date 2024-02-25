@@ -42,12 +42,17 @@ void	check_first_last_wall(t_game **game)
 		divided_line = ft_split((*game)->map->map[line_index], ' ');
 		while (divided_line[i])
 		{
-			if (divided_line[i][0] != '1' || divided_line[i][ft_strlen(divided_line[i]) - 1] != '1')
+			if (divided_line[i][0] != '1'
+				|| divided_line[i][ft_strlen(divided_line[i]) - 1] != '1')
+			{
+				free_string_array(divided_line);
 				clean_and_exit("Map has to be surrounded by walls", game);
+			}
 			i++;
 		}
 		line_index++;
 	}
+	free_string_array(divided_line);
 }
 
 void	check_surrounding_walls(t_game **game)
@@ -63,26 +68,12 @@ void	check_surrounding_walls(t_game **game)
 		j = 0;
 		while (j < (*game)->map_width)
 		{
-			if (array[i][j] != '1' && array[i][j] != ' ')
-			{
-				if (array[i - 1][j] == ' ' || array[i + 1][j] == ' ')
-					clean_and_exit("Map has to be surrounded by walls", game);
-			}
+			if (array[i][j] != '1' && array[i][j] != ' '
+				&& (array[i - 1][j] == ' ' || array[i + 1][j] == ' '))
+				clean_and_exit("Map has to be surrounded by walls", game);
 			if (array[i][j] == 'N' || array[i][j] == 'S'
 				|| array[i][j] == 'E' || array[i][j] == 'W')
-			{
-				if (array[i][j] == 'N')
-					(*game)->player_angle = M_PI_2;
-				else if (array[i][j] == 'S')
-					(*game)->player_angle = M_PI_2 * 3;
-				else if (array[i][j] == 'W')
-					(*game)->player_angle = 0.008;
-				else if (array[i][j] == 'E')
-					(*game)->player_angle = M_PI_2 * 2;
-//				printf("i: %i, player_y: %i\n", i, i * 64 + 32);
-				(*game)->player_y = i * CUBE + CUBE / 2;
-				(*game)->player_x = j * CUBE + CUBE / 2;
-			}
+				init_player_position(game, i, j);
 			j++;
 		}
 		i++;
@@ -106,22 +97,10 @@ void	check_corners(t_game **game)
 		{
 			cnt = 0;
 			wall_cnt = 0;
-			if (array[i][j] != '1' && array[i][j] != ' ')
-				cnt++;
-			else if (array[i][j] == '1')
-				wall_cnt++;
-			if (array[i][j + 1] != '1' && array[i][j + 1] != ' ')
-				cnt++;
-			else if (array[i][j + 1] == '1')
-				wall_cnt++;
-			if (array[i + 1][j] != '1' && array[i + 1][j] != ' ')
-				cnt++;
-			else if (array[i + 1][j] == '1')
-				wall_cnt++;
-			if (array[i + 1][j + 1] != '1' && array[i + 1][j + 1] != ' ')
-				cnt++;
-			else if (array[i + 1][j + 1] == '1')
-				wall_cnt++;
+			check_corner_symbol(&cnt, &wall_cnt, array[i][j]);
+			check_corner_symbol(&cnt, &wall_cnt, array[i][j + 1]);
+			check_corner_symbol(&cnt, &wall_cnt, array[i + 1][j]);
+			check_corner_symbol(&cnt, &wall_cnt, array[i + 1][j + 1]);
 			if (cnt == 1 && wall_cnt < 3)
 				clean_and_exit("Please check corners", game);
 			j++;
@@ -132,6 +111,8 @@ void	check_corners(t_game **game)
 
 void	check_map(t_game **game)
 {
+	if ((*game)->map->start == 0)
+		clean_and_exit("There is no player at the map", game);
 	check_first_last_wall(game);
 	check_surrounding_walls(game);
 	check_corners(game);

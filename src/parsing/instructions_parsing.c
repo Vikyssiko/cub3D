@@ -32,11 +32,6 @@ int	check_all_instructions(t_game *game)
 	return (0);
 }
 
-//int	is_valid_instruction(char **instruction)
-//{
-//
-//}
-
 int rgb_to_decimal(char *color_rgb, t_game **game)
 {
 	char	**rgb;
@@ -65,6 +60,8 @@ int rgb_to_decimal(char *color_rgb, t_game **game)
 		multiplier *= 16;
 		i--;
 	}
+	free(color_rgb);
+	free_string_array(rgb);
 	return (color);
 }
 
@@ -77,7 +74,7 @@ t_game	*parse_textures(char *map_name)
 
 	fd = open(map_name, O_RDONLY);
 	if (fd < 0)
-		exit_with_error("Error\nCouldn't open file\n", 0);
+		exit_with_error("Couldn't open file", 0);
 	line = get_next_line(fd);
 	if (!line)
 		exit_with_error("Map is empty", fd);
@@ -94,13 +91,16 @@ t_game	*parse_textures(char *map_name)
 				continue ;
 			}
 			if (instruction[2] != NULL || instruction[0] == NULL || instruction[1] == NULL)
-				clean_and_exit("Invalid instruction: only instruction and texture required", &game);
+				clean_and_exit("Invalid instruction: an instruction and texture required", &game);
 			check_cardinal_directions(&game, instruction);
 			check_floor_ceiling(&game, instruction);
 			if (check_all_instructions(game))
+			{
+				free(line);
 				break ;
+			}
 		}
-		//free_instructions
+		clean_instructions(instruction);
 		free(line);
 		line = get_next_line(fd);
 	}
