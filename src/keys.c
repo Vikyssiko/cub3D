@@ -35,8 +35,8 @@ void	go_straight(t_game **game)
 	int	y;
 	int	x;
 
-	y = (*game)->player_y - sin((*game)->player_angle) * (CUBE / 25);
-	x = (*game)->player_x + cos((*game)->player_angle) * (CUBE / 25);
+	y = (*game)->player_y - sin((*game)->player_angle) * (CUBE / 10);
+	x = (*game)->player_x + cos((*game)->player_angle) * (CUBE / 10);
 	change_position(game, x, y);
 }
 
@@ -45,8 +45,8 @@ void	go_back(t_game **game)
 	int	y;
 	int	x;
 
-	y = (*game)->player_y + sin((*game)->player_angle) * (CUBE / 25);
-	x = (*game)->player_x - cos((*game)->player_angle) * (CUBE / 25);
+	y = (*game)->player_y + sin((*game)->player_angle) * (CUBE / 10);
+	x = (*game)->player_x - cos((*game)->player_angle) * (CUBE / 10);
 	change_position(game, x, y);
 }
 
@@ -55,8 +55,8 @@ void	go_left(t_game **game)
 	int	y;
 	int	x;
 
-	y = (*game)->player_y - cos((*game)->player_angle) * (CUBE / 25);
-	x = (*game)->player_x - sin((*game)->player_angle) * (CUBE / 25);
+	y = (*game)->player_y - cos((*game)->player_angle) * (CUBE / 10);
+	x = (*game)->player_x - sin((*game)->player_angle) * (CUBE / 10);
 	change_position(game, x, y);
 }
 
@@ -65,7 +65,7 @@ void	go_right(t_game **game)
 	int	y;
 	int	x;
 
-	y = (*game)->player_y + cos((*game)->player_angle) * (CUBE / 25);
-	x = (*game)->player_x + sin((*game)->player_angle) * (CUBE / 25);
+	y = (*game)->player_y + cos((*game)->player_angle) * (CUBE / 10);
+	x = (*game)->player_x + sin((*game)->player_angle) * (CUBE / 10);
 	change_position(game, x, y);
 }

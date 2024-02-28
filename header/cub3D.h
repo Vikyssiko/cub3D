@@ -54,6 +54,7 @@ typedef struct s_img
 
 typedef struct s_dist {
 	double	dist;
+	double	hit_point;
 	char	direction;
 }	t_dist;
 
@@ -102,6 +103,7 @@ typedef struct s_game {
 	void		*mlx_ptr;
 	t_img		*img;
 	void		*window_ptr;
+	void		**anim;
 }	t_game;
 
 t_game	*parse_textures(char *map_name);
@@ -123,7 +125,7 @@ t_dist 	horizontal_hit_dist(t_game **game, double angle);
 t_dist 	vertical_hit_dist(t_game **game, double angle);
 double	find_min(double a, double b);
 void	create_cos_array(t_game **game);
-t_dist 	find_dist(t_game **game, t_ray *ray, double angle, t_dist dist);
+//t_dist 	find_dist(t_game **game, t_ray *ray, double angle, t_dist dist);
 t_dist	find_min_dist(t_dist vert, t_dist hor);
 int 	rgb_to_decimal(char *color_rgb, t_game **game);
 void	init_textures(t_game **game);

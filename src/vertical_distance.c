@@ -28,6 +28,7 @@ t_dist 	find_dist(t_game **game, t_ray *ray, double angle, t_dist dist)
 		ray->x += ray->x_diff;
 		ray->y += ray->y_diff;
 	}
+	dist.hit_point = ray->y;
 	return (dist);
 }
 
@@ -52,7 +53,7 @@ t_dist 	vertical_hit_dist(t_game **game, double angle)
 	}
 	else if (cos(angle) < -0.001)
 	{
-		ray.x = (((int)(*game)->player_x >> BITS) << BITS) - 0.0001;
+		ray.x = (((int)(*game)->player_x >> BITS) << BITS) - 0.0002;
 		ray.x_diff = -CUBE;
 		ray.y = ((*game)->player_x - ray.x) * tang + (*game)->player_y;
 		ray.y_diff = -ray.x_diff * tang;
@@ -60,6 +61,8 @@ t_dist 	vertical_hit_dist(t_game **game, double angle)
 	}
 	else
 	{
+		ray.y_diff = CUBE * cos(M_PI_2 - 0.0002);
+		ray.x_diff = 0;
 		ray.x = (*game)->player_x;
 		ray.y = (*game)->player_y;
 	}
