@@ -29,12 +29,22 @@ t_dist	find_h_dist(t_game **game, t_ray *ray, double angle, t_dist dist)
 			distance = cos(angle) * (ray->x - (*game)->player_x)
 				- sin(angle) * (ray->y - (*game)->player_y);
 			dist.dist = find_min(dist.dist, distance);
+			dist.hit_point = ray->x;
+			break ;
+		}
+		else if (map[(int)(ray->y) >> BITS][(int)(ray->x) >> BITS] == 'D')
+		{
+			distance = cos(angle) * (ray->x - (*game)->player_x + ray->x_diff / 2)
+					   - sin(angle) * (ray->y - (*game)->player_y + ray->y_diff / 2);
+			dist.dist = find_min(dist.dist, distance);
+			dist.direction = 'D';
+			dist.hit_point = ray->x + ray->x_diff / 2;
 			break ;
 		}
 		ray->x += ray->x_diff;
 		ray->y += ray->y_diff;
 	}
-	dist.hit_point = ray->x;
+//	dist.hit_point = ray->x;
 	return (dist);
 }
 

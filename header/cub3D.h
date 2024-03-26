@@ -92,10 +92,13 @@ typedef struct s_game {
 	t_img		*west_img;
 	char		*east;
 	t_img		*east_img;
+	char		*door;
+	t_img		*door_img;
 	int			**n_pixels;
 	int			**s_pixels;
 	int			**w_pixels;
 	int			**e_pixels;
+	int			**d_pixels;
 	int			floor;
 	int			ceiling;
 	t_map		*map;
