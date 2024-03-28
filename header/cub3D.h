@@ -78,6 +78,11 @@ typedef struct s_player {
 	int	yd;
 }	t_player;
 
+//typedef struct s_door_list {
+//	t_img				*door_img;
+//	struct s_door_list	*next;
+//}	t_door_list;
+
 typedef struct s_game {
 	int			player_x;
 	int			player_y;
@@ -92,8 +97,11 @@ typedef struct s_game {
 	t_img		*west_img;
 	char		*east;
 	t_img		*east_img;
-	char		*door;
+//	char		*door;
 	t_img		*door_img;
+	t_img		*open_door_img;
+//	t_door_list	*door_list;
+	t_img 		**anim;
 	int			**n_pixels;
 	int			**s_pixels;
 	int			**w_pixels;
@@ -106,7 +114,7 @@ typedef struct s_game {
 	void		*mlx_ptr;
 	t_img		*img;
 	void		*window_ptr;
-	void		**anim;
+//	void		**anim;
 }	t_game;
 
 t_game	*parse_textures(char *map_name);
@@ -124,8 +132,8 @@ void	ft_strcpy(char *dst, const char *src);
 void	check_surrounding_walls(t_game **game);
 void	check_corners(t_game **game);
 void	check_map(t_game **game);
-t_dist 	horizontal_hit_dist(t_game **game, double angle);
-t_dist 	vertical_hit_dist(t_game **game, double angle);
+t_dist 	horizontal_hit_dist(t_game **game, double angle, int door);
+t_dist 	vertical_hit_dist(t_game **game, double angle, int door);
 double	find_min(double a, double b);
 void	create_cos_array(t_game **game);
 //t_dist 	find_dist(t_game **game, t_ray *ray, double angle, t_dist dist);
@@ -151,10 +159,21 @@ void	ft_stckadd_back(t_stack **stack, t_stack *new);
 t_stack	*ft_stcklast(t_stack *stack);
 int		ft_stcksize(t_stack *stck);
 
+//t_door_list	*lstnew(t_img *content);
+//void		lstadd_front(t_door_list **lst, t_door_list *new);
+//t_door_list	*lstlast(t_door_list *list);
+//int			lstsize(t_door_list *list);
+//void		lstadd_back(t_door_list **list, t_door_list *new);
+
+void		create_open_door_texture_img(t_game **game);
+
 void	clean_instructions(char **instructions);
 void	free_string_array(char **str);
 void	free_stack(t_stack **stack);
 
 void	*create_anim_array(t_game **game);
+void	create_door_list(t_game **game);
+t_img	create_door_texture(t_game **game, char *texture);
+void	create_door_texture_img(t_game **game);
 
 #endif

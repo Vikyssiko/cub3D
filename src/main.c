@@ -66,97 +66,66 @@ double fix_angle(double angle)
 void	draw_doors(t_game **game)
 {
 	double	ray_angle;
-	int		i;
 	t_dist 	dist;
 	double 	line_height;
 	double 		y_start;
 	int		x;
-
 	double line;
 
-	i = 0;
 	ray_angle = fix_angle((*game)->player_angle + M_PI_2 / 3);
 	x = 0;
-//	t_img n = *((*game)->north_img);
-//	t_img s = *((*game)->south_img);
-//	t_img w = *((*game)->west_img);
-//	t_img e = *((*game)->east_img);
-	while (i < MAP_WIDTH)
+	while (x < MAP_WIDTH)
 	{
-//		line = 0.0;
-		dist = find_min_dist(vertical_hit_dist(game, ray_angle),
-							 horizontal_hit_dist(game, ray_angle));
-//		double fixed_angle = fix_angle((*game)->player_angle - ray_angle);
-//		if ((fixed_angle > M_PI_2 && fixed_angle < M_PI_2 * 3)
-//			|| fixed_angle < M_PI_2 || fixed_angle > M_PI_2 * 3)
-		dist.dist = dist.dist * cos(fix_angle((*game)->player_angle - ray_angle));
+//		dist = vertical_hit_dist(game, ray_angle, 1);
+		dist = find_min_dist(vertical_hit_dist(game, ray_angle, 1),
+							 horizontal_hit_dist(game, ray_angle, 1));
 		if (dist.dist < 0)
 		{
 			ray_angle = fix_angle(ray_angle - 0.0002);
 			continue ;
 		}
+		if (dist.direction != 'D') {
+			x++;
+			ray_angle = fix_angle(ray_angle - 0.00058177);
+			continue;
+		}
+		dist.dist = dist.dist * cos(fix_angle((*game)->player_angle - ray_angle));
+//		if (dist.dist < 0)
+//		{
+//			ray_angle = fix_angle(ray_angle - 0.0002);
+//			continue ;
+//		}
 		line_height = CUBE * (MAP_WIDTH / 2 / tan(M_PI_2 / 3)) / dist.dist;
 		int color;
 		double ratio = TEXTURE_SIZE / line_height;
 		y_start = MAP_HEIGHT / 2 - (line_height / 2);
 		int y_end = MAP_HEIGHT / 2 + (line_height / 2);
 		line = dist.hit_point;
-//		if (dist.direction == 'S' || dist.direction == 'N')
-//			printf("hit point: %f, line: %f\n", line, (*game)->player_x + cos(ray_angle) * dist.dist);
-//		else if (dist.direction == 'E' || dist.direction == 'W')
-//			printf("hit point: %f, line: %f\n", line, (*game)->player_y - sin(ray_angle) * dist.dist);
-//		if (line_height > MAP_HEIGHT)
-//			line_height = MAP_HEIGHT;
 		if (y_start < 0)
 			y_start = 0;
 		if (y_end > MAP_HEIGHT)
 			y_end = MAP_HEIGHT - 1;
 //		t_img texture;
-		int	**array;
-//		if (dist.direction == 'N')
-//			texture = n;
-//		else if (dist.direction == 'S')
-//			texture = s;
-//		else if (dist.direction == 'W')
-//			texture = w;
-//		else if (dist.direction == 'E')
-//			texture = e;
-//		if (dist.direction == 'E' || dist.direction == 'W')
-//			line = (((*game)->player_y - sin(ray_angle) * dist.dist));
-//		else if (dist.direction == 'S' || dist.direction == 'N')
-//			line = (((*game)->player_x + cos(ray_angle) * dist.dist));
-		if (dist.direction == 'N')
-			array = (*game)->n_pixels;
-		else if (dist.direction == 'S')
-			array = (*game)->s_pixels;
-		else if (dist.direction == 'W')
-			array = (*game)->w_pixels;
-		else if (dist.direction == 'E')
-			array = (*game)->e_pixels;
-//		else if (dist.direction == 'D')
-//			array = (*game)->d_pixels;
+		int	**array = (*game)->d_pixels;
 		double texture_pos = (y_start - MAP_HEIGHT / 2 + line_height / 2) * ratio;
 		if (texture_pos < 0)
 			texture_pos = 0.0;
-		while (y_start < y_end)
+		while (dist.direction == 'D' && y_start < y_end)
 		{
-//			if (line >= (double)TEXTURE_SIZE)
-//				line = line - (((int)line >> BITS) << BITS);
-//				line = line - ((int)(line / TEXTURE_SIZE)) * TEXTURE_SIZE;
-//				line = (int)line % TEXTURE_SIZE;
-//			if ((int)(texture_pos) >= 510 || (int)(line) >= 510 || (int)(texture_pos) < 0 || (int)(line) < 0)
-//				printf("ratio: %f, texture position: %f, line: %f\n", ratio, texture_pos, line);
-//			if (line >= TEXTURE_SIZE)
-//				line = 0.0;
-//			color = array[(int)((double)((y_end - y_start) / ratio) * (double)TEXTURE_SIZE + line) - 1];
 			color = array[(int)(texture_pos)][(int)line % TEXTURE_SIZE];
-			my_mlx_pixel_put((*game)->img, x, y_start, color);
+			if (color != 0) {
+				my_mlx_pixel_put((*game)->img, x, y_start, color);
+			}
+//			if (texture_pos == TEXTURE_SIZE / 2) {
+//				printf("%d\n", color);
+//				continue;
+//			}
+//			my_mlx_pixel_put((*game)->img, x, y_start, color);
 			texture_pos += ratio;
 			y_start++;
 		}
 		x += 1;
 		ray_angle = fix_angle(ray_angle - 0.00058177);
-		i++;
 	}
 }
 
@@ -181,8 +150,8 @@ void	draw_rays(t_game **game)
 	while (i < MAP_WIDTH)
 	{
 //		line = 0.0;
-		dist = find_min_dist(vertical_hit_dist(game, ray_angle),
-						horizontal_hit_dist(game, ray_angle));
+		dist = find_min_dist(vertical_hit_dist(game, ray_angle, 0),
+						horizontal_hit_dist(game, ray_angle, 0));
 //		double fixed_angle = fix_angle((*game)->player_angle - ray_angle);
 //		if ((fixed_angle > M_PI_2 && fixed_angle < M_PI_2 * 3)
 //			|| fixed_angle < M_PI_2 || fixed_angle > M_PI_2 * 3)
@@ -230,8 +199,8 @@ void	draw_rays(t_game **game)
 			array = (*game)->w_pixels;
 		else if (dist.direction == 'E')
 			array = (*game)->e_pixels;
-		else if (dist.direction == 'D')
-			array = (*game)->d_pixels;
+//		else if (dist.direction == 'D')
+//			array = (*game)->d_pixels;
 		double texture_pos = (y_start - MAP_HEIGHT / 2 + line_height / 2) * ratio;
 		if (texture_pos < 0)
 			 texture_pos = 0.0;
@@ -293,6 +262,7 @@ int	draw(t_game **game)
 		i = 0;
 		draw_black(game);
 		draw_rays(game);
+		draw_doors(game);
 		draw_map(game);
 //		mlx_clear_window((*game)->mlx_ptr, (*game)->window_ptr);
 		mlx_put_image_to_window((*game)->mlx_ptr, (*game)->window_ptr, (*(*game)->img).img_ptr, 0, 0);

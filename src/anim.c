@@ -14,15 +14,13 @@
 
 void 	*create_anim_array(t_game **game)
 {
-	void **array = malloc(sizeof(void *) * 6);
-	int width = 1719;
-	int height = 835;
+	t_img **array = malloc(sizeof(t_img *) * 4);
 
-	array[0] = mlx_xpm_file_to_image((*game)->mlx_ptr, "anim_pictures/1.xpm", &width, &height);
-	array[1] = mlx_xpm_file_to_image((*game)->mlx_ptr, "anim_pictures/2.xpm", &width, &height);
-	array[2] = mlx_xpm_file_to_image((*game)->mlx_ptr, "anim_pictures/3.xpm", &width, &height);
-	array[3] = mlx_xpm_file_to_image((*game)->mlx_ptr, "anim_pictures/4.xpm", &width, &height);
-	array[4] = mlx_xpm_file_to_image((*game)->mlx_ptr, "anim_pictures/5.xpm", &width, &height);
-	array[5] = mlx_xpm_file_to_image((*game)->mlx_ptr, "anim_pictures/6.xpm", &width, &height);
+	array[0] = (*game)->door_img;
+	array[1] = malloc(sizeof(t_img));
+	*(array[1]) = create_door_texture(game, "./textures/door1.xpm");
+	array[2] = malloc(sizeof(t_img));
+	*(array[2]) = create_door_texture(game, "./textures/door2.xpm");
+	array[3] = (*game)->open_door_img;
 	return (array);
 }

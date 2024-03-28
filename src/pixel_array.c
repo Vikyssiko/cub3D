@@ -47,6 +47,11 @@ void	put_color(t_game **game, int x, int y)
 			(*game)->west_img->img_pixels_ptr, (*game)->west_img);
 	(*game)->e_pixels[y][x] = get_pixel_color(x, y,
 			(*game)->east_img->img_pixels_ptr, (*game)->east_img);
+//	int color = get_pixel_color(x, y,
+//								(*game)->door_img->img_pixels_ptr, (*game)->door_img);
+//	if (x == TEXTURE_SIZE / 2) {
+//		printf("%d\n", color);
+//	}
 	(*game)->d_pixels[y][x] = get_pixel_color(x, y,
 			(*game)->door_img->img_pixels_ptr, (*game)->door_img); //door
 //	free images;
