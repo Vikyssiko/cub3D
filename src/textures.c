@@ -108,5 +108,6 @@ void	init_textures(t_game **game)
 	create_west_texture_img(game);
 	create_east_texture_img(game);
 	create_door_texture_img(game); //door
+	create_open_door_texture_img(game); //open door
 	create_array_of_pixels(game);
 }

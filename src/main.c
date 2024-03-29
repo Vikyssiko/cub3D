@@ -46,6 +46,7 @@ t_game	*create_game(int fd)
 	game->mlx_ptr = NULL;
 	game->img = NULL;
 	game->window_ptr = NULL;
+	game->door_open = 0;
 	return (game);
 }
 
@@ -63,6 +64,8 @@ double fix_angle(double angle)
 	return (angle);
 }
 
+static int a;
+
 void	draw_doors(t_game **game)
 {
 	double	ray_angle;
@@ -76,7 +79,12 @@ void	draw_doors(t_game **game)
 	x = 0;
 	while (x < MAP_WIDTH)
 	{
-//		dist = vertical_hit_dist(game, ray_angle, 1);
+//		dist = horizontal_hit_dist(game, ray_angle, 1);
+//		int vert = vertical_hit_dist(game, ray_angle, 1).dist;
+//		int hor = horizontal_hit_dist(game, ray_angle, 1).dist;
+//		if (vert < hor && dist.direction == 'D') {
+//			printf("vert: %d, hor: %d, angle: %f\n", vert, hor, ray_angle);
+//		}
 		dist = find_min_dist(vertical_hit_dist(game, ray_angle, 1),
 							 horizontal_hit_dist(game, ray_angle, 1));
 		if (dist.dist < 0)
@@ -90,11 +98,11 @@ void	draw_doors(t_game **game)
 			continue;
 		}
 		dist.dist = dist.dist * cos(fix_angle((*game)->player_angle - ray_angle));
-//		if (dist.dist < 0)
-//		{
-//			ray_angle = fix_angle(ray_angle - 0.0002);
-//			continue ;
-//		}
+		if (dist.dist < 0)
+		{
+			ray_angle = fix_angle(ray_angle - 0.0002);
+			continue ;
+		}
 		line_height = CUBE * (MAP_WIDTH / 2 / tan(M_PI_2 / 3)) / dist.dist;
 		int color;
 		double ratio = TEXTURE_SIZE / line_height;
@@ -105,22 +113,30 @@ void	draw_doors(t_game **game)
 			y_start = 0;
 		if (y_end > MAP_HEIGHT)
 			y_end = MAP_HEIGHT - 1;
-//		t_img texture;
-		int	**array = (*game)->d_pixels;
+		int	**array;
+//		if (a % 200000 < 100000)
+		if ((*game)->door_open == 1)
+		{
+			array = (*game)->od_pixels;
+		}
+		else
+		{
+			a = 0;
+			array = (*game)->d_pixels;
+		}
+//		else if (a % 10000 == 0) {
+//			array = (*game)->od_pixels;
+//		}
+		a++;
 		double texture_pos = (y_start - MAP_HEIGHT / 2 + line_height / 2) * ratio;
 		if (texture_pos < 0)
 			texture_pos = 0.0;
-		while (dist.direction == 'D' && y_start < y_end)
+		while (y_start < y_end)
 		{
 			color = array[(int)(texture_pos)][(int)line % TEXTURE_SIZE];
 			if (color != 0) {
 				my_mlx_pixel_put((*game)->img, x, y_start, color);
 			}
-//			if (texture_pos == TEXTURE_SIZE / 2) {
-//				printf("%d\n", color);
-//				continue;
-//			}
-//			my_mlx_pixel_put((*game)->img, x, y_start, color);
 			texture_pos += ratio;
 			y_start++;
 		}
@@ -295,6 +311,8 @@ int	handle_input(int key, t_game **game)
 		go_right(game);
 	else if (key == XK_a)
 		go_left(game);
+	else if (key == XK_space)
+		(*game)->door_open = ((*game)->door_open + 1) % 2;
 	return (0);
 }
 
@@ -315,7 +333,7 @@ int main(int args, char *argv[])
 	img.img_pixels_ptr = mlx_get_data_addr(img.img_ptr, &img.bits_per_pixel, &img.line_len,
 								 &img.endian);
 
-	game->anim = create_anim_array(&game);
+//	game->anim = create_anim_array(&game);
 	game->window_ptr = mlx_new_window(game->mlx_ptr, MAP_WIDTH, MAP_HEIGHT, "cub3D");
 //	draw(&game);
 	mlx_put_image_to_window(game->mlx_ptr, game->window_ptr, img.img_ptr, 0, 0);

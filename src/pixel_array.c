@@ -47,13 +47,10 @@ void	put_color(t_game **game, int x, int y)
 			(*game)->west_img->img_pixels_ptr, (*game)->west_img);
 	(*game)->e_pixels[y][x] = get_pixel_color(x, y,
 			(*game)->east_img->img_pixels_ptr, (*game)->east_img);
-//	int color = get_pixel_color(x, y,
-//								(*game)->door_img->img_pixels_ptr, (*game)->door_img);
-//	if (x == TEXTURE_SIZE / 2) {
-//		printf("%d\n", color);
-//	}
 	(*game)->d_pixels[y][x] = get_pixel_color(x, y,
 			(*game)->door_img->img_pixels_ptr, (*game)->door_img); //door
+	(*game)->od_pixels[y][x] = get_pixel_color(x, y,
+			(*game)->open_door_img->img_pixels_ptr, (*game)->open_door_img); //open door
 //	free images;
 }
 
@@ -68,6 +65,7 @@ void	create_array_of_pixels(t_game **game)
 	(*game)->s_pixels = malloc(sizeof(int *) * (TEXTURE_SIZE) + 1);
 	(*game)->n_pixels = malloc(sizeof(int *) * (TEXTURE_SIZE) + 1);
 	(*game)->d_pixels = malloc(sizeof(int *) * (TEXTURE_SIZE) + 1); //door
+	(*game)->od_pixels = malloc(sizeof(int *) * (TEXTURE_SIZE) + 1); //open door
 	while (y < TEXTURE_SIZE + 1)
 	{
 		x = 0;
@@ -76,6 +74,7 @@ void	create_array_of_pixels(t_game **game)
 		(*game)->w_pixels[y] = malloc(sizeof(int) * TEXTURE_SIZE + 1);
 		(*game)->e_pixels[y] = malloc(sizeof(int) * TEXTURE_SIZE + 1);
 		(*game)->d_pixels[y] = malloc(sizeof(int) * TEXTURE_SIZE + 1); //door
+		(*game)->od_pixels[y] = malloc(sizeof(int) * TEXTURE_SIZE + 1); //open door
 		while (x < TEXTURE_SIZE)
 		{
 			put_color(game, x, y);

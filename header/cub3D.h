@@ -102,11 +102,13 @@ typedef struct s_game {
 	t_img		*open_door_img;
 //	t_door_list	*door_list;
 	t_img 		**anim;
+	int 		***doors_pixels;
 	int			**n_pixels;
 	int			**s_pixels;
 	int			**w_pixels;
 	int			**e_pixels;
 	int			**d_pixels;
+	int			**od_pixels;
 	int			floor;
 	int			ceiling;
 	t_map		*map;
@@ -114,6 +116,7 @@ typedef struct s_game {
 	void		*mlx_ptr;
 	t_img		*img;
 	void		*window_ptr;
+	int			door_open;
 //	void		**anim;
 }	t_game;
 
@@ -171,9 +174,11 @@ void	clean_instructions(char **instructions);
 void	free_string_array(char **str);
 void	free_stack(t_stack **stack);
 
-void	*create_anim_array(t_game **game);
+void	create_anim_array(t_game **game);
 void	create_door_list(t_game **game);
 t_img	create_door_texture(t_game **game, char *texture);
 void	create_door_texture_img(t_game **game);
+void 	create_anim_pixels_array(t_game **game);
+void	put_color(t_game **game, int x, int y);
 
 #endif

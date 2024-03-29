@@ -91,7 +91,7 @@ t_dist	horizontal_hit_dist(t_game **game, double angle, int door)
 	}
 //	else
 //	{
-//		ray.x_diff = CUBE * sin(0.0001);
+//		ray.x_diff = CUBE * sin(0.0002);
 //		ray.y_diff = 0;
 //		ray.x = (*game)->player_x;
 //		ray.y = (*game)->player_y;
