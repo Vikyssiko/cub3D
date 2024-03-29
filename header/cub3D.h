@@ -130,6 +130,7 @@ int		clean_and_exit_no_error(t_game **game);
 void	exit_with_error(char *message, int fd);
 void	parse_map(t_game **game);
 void	check_symbol(char *line, t_game **game);
+void	check_doors(t_game **game);
 void	check_first_last_wall(t_game **game);
 void	ft_strcpy(char *dst, const char *src);
 void	check_surrounding_walls(t_game **game);

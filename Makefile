@@ -51,7 +51,8 @@ SRCS		=	$(SRC_DIR)/parsing/cardinal_directions.c \
 				$(SRC_DIR)/minimap.c \
 				$(SRC_DIR)/anim.c \
 				$(SRC_DIR)/door_textures.c \
-				$(SRC_DIR)/doors.c
+				$(SRC_DIR)/doors.c \
+				$(SRC_DIR)/parsing/doors_check.c
 
 OBJS		=	$(SRCS:.c=.o)
 
