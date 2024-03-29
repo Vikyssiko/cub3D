@@ -79,12 +79,6 @@ void	draw_doors(t_game **game)
 	x = 0;
 	while (x < MAP_WIDTH)
 	{
-//		dist = horizontal_hit_dist(game, ray_angle, 1);
-//		int vert = vertical_hit_dist(game, ray_angle, 1).dist;
-//		int hor = horizontal_hit_dist(game, ray_angle, 1).dist;
-//		if (vert < hor && dist.direction == 'D') {
-//			printf("vert: %d, hor: %d, angle: %f\n", vert, hor, ray_angle);
-//		}
 		dist = find_min_dist(vertical_hit_dist(game, ray_angle, 1),
 							 horizontal_hit_dist(game, ray_angle, 1));
 		if (dist.dist < 0)
@@ -114,20 +108,10 @@ void	draw_doors(t_game **game)
 		if (y_end > MAP_HEIGHT)
 			y_end = MAP_HEIGHT - 1;
 		int	**array;
-//		if (a % 200000 < 100000)
 		if ((*game)->door_open == 1)
-		{
 			array = (*game)->od_pixels;
-		}
 		else
-		{
-			a = 0;
 			array = (*game)->d_pixels;
-		}
-//		else if (a % 10000 == 0) {
-//			array = (*game)->od_pixels;
-//		}
-		a++;
 		double texture_pos = (y_start - MAP_HEIGHT / 2 + line_height / 2) * ratio;
 		if (texture_pos < 0)
 			texture_pos = 0.0;
@@ -159,13 +143,8 @@ void	draw_rays(t_game **game)
 	i = 0;
 	ray_angle = fix_angle((*game)->player_angle + M_PI_2 / 3);
 	x = 0;
-//	t_img n = *((*game)->north_img);
-//	t_img s = *((*game)->south_img);
-//	t_img w = *((*game)->west_img);
-//	t_img e = *((*game)->east_img);
 	while (i < MAP_WIDTH)
 	{
-//		line = 0.0;
 		dist = find_min_dist(vertical_hit_dist(game, ray_angle, 0),
 						horizontal_hit_dist(game, ray_angle, 0));
 //		double fixed_angle = fix_angle((*game)->player_angle - ray_angle);
@@ -183,30 +162,11 @@ void	draw_rays(t_game **game)
 		y_start = MAP_HEIGHT / 2 - (line_height / 2);
 		int y_end = MAP_HEIGHT / 2 + (line_height / 2);
 		line = dist.hit_point;
-//		if (dist.direction == 'S' || dist.direction == 'N')
-//			printf("hit point: %f, line: %f\n", line, (*game)->player_x + cos(ray_angle) * dist.dist);
-//		else if (dist.direction == 'E' || dist.direction == 'W')
-//			printf("hit point: %f, line: %f\n", line, (*game)->player_y - sin(ray_angle) * dist.dist);
-//		if (line_height > MAP_HEIGHT)
-//			line_height = MAP_HEIGHT;
 		if (y_start < 0)
 			y_start = 0;
 		if (y_end > MAP_HEIGHT)
 			y_end = MAP_HEIGHT - 1;
-//		t_img texture;
 		int	**array;
-//		if (dist.direction == 'N')
-//			texture = n;
-//		else if (dist.direction == 'S')
-//			texture = s;
-//		else if (dist.direction == 'W')
-//			texture = w;
-//		else if (dist.direction == 'E')
-//			texture = e;
-//		if (dist.direction == 'E' || dist.direction == 'W')
-//			line = (((*game)->player_y - sin(ray_angle) * dist.dist));
-//		else if (dist.direction == 'S' || dist.direction == 'N')
-//			line = (((*game)->player_x + cos(ray_angle) * dist.dist));
 		if (dist.direction == 'N')
 			array = (*game)->n_pixels;
 		else if (dist.direction == 'S')
@@ -215,24 +175,11 @@ void	draw_rays(t_game **game)
 			array = (*game)->w_pixels;
 		else if (dist.direction == 'E')
 			array = (*game)->e_pixels;
-//		else if (dist.direction == 'D' && !(*game)->door_open)
-//			array = (*game)->d_pixels;
-//		else if (dist.direction == 'D')
-//			array = (*game)->od_pixels;
 		double texture_pos = (y_start - MAP_HEIGHT / 2 + line_height / 2) * ratio;
 		if (texture_pos < 0)
 			 texture_pos = 0.0;
 		while (y_start < y_end)
 		{
-//			if (line >= (double)TEXTURE_SIZE)
-//				line = line - (((int)line >> BITS) << BITS);
-//				line = line - ((int)(line / TEXTURE_SIZE)) * TEXTURE_SIZE;
-//				line = (int)line % TEXTURE_SIZE;
-//			if ((int)(texture_pos) >= 510 || (int)(line) >= 510 || (int)(texture_pos) < 0 || (int)(line) < 0)
-//				printf("ratio: %f, texture position: %f, line: %f\n", ratio, texture_pos, line);
-//			if (line >= TEXTURE_SIZE)
-//				line = 0.0;
-//			color = array[(int)((double)((y_end - y_start) / ratio) * (double)TEXTURE_SIZE + line) - 1];
 			color = array[(int)(texture_pos)][(int)line % TEXTURE_SIZE];
 			my_mlx_pixel_put((*game)->img, x, y_start, color);
 			texture_pos += ratio;
@@ -267,57 +214,124 @@ void	draw_black(t_game **game)
 }
 
 static int i;
+static int a;
 
 int	draw(t_game **game)
 {
-
-//	if (i % 10000)
-//	{
-//
-//	}
-
-	if (i % 500 == 0)
+	if ((*game)->door_open && (*game)->door_close_anim) {
+		if (i % 14000 < 2000) {
+			(*game)->od_pixels = (*game)->doors_pixels[5];
+		} else if (i % 14000 < 4000) {
+			(*game)->od_pixels = (*game)->doors_pixels[4];
+		} else if (i % 14000 < 6000) {
+			(*game)->od_pixels = (*game)->doors_pixels[3];
+		} else if (i % 14000 < 8000) {
+			(*game)->od_pixels = (*game)->doors_pixels[2];
+		} else if (i % 14000 < 10000) {
+			(*game)->od_pixels = (*game)->doors_pixels[1];
+		} else if (i % 14000 < 12000) {
+			(*game)->od_pixels = (*game)->doors_pixels[0];
+		} else {
+			(*game)->door_open = ((*game)->door_open + 1) % 2;
+			(*game)->od_pixels = (*game)->doors_pixels[6];
+			(*game)->door_close_anim = 0;
+		}
+	} else if (!(*game)->door_open && (*game)->door_open_anim) {
+		if (i % 21000 < 3000) {
+			(*game)->d_pixels = (*game)->doors_pixels[0];
+		} else if (i % 21000 < 6000) {
+			(*game)->d_pixels = (*game)->doors_pixels[1];
+		} else if (i % 21000 < 9000) {
+			(*game)->d_pixels = (*game)->doors_pixels[2];
+		} else if (i % 21000 < 12000) {
+			(*game)->d_pixels = (*game)->doors_pixels[3];
+		} else if (i % 21000 < 15000) {
+			(*game)->d_pixels = (*game)->doors_pixels[4];
+		} else if (i % 21000 < 18000) {
+			(*game)->d_pixels = (*game)->doors_pixels[5];
+		} else {
+			(*game)->door_open = ((*game)->door_open + 1) % 2;
+			(*game)->d_pixels = (*game)->doors_pixels[0];
+			(*game)->door_open_anim = 0;
+		}
+	}
+	if (a % 500 == 0)
 	{
-//		i = 0;
+		keys(game);
+		a = 0;
 		draw_black(game);
 		draw_rays(game);
 		draw_doors(game);
 		draw_map(game);
-//		mlx_clear_window((*game)->mlx_ptr, (*game)->window_ptr);
 		mlx_put_image_to_window((*game)->mlx_ptr, (*game)->window_ptr, (*(*game)->img).img_ptr, 0, 0);
 	}
-//	mlx_put_image_to_window((*game)->mlx_ptr, (*game)->window_ptr, ((*game)->anim)[0], 0, 0);
+	a++;
 	i++;
 	return (0);
 }
 
 int	handle_input(int key, t_game **game)
 {
-//	int mouse_x;
-//	int mouse_y;
-
-//	mouse_x = malloc(sizeof(int));
-//	mouse_y = malloc(sizeof(int));
-//	if ((*game) && (*game)->window_ptr)
-//		mlx_mouse_get_pos((*game)->window_ptr, &mouse_x, &mouse_y);
 	if (key == XK_Escape)
 		clean_and_exit_no_error(game);
 	else if (key == XK_Left)
-		(*game)->player_angle = fix_angle((*game)->player_angle + 0.1);
+		(*game)->keys.left_pressed = 1;
 	else if (key == XK_Right)
-		(*game)->player_angle = fix_angle((*game)->player_angle - 0.1);
+		(*game)->keys.right_pressed = 1;
 	else if (key == XK_w)
-		go_straight(game);
+		(*game)->keys.w_pressed = 1;
 	else if (key == XK_s)
-		go_back(game);
+		(*game)->keys.s_pressed = 1;
 	else if (key == XK_d)
-		go_right(game);
+		(*game)->keys.d_pressed = 1;
 	else if (key == XK_a)
-		go_left(game);
+		(*game)->keys.a_pressed = 1;
 	else if (key == XK_space) {
-		open_doors(game, i);
-//		(*game)->door_open = ((*game)->door_open + 1) % 2;
+		if (!(*game)->door_open && !(*game)->door_open_anim) {
+			i = 0;
+
+			(*game)->door_open_anim = 1;
+		}
+		else if ((*game)->door_open && !(*game)->door_close_anim) {
+			i = 0;
+			(*game)->door_close_anim = 1;
+
+		}
 	}
+	return (0);
+}
+
+int	handle_release(int key, t_game **game)
+{
+	if (key == XK_Escape)
+		clean_and_exit_no_error(game);
+	else if (key == XK_Left)
+		(*game)->keys.left_pressed = 0;
+	else if (key == XK_Right)
+		(*game)->keys.right_pressed = 0;
+	else if (key == XK_w)
+		(*game)->keys.w_pressed = 0;
+	else if (key == XK_s)
+		(*game)->keys.s_pressed = 0;
+	else if (key == XK_d)
+		(*game)->keys.d_pressed = 0;
+	else if (key == XK_a)
+		(*game)->keys.a_pressed = 0;
+	return (0);
+}
+
+int	mouse_move_hook(int x, int y, t_game **game)
+{
+	int	delta_x;
+	int	y_pos;
+
+	y_pos = y;
+	delta_x = x - (*game)->mouse_x;
+	(*game)->mouse_x = x;
+	if (delta_x > 0)
+		(*game)->player_angle = fix_angle((*game)->player_angle - 0.1);
+	else if (delta_x < 0)
+		(*game)->player_angle = fix_angle((*game)->player_angle + 0.1);
 	return (0);
 }
 
@@ -337,26 +351,14 @@ int main(int args, char *argv[])
 	img.img_ptr = mlx_new_image(game->mlx_ptr, MAP_WIDTH, MAP_HEIGHT);
 	img.img_pixels_ptr = mlx_get_data_addr(img.img_ptr, &img.bits_per_pixel, &img.line_len,
 								 &img.endian);
-
-//	game->anim = create_anim_array(&game);
 	game->window_ptr = mlx_new_window(game->mlx_ptr, MAP_WIDTH, MAP_HEIGHT, "cub3D");
-//	draw(&game);
 	mlx_put_image_to_window(game->mlx_ptr, game->window_ptr, img.img_ptr, 0, 0);
-//	mou
+	mlx_hook(game->window_ptr, MotionNotify, PointerMotionMask, mouse_move_hook, &game);
 	mlx_hook(game->window_ptr, KeyPress, KeyPressMask, handle_input, &game);
+	mlx_hook(game->window_ptr, KeyRelease, KeyReleaseMask, handle_release, &game);
 	mlx_loop_hook(game->mlx_ptr, draw, &game);
 	mlx_hook(game->window_ptr,
 			 DestroyNotify, ButtonPressMask, clean_and_exit_no_error, &game);
 	mlx_loop(game->mlx_ptr);
 	return (0);
 }
-
-//	int i = 0;
-//	t_stack	*stack = game->stack;
-//	while (stack)
-//	{
-//		if (game->map->map)
-//			printf("%s\n", game->map->map[i]);
-//		stack = stack->next;
-//		i++;
-//	}

@@ -58,11 +58,6 @@ typedef struct s_dist {
 	char	direction;
 }	t_dist;
 
-//typedef struct s_ray {
-//	double	x;
-//	double 	y;
-//}	t_ray;
-
 typedef struct s_ray {
 	double	x;
 	double 	y;
@@ -78,46 +73,51 @@ typedef struct s_player {
 	int	yd;
 }	t_player;
 
-//typedef struct s_door_list {
-//	t_img				*door_img;
-//	struct s_door_list	*next;
-//}	t_door_list;
+typedef struct s_key_pressed {
+	int	w_pressed;
+	int	s_pressed;
+	int	a_pressed;
+	int	d_pressed;
+	int	left_pressed;
+	int	right_pressed;
+}	t_key_pressed;
 
 typedef struct s_game {
-	int			player_x;
-	int			player_y;
-	double		player_angle;
-	int			fd;
-	int			map_width;
-	char		*north;
-	t_img		*north_img;
-	char		*south;
-	t_img		*south_img;
-	char		*west;
-	t_img		*west_img;
-	char		*east;
-	t_img		*east_img;
-//	char		*door;
-	t_img		*door_img;
-	t_img		*open_door_img;
-//	t_door_list	*door_list;
-	t_img 		**anim;
-	int 		***doors_pixels;
-	int			**n_pixels;
-	int			**s_pixels;
-	int			**w_pixels;
-	int			**e_pixels;
-	int			**d_pixels;
-	int			**od_pixels;
-	int			floor;
-	int			ceiling;
-	t_map		*map;
-	t_stack		*stack;
-	void		*mlx_ptr;
-	t_img		*img;
-	void		*window_ptr;
-	int			door_open;
-//	void		**anim;
+	int				player_x;
+	int				player_y;
+	double			player_angle;
+	int				fd;
+	int				map_width;
+	char			*north;
+	t_img			*north_img;
+	char			*south;
+	t_img			*south_img;
+	char			*west;
+	t_img			*west_img;
+	char			*east;
+	t_img			*east_img;
+	t_img			*door_img;
+	t_img			*open_door_img;
+	t_img 			**anim;
+	int 			***doors_pixels;
+	int				**n_pixels;
+	int				**s_pixels;
+	int				**w_pixels;
+	int				**e_pixels;
+	int				**d_pixels;
+	int				**od_pixels;
+	int				floor;
+	int				ceiling;
+	t_map			*map;
+	t_stack			*stack;
+	void			*mlx_ptr;
+	t_img			*img;
+	void			*window_ptr;
+	int				door_open;
+	int				door_open_anim;
+	int				door_close_anim;
+	t_key_pressed	keys;
+	int				mouse_x;
 }	t_game;
 
 t_game	*parse_textures(char *map_name);
@@ -139,7 +139,6 @@ t_dist 	horizontal_hit_dist(t_game **game, double angle, int door);
 t_dist 	vertical_hit_dist(t_game **game, double angle, int door);
 double	find_min(double a, double b);
 void	create_cos_array(t_game **game);
-//t_dist 	find_dist(t_game **game, t_ray *ray, double angle, t_dist dist);
 t_dist	find_min_dist(t_dist vert, t_dist hor);
 int 	rgb_to_decimal(char *color_rgb, t_game **game);
 void	init_textures(t_game **game);
@@ -162,12 +161,6 @@ void	ft_stckadd_back(t_stack **stack, t_stack *new);
 t_stack	*ft_stcklast(t_stack *stack);
 int		ft_stcksize(t_stack *stck);
 
-//t_door_list	*lstnew(t_img *content);
-//void		lstadd_front(t_door_list **lst, t_door_list *new);
-//t_door_list	*lstlast(t_door_list *list);
-//int			lstsize(t_door_list *list);
-//void		lstadd_back(t_door_list **list, t_door_list *new);
-
 void		create_open_door_texture_img(t_game **game);
 
 void	clean_instructions(char **instructions);
@@ -182,5 +175,8 @@ void 	create_anim_pixels_array(t_game **game);
 void	put_color(t_game **game, int x, int y);
 
 void	open_doors(t_game **game, int i);
+
+double	fix_angle(double angle);
+void	keys(t_game **game);
 
 #endif
