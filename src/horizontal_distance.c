@@ -30,10 +30,15 @@ t_dist	find_h_dist(t_game **game, t_ray *ray, double angle, t_dist dist, int doo
 ////			dist.direction = 'D';
 //			break ;
 //		}
-		if (door && map[(int)(ray->y) >> BITS][(int)(ray->x) >> BITS] == 'D')
+		if (door && (((int)(ray->x) >> BITS) < 0
+					 || ((int)(ray->x) >> BITS) >= (*game)->map_width
+					 || map[(int)(ray->y) >> BITS][(int)(ray->x) >> BITS] == 'D'))
 		{
 			distance = cos(angle) * (ray->x - (*game)->player_x + ray->x_diff / 2)
 					- sin(angle) * (ray->y - (*game)->player_y + ray->y_diff / 2);
+//			if (distance < 0) {
+//				printf("dist: %f, angle: %f\n", dist.dist, angle);
+//			}
 			dist.dist = find_min(dist.dist, distance);
 			dist.direction = 'D';
 			dist.hit_point = ray->x + ray->x_diff / 2;
@@ -81,7 +86,8 @@ t_dist	horizontal_hit_dist(t_game **game, double angle, int door)
 		ray.x_diff = -ray.y_diff * tang;
 		ray.x = ((*game)->player_y - ray.y) * tang + (*game)->player_x;
 	}
-	else if (sin(angle) < -0.001)
+//	else if (sin(angle) < -0.001)
+	else
 	{
 		ray.y = (((int)(*game)->player_y >> BITS) << BITS) + CUBE;
 		ray.y_diff = CUBE;

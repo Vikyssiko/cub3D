@@ -51,8 +51,8 @@ void	create_door_texture_img(t_game **game)
 //void	create_door_list(t_game **game)
 //{
 //	(*game)->door_list = lstnew((*game)->door_img);
-//	add_door_texture_to_list(game, "./textures/door1.xpm");
 //	add_door_texture_to_list(game, "./textures/door2.xpm");
+//	add_door_texture_to_list(game, "./textures/door4.xpm");
 //	lstadd_back(&((*game)->door_list), lstnew((*game)->open_door_img));
 //}
 

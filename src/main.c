@@ -215,8 +215,10 @@ void	draw_rays(t_game **game)
 			array = (*game)->w_pixels;
 		else if (dist.direction == 'E')
 			array = (*game)->e_pixels;
-//		else if (dist.direction == 'D')
+//		else if (dist.direction == 'D' && !(*game)->door_open)
 //			array = (*game)->d_pixels;
+//		else if (dist.direction == 'D')
+//			array = (*game)->od_pixels;
 		double texture_pos = (y_start - MAP_HEIGHT / 2 + line_height / 2) * ratio;
 		if (texture_pos < 0)
 			 texture_pos = 0.0;
@@ -273,9 +275,10 @@ int	draw(t_game **game)
 //	{
 //
 //	}
+
 	if (i % 500 == 0)
 	{
-		i = 0;
+//		i = 0;
 		draw_black(game);
 		draw_rays(game);
 		draw_doors(game);
@@ -311,8 +314,10 @@ int	handle_input(int key, t_game **game)
 		go_right(game);
 	else if (key == XK_a)
 		go_left(game);
-	else if (key == XK_space)
-		(*game)->door_open = ((*game)->door_open + 1) % 2;
+	else if (key == XK_space) {
+		open_doors(game, i);
+//		(*game)->door_open = ((*game)->door_open + 1) % 2;
+	}
 	return (0);
 }
 

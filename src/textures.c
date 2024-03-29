@@ -110,4 +110,6 @@ void	init_textures(t_game **game)
 	create_door_texture_img(game); //door
 	create_open_door_texture_img(game); //open door
 	create_array_of_pixels(game);
+	create_anim_array(game);
+	create_anim_pixels_array(game);
 }

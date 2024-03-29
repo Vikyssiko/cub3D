@@ -181,4 +181,6 @@ void	create_door_texture_img(t_game **game);
 void 	create_anim_pixels_array(t_game **game);
 void	put_color(t_game **game, int x, int y);
 
+void	open_doors(t_game **game, int i);
+
 #endif
