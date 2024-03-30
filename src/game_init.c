@@ -46,6 +46,16 @@ void	init_keys(t_game **game)
 	(*game)->keys.d_pressed = 0;
 }
 
+void	init_texture_files(t_game **game)
+{
+	(*game)->ceiling = -1;
+	(*game)->floor = -1;
+	(*game)->north = NULL;
+	(*game)->south = NULL;
+	(*game)->east = NULL;
+	(*game)->west = NULL;
+}
+
 t_game	*create_game(int fd)
 {
 	t_game	*game;
@@ -59,8 +69,6 @@ t_game	*create_game(int fd)
 	game->fd = fd;
 	game->map_width = 0;
 	game->stack = NULL;
-	game->ceiling = -1;
-	game->floor = -1;
 	game->anim = NULL;
 	game->map = NULL;
 	game->mlx_ptr = NULL;
@@ -69,8 +77,8 @@ t_game	*create_game(int fd)
 	game->door_open = 0;
 	game->door_open_anim = 0;
 	game->door_close_anim = 0;
-//	game->keys = NULL;
 	game->mouse_x = 0;
+	init_texture_files(&game);
 	init_images(&game);
 	init_pixels_arrays(&game);
 	init_keys(&game);

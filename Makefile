@@ -42,6 +42,7 @@ SRCS		=	$(SRC_DIR)/parsing/cardinal_directions.c \
 				$(SRC_DIR)/parsing/check_line.c \
 				$(SRC_DIR)/parsing/map.c \
 				$(SRC_DIR)/parsing/parsing_utils.c \
+				$(SRC_DIR)/parsing/color_parsing.c \
 				$(SRC_DIR)/horizontal_distance.c \
 				$(SRC_DIR)/vertical_distance.c \
 				$(SRC_DIR)/textures.c \
@@ -53,7 +54,10 @@ SRCS		=	$(SRC_DIR)/parsing/cardinal_directions.c \
 				$(SRC_DIR)/door_textures.c \
 				$(SRC_DIR)/doors.c \
 				$(SRC_DIR)/parsing/doors_check.c \
-				$(SRC_DIR)/game_init.c
+				$(SRC_DIR)/game_init.c \
+				$(SRC_DIR)/free_images.c \
+				$(SRC_DIR)/handle_input.c \
+				$(SRC_DIR)/utils.c
 
 OBJS		=	$(SRCS:.c=.o)
 

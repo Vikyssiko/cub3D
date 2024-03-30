@@ -18,6 +18,8 @@
 # include <math.h>
 # include "../libft/header/libft.h"
 # include "../minilibx/mlx.h"
+# include <X11/keysym.h>
+# include <X11/X.h>
 
 # define FOV					60
 # define CUBE					512
@@ -153,13 +155,15 @@ void	go_left(t_game **game);
 void	go_right(t_game **game);
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 void	draw_map(t_game **game);
+void	draw_rays(t_game **game);
+int		draw(t_game **game);
+void	draw_doors(t_game **game);
+void	draw_black(t_game **game);
 
-int get_pixel_color(int x, int y, char *data_addr, t_img *img);
+int 	get_pixel_color(int x, int y, char *data_addr, t_img *img);
 
 t_stack	*ft_stcknew(char *content);
-void	ft_stckadd_front(t_stack **stck, t_stack *new);
 void	ft_stckadd_back(t_stack **stack, t_stack *new);
-t_stack	*ft_stcklast(t_stack *stack);
 int		ft_stcksize(t_stack *stck);
 
 void		create_open_door_texture_img(t_game **game);
@@ -176,6 +180,7 @@ void 	create_anim_pixels_array(t_game **game);
 void	put_color(t_game **game, int x, int y);
 
 void	open_doors(t_game **game, int i);
+void	close_doors(t_game **game, int i);
 
 double	fix_angle(double angle);
 void	keys(t_game **game);
@@ -184,5 +189,11 @@ void	free_game(t_game **game);
 void	free_map(t_game **game);
 void	free_card_dir_img(t_game **game);
 void	free_images(t_game **game);
+void	free_pixel_arrays(t_game **game);
+int		rgb_to_decimal(char *color_rgb, t_game **game);
+
+int		mouse_move_hook(int x, int y, t_game **game);
+int		handle_release(int key, t_game **game);
+int		handle_input(int key, t_game **game);
 
 #endif

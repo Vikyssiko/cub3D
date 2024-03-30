@@ -67,7 +67,7 @@ void	creating_map_array(t_game **game)
 	free_stack(&((*game)->stack));
 }
 
-int		find_max(int a, int b)
+int	find_max(int a, int b)
 {
 	if (a >= b)
 		return (a);

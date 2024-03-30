@@ -25,16 +25,16 @@ void	check_doors(t_game **game)
 		j = 1;
 		while (j < (*game)->map_width - 1)
 		{
-			if (array[i][j] == 'D') {
-				if ((array[i][j - 1] == '1' && array[i][j + 1] == '1')
-					|| (array[i - 1][j] == '1' && array[i + 1][j] == '1'))
-				{
-					j++;
-					continue;
-				}
-				else
-					clean_and_exit("Doors should be located between walls", game);
+			if (array[i][j] == 'D' && ((array[i][j - 1] == '1'
+				&& array[i][j + 1] == '1') || (array[i - 1][j] == '1'
+				&& array[i + 1][j] == '1')))
+			{
+				j++;
+				continue ;
 			}
+			else if (array[i][j] == 'D')
+				clean_and_exit(
+					"Doors should be located between walls", game);
 			j++;
 		}
 		i++;

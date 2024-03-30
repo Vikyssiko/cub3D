@@ -26,20 +26,6 @@ t_stack	*ft_stcknew(char *content)
 	return (node);
 }
 
-void	ft_stckadd_front(t_stack **stck, t_stack *new)
-{
-	new->next = *stck;
-	(*stck)->prev = new;
-	*stck = new;
-}
-
-t_stack	*ft_stcklast(t_stack *stack)
-{
-	while (stack != NULL && stack->next != NULL)
-		stack = stack->next;
-	return (stack);
-}
-
 int	ft_stcksize(t_stack *stck)
 {
 	int	size;

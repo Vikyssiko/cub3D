@@ -14,10 +14,12 @@
 
 void	check_north(t_game **game, char **instructions)
 {
-	if (ft_strcmp(instructions[0], "NO") == 0) {
-		if ((*game)->north == NULL) {
+	if (ft_strcmp(instructions[0], "NO") == 0)
+	{
+		if ((*game)->north == NULL)
 			(*game)->north = ft_strtrim(instructions[1], "\n");
-		} else {
+		else
+		{
 			clean_instructions(instructions);
 			clean_and_exit("Invalid north instruction", game);
 		}
@@ -26,10 +28,12 @@ void	check_north(t_game **game, char **instructions)
 
 void	check_south(t_game **game, char **instructions)
 {
-	if (ft_strcmp(instructions[0], "SO") == 0) {
-		if ((*game)->south == NULL) {
+	if (ft_strcmp(instructions[0], "SO") == 0)
+	{
+		if ((*game)->south == NULL)
 			(*game)->south = ft_strtrim(instructions[1], "\n");
-		} else {
+		else
+		{
 			clean_instructions(instructions);
 			clean_and_exit("Invalid south instruction", game);
 		}
@@ -41,9 +45,7 @@ void	check_west(t_game **game, char **instructions)
 	if (ft_strcmp(instructions[0], "WE") == 0)
 	{
 		if ((*game)->west == NULL)
-		{
 			(*game)->west = ft_strtrim(instructions[1], "\n");
-		}
 		else
 		{
 			clean_instructions(instructions);
@@ -54,10 +56,12 @@ void	check_west(t_game **game, char **instructions)
 
 void	check_east(t_game **game, char **instructions)
 {
-	if (ft_strcmp(instructions[0], "EA") == 0) {
-		if ((*game)->east == NULL) {
+	if (ft_strcmp(instructions[0], "EA") == 0)
+	{
+		if ((*game)->east == NULL)
 			(*game)->east = ft_strtrim(instructions[1], "\n");
-		} else {
+		else
+		{
 			clean_instructions(instructions);
 			clean_and_exit("Invalid east instruction", game);
 		}
