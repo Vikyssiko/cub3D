@@ -38,10 +38,14 @@ void	check_south(t_game **game, char **instructions)
 
 void	check_west(t_game **game, char **instructions)
 {
-	if (ft_strcmp(instructions[0], "WE") == 0) {
-		if ((*game)->west == NULL) {
+	if (ft_strcmp(instructions[0], "WE") == 0)
+	{
+		if ((*game)->west == NULL)
+		{
 			(*game)->west = ft_strtrim(instructions[1], "\n");
-		} else {
+		}
+		else
+		{
 			clean_instructions(instructions);
 			clean_and_exit("Invalid west instruction", game);
 		}

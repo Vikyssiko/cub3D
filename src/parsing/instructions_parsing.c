@@ -27,7 +27,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 int	check_all_instructions(t_game *game)
 {
 	if (game->north && game->south && game->west && game->east
-		&& game->floor && game->ceiling)
+		&& game->floor >= 0 && game->ceiling >= 0)
 		return (1);
 	return (0);
 }
@@ -91,8 +91,9 @@ t_game	*parse_textures(char *map_name)
 				clean_instructions(instruction);
 				continue ;
 			}
-			if (instruction[2] != NULL || instruction[0] == NULL || instruction[1] == NULL)
+			if (instruction[2] != NULL || instruction[0] == NULL || instruction[1] == NULL) {
 				clean_and_exit("Invalid instruction: an instruction and texture required", &game);
+			}
 			check_cardinal_directions(&game, instruction);
 			check_floor_ceiling(&game, instruction);
 			if (check_all_instructions(game))

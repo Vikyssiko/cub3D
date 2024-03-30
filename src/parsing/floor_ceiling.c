@@ -16,7 +16,7 @@ void	check_floor(t_game **game, char **instructions)
 {
 	if (ft_strcmp(instructions[0], "F") == 0)
 	{
-		if ((*game)->floor == 0) {
+		if ((*game)->floor < 0) {
 			(*game)->floor = rgb_to_decimal(ft_strtrim(instructions[1], "\n"), game);
 		} else {
 			clean_instructions(instructions);
@@ -29,7 +29,7 @@ void	check_ceiling(t_game **game, char **instructions)
 {
 	if (ft_strcmp(instructions[0], "C") == 0)
 	{
-		if ((*game)->ceiling == 0) {
+		if ((*game)->ceiling < 0) {
 			(*game)->ceiling = rgb_to_decimal(ft_strtrim(instructions[1], "\n"), game);
 		} else {
 			clean_instructions(instructions);

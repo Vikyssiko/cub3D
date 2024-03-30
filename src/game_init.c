@@ -59,8 +59,8 @@ t_game	*create_game(int fd)
 	game->fd = fd;
 	game->map_width = 0;
 	game->stack = NULL;
-	game->ceiling = 0;
-	game->floor = 0;
+	game->ceiling = -1;
+	game->floor = -1;
 	game->anim = NULL;
 	game->map = NULL;
 	game->mlx_ptr = NULL;

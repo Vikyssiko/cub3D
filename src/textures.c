@@ -20,6 +20,7 @@ void	create_north_texture_img(t_game **game)
 	size = TEXTURE_SIZE;
 	img.img_ptr = mlx_xpm_file_to_image((*game)->mlx_ptr, (*game)->north, &size, &size);
 	free((*game)->north);
+	(*game)->north = NULL;
 	if (!img.img_ptr)
 		clean_and_exit("Check north texture", game);
 	img.img_pixels_ptr = mlx_get_data_addr(img.img_ptr, &img.bits_per_pixel, &img.line_len,
@@ -38,6 +39,7 @@ void	create_south_texture_img(t_game **game)
 	size = TEXTURE_SIZE;
 	img.img_ptr = mlx_xpm_file_to_image((*game)->mlx_ptr, (*game)->south, &size, &size);
 	free((*game)->south);
+	(*game)->south = NULL;
 	if (!img.img_ptr)
 		clean_and_exit("Check south texture", game);
 	img.img_pixels_ptr = mlx_get_data_addr(img.img_ptr, &img.bits_per_pixel, &img.line_len,
@@ -56,6 +58,7 @@ void	create_west_texture_img(t_game **game)
 	size = TEXTURE_SIZE;
 	img.img_ptr = mlx_xpm_file_to_image((*game)->mlx_ptr, (*game)->west, &size, &size);
 	free((*game)->west);
+	(*game)->west = NULL;
 	if (!img.img_ptr)
 		clean_and_exit("Check west texture", game);
 	img.img_pixels_ptr = mlx_get_data_addr(img.img_ptr, &img.bits_per_pixel, &img.line_len,
@@ -74,6 +77,7 @@ void	create_east_texture_img(t_game **game)
 	size = TEXTURE_SIZE;
 	img.img_ptr = mlx_xpm_file_to_image((*game)->mlx_ptr, (*game)->east, &size, &size);
 	free((*game)->east);
+	(*game)->east = NULL;
 	if (!img.img_ptr)
 		clean_and_exit("Check east texture", game);
 	img.img_pixels_ptr = mlx_get_data_addr(img.img_ptr, &img.bits_per_pixel, &img.line_len,
@@ -83,23 +87,6 @@ void	create_east_texture_img(t_game **game)
 	(*game)->east_img = malloc(sizeof(t_img));
 	*((*game)->east_img) = img;
 }
-
-//void	create_door_texture_img(t_game **game)
-//{
-//	t_img	img;
-//	int		size;
-//
-//	size = TEXTURE_SIZE;
-//	img.img_ptr = mlx_xpm_file_to_image((*game)->mlx_ptr, "./textures/door.xpm" , &size, &size);
-//	if (!img.img_ptr)
-//		clean_and_exit("Check door texture", game);
-//	img.img_pixels_ptr = mlx_get_data_addr(img.img_ptr, &img.bits_per_pixel, &img.line_len,
-//										   &img.endian);
-//	if (!img.img_pixels_ptr)
-//		clean_and_exit("Check door texture", game);
-//	(*game)->door_img = malloc(sizeof(t_img));
-//	*((*game)->door_img) = img;
-//}
 
 void	init_textures(t_game **game)
 {

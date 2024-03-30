@@ -12,6 +12,18 @@
 
 #include "../../header/cub3D.h"
 
+void	free_texture_names(t_game **game)
+{
+	if ((*game)->south)
+		free((*game)->south);
+	if ((*game)->north)
+		free((*game)->north);
+	if ((*game)->east)
+		free((*game)->east);
+	if ((*game)->west)
+		free((*game)->west);
+}
+
 void	clean_and_exit(char *message, t_game **game)
 {
 	write(2, "Error\n", 6);
@@ -20,7 +32,12 @@ void	clean_and_exit(char *message, t_game **game)
 	if ((*game)->map)
 		free_map(game);
 	free_images(game);
-//	free_game(game);
+	if ((*game)->window_ptr)
+		mlx_destroy_window((*game)->mlx_ptr, (*game)->window_ptr);
+	if ((*game)->mlx_ptr)
+		free((*game)->mlx_ptr);
+	free_texture_names(game);
+	free_stack(&(*game)->stack);
 	free(*game);
 	exit(1);
 }
