@@ -17,6 +17,10 @@ void	clean_and_exit(char *message, t_game **game)
 	write(2, "Error\n", 6);
 	write(2, message, ft_strlen(message));
 	close((*game)->fd);
+	if ((*game)->map)
+		free_map(game);
+	free_card_dir_img(game);
+//	free_game(game);
 	free(*game);
 	exit(1);
 }
@@ -24,6 +28,7 @@ void	clean_and_exit(char *message, t_game **game)
 int	clean_and_exit_no_error(t_game **game)
 {
 	close((*game)->fd);
+	free_game(game);
 	free(*game);
 	exit(1);
 }

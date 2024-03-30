@@ -88,6 +88,7 @@ t_game	*parse_textures(char *map_name)
 			{
 				free(line);
 				line = get_next_line(fd);
+				clean_instructions(instruction);
 				continue ;
 			}
 			if (instruction[2] != NULL || instruction[0] == NULL || instruction[1] == NULL)
@@ -96,6 +97,7 @@ t_game	*parse_textures(char *map_name)
 			check_floor_ceiling(&game, instruction);
 			if (check_all_instructions(game))
 			{
+				clean_instructions(instruction);
 				free(line);
 				break ;
 			}

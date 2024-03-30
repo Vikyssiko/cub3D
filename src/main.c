@@ -11,44 +11,8 @@
 /* ************************************************************************** */
 
 #include "../header/cub3D.h"
-#include <stdio.h>
 #include <X11/keysym.h>
 #include <X11/X.h>
-
-t_game	*create_game(int fd)
-{
-	t_game	*game;
-
-	game = malloc(sizeof(t_game));
-	if (!game)
-		exit_with_error("Error of malloc", fd);
-	game->map_width = 0;
-	game->stack = NULL;
-	game->fd = fd;
-	game->west = NULL;
-	game->ceiling = 0;
-	game->east = NULL;
-	game->floor = 0;
-	game->north = NULL;
-	game->south = NULL;
-	game->player_x = 0;
-	game->player_y = 0;
-	game->player_angle = 0;
-	game->north_img = NULL;
-	game->south_img = NULL;
-	game->west_img = NULL;
-	game->east_img = NULL;
-	game->n_pixels = NULL;
-	game->s_pixels = NULL;
-	game->w_pixels = NULL;
-	game->e_pixels = NULL;
-	game->map = NULL;
-	game->mlx_ptr = NULL;
-	game->img = NULL;
-	game->window_ptr = NULL;
-	game->door_open = 0;
-	return (game);
-}
 
 double fix_angle(double angle)
 {
@@ -59,8 +23,6 @@ double fix_angle(double angle)
 		angle -= 2 * M_PI;
 	else if (angle < 0)
 		angle += 2 * M_PI;
-//	else if (angle > M_PI - radian / 10 && angle < M_PI)
-//		angle -= radian / 10;
 	return (angle);
 }
 
@@ -255,7 +217,8 @@ int	draw(t_game **game)
 			(*game)->door_open_anim = 0;
 		}
 	}
-	else if ((*game)->door_open && i % 55000 > 54500) {
+	else if ((*game)->door_open && i % 55000 > 54500
+		&& (*game)->map->map[(*game)->player_y >> BITS][(*game)->player_x >> BITS] != 'D') {
 		i = 0;
 		(*game)->door_close_anim = 1;
 	}
@@ -296,8 +259,11 @@ int	handle_input(int key, t_game **game)
 			(*game)->door_open_anim = 1;
 		}
 		else if ((*game)->door_open && !(*game)->door_close_anim) {
-			i = 0;
-			(*game)->door_close_anim = 1;
+			if ((*game)->map->map[(*game)->player_y >> BITS][(*game)->player_x >> BITS] != 'D')
+			{
+				i = 0;
+				(*game)->door_close_anim = 1;
+			}
 		}
 	}
 	return (0);

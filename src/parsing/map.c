@@ -50,9 +50,9 @@ void	check_first_last_wall(t_game **game)
 			}
 			i++;
 		}
+		free_string_array(divided_line);
 		line_index++;
 	}
-	free_string_array(divided_line);
 }
 
 void	check_surrounding_walls(t_game **game)

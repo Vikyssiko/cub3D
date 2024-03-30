@@ -40,20 +40,20 @@ void 	create_anim_pixels_array(t_game **game)
 	y = 0;
 	(*game)->doors_pixels = malloc(sizeof(int **) * 7);
 	(*game)->doors_pixels[0] = (*game)->d_pixels;
-	(*game)->doors_pixels[1] = malloc(sizeof(int *) * (TEXTURE_SIZE) + 1);
-	(*game)->doors_pixels[2] = malloc(sizeof(int *) * (TEXTURE_SIZE) + 1);
-	(*game)->doors_pixels[3] = malloc(sizeof(int *) * (TEXTURE_SIZE) + 1);
-	(*game)->doors_pixels[4] = malloc(sizeof(int *) * (TEXTURE_SIZE) + 1);
-	(*game)->doors_pixels[5] = malloc(sizeof(int *) * (TEXTURE_SIZE) + 1);
+	(*game)->doors_pixels[1] = malloc(sizeof(int *) * (TEXTURE_SIZE + 1));
+	(*game)->doors_pixels[2] = malloc(sizeof(int *) * (TEXTURE_SIZE + 1));
+	(*game)->doors_pixels[3] = malloc(sizeof(int *) * (TEXTURE_SIZE + 1));
+	(*game)->doors_pixels[4] = malloc(sizeof(int *) * (TEXTURE_SIZE + 1));
+	(*game)->doors_pixels[5] = malloc(sizeof(int *) * (TEXTURE_SIZE + 1));
 	(*game)->doors_pixels[6] = (*game)->od_pixels;
 	while (y < TEXTURE_SIZE + 1)
 	{
 		x = 0;
-		(*game)->doors_pixels[1][y] = malloc(sizeof(int) * TEXTURE_SIZE + 1);
-		(*game)->doors_pixels[2][y] = malloc(sizeof(int) * TEXTURE_SIZE + 1);
-		(*game)->doors_pixels[3][y] = malloc(sizeof(int) * TEXTURE_SIZE + 1);
-		(*game)->doors_pixels[4][y] = malloc(sizeof(int) * TEXTURE_SIZE + 1);
-		(*game)->doors_pixels[5][y] = malloc(sizeof(int) * TEXTURE_SIZE + 1);
+		(*game)->doors_pixels[1][y] = malloc(sizeof(int) * (TEXTURE_SIZE + 1));
+		(*game)->doors_pixels[2][y] = malloc(sizeof(int) * (TEXTURE_SIZE + 1));
+		(*game)->doors_pixels[3][y] = malloc(sizeof(int) * (TEXTURE_SIZE + 1));
+		(*game)->doors_pixels[4][y] = malloc(sizeof(int) * (TEXTURE_SIZE + 1));
+		(*game)->doors_pixels[5][y] = malloc(sizeof(int) * (TEXTURE_SIZE + 1));
 		while (x < TEXTURE_SIZE)
 		{
 			(*game)->doors_pixels[1][y][x] = get_pixel_color(x, y,

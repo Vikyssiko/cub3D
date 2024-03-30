@@ -180,4 +180,8 @@ void	open_doors(t_game **game, int i);
 double	fix_angle(double angle);
 void	keys(t_game **game);
 
+void	free_game(t_game **game);
+void	free_map(t_game **game);
+void	free_card_dir_img(t_game **game);
+
 #endif
