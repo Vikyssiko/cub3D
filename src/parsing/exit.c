@@ -19,7 +19,7 @@ void	clean_and_exit(char *message, t_game **game)
 	close((*game)->fd);
 	if ((*game)->map)
 		free_map(game);
-	free_card_dir_img(game);
+	free_images(game);
 //	free_game(game);
 	free(*game);
 	exit(1);

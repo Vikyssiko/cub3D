@@ -183,5 +183,6 @@ void	keys(t_game **game);
 void	free_game(t_game **game);
 void	free_map(t_game **game);
 void	free_card_dir_img(t_game **game);
+void	free_images(t_game **game);
 
 #endif

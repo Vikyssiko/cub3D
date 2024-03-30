@@ -48,55 +48,31 @@ void	free_stack(t_stack **stack)
 	}
 }
 
-void	free_images(t_game **game)
+void	free_img(t_img *img, t_game **game)
 {
-	mlx_destroy_image((*game)->mlx_ptr, (*game)->north_img->img_ptr);
-	mlx_destroy_image((*game)->mlx_ptr, (*game)->south_img->img_ptr);
-	mlx_destroy_image((*game)->mlx_ptr, (*game)->west_img->img_ptr);
-	mlx_destroy_image((*game)->mlx_ptr, (*game)->east_img->img_ptr);
-	mlx_destroy_image((*game)->mlx_ptr, (*game)->door_img->img_ptr);
-	mlx_destroy_image((*game)->mlx_ptr, (*game)->open_door_img->img_ptr);
-	mlx_destroy_image((*game)->mlx_ptr, (*game)->anim[1]->img_ptr);
-	mlx_destroy_image((*game)->mlx_ptr, (*game)->anim[2]->img_ptr);
-	mlx_destroy_image((*game)->mlx_ptr, (*game)->anim[3]->img_ptr);
-	mlx_destroy_image((*game)->mlx_ptr, (*game)->anim[4]->img_ptr);
-	mlx_destroy_image((*game)->mlx_ptr, (*game)->anim[5]->img_ptr);
-	free((*game)->north_img);
-	free((*game)->south_img);
-	free((*game)->west_img);
-	free((*game)->east_img);
-	free((*game)->door_img);
-	free((*game)->open_door_img);
-	free((*game)->anim[1]);
-	free((*game)->anim[2]);
-	free((*game)->anim[3]);
-	free((*game)->anim[4]);
-	free((*game)->anim[5]);
-	free((*game)->anim);
+	if (img) {
+		mlx_destroy_image((*game)->mlx_ptr, img->img_ptr);
+		free(img);
+	}
 }
 
-void	free_card_dir_img(t_game **game)
+void	free_images(t_game **game)
 {
-	if ((*game)->north_img)
+	free_img((*game)->north_img, game);
+	free_img((*game)->south_img, game);
+	free_img((*game)->west_img, game);
+	free_img((*game)->east_img, game);
+	if ((*game)->anim)
 	{
-		mlx_destroy_image((*game)->mlx_ptr, (*game)->north_img->img_ptr);
-		free((*game)->north_img);
+		free_img((*game)->anim[1], game);
+		free_img((*game)->anim[2], game);
+		free_img((*game)->anim[3], game);
+		free_img((*game)->anim[4], game);
+		free_img((*game)->anim[5], game);
+		free((*game)->anim);
 	}
-	if ((*game)->south_img)
-	{
-		mlx_destroy_image((*game)->mlx_ptr, (*game)->south_img->img_ptr);
-		free((*game)->south_img);
-	}
-	if ((*game)->west_img)
-	{
-		mlx_destroy_image((*game)->mlx_ptr, (*game)->west_img->img_ptr);
-		free((*game)->west_img);
-	}
-	if ((*game)->east_img)
-	{
-		mlx_destroy_image((*game)->mlx_ptr, (*game)->east_img->img_ptr);
-		free((*game)->east_img);
-	}
+	free_img((*game)->door_img, game);
+	free_img((*game)->open_door_img, game);
 }
 
 void	free_pixel_arrays(t_game **game)
