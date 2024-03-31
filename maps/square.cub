@@ -1,13 +1,13 @@
-   WE                            ./textures/leaves.xpm
+   WE                            ./textures/rock-or-bark.xpm
 NO      ./textures/microbes.xpm
 
 
 
-SO ./textures/snow.xpm
+SO ./textures/banana.xpm
 
 F   69,222,199
 
-EA ./textures/frost.xpm
+EA ./textures/flowers.xpm
 
 
 
