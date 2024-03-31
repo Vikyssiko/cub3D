@@ -98,5 +98,9 @@ void	init_textures(t_game **game)
 	create_south_texture_img(game);
 	create_west_texture_img(game);
 	create_east_texture_img(game);
+	create_door_texture_img(game);
+	create_open_door_texture_img(game);
 	create_array_of_pixels(game);
+	create_anim_array(game);
+	create_anim_pixels_array(game);
 }

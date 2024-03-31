@@ -23,7 +23,8 @@ void	change_position(t_game **game, int x, int y)
 		|| (*game)->map->map[y_index][x_index] == 'N'
 		|| (*game)->map->map[y_index][x_index] == 'S'
 		|| (*game)->map->map[y_index][x_index] == 'W'
-		|| (*game)->map->map[y_index][x_index] == 'E')
+		|| (*game)->map->map[y_index][x_index] == 'E'
+		|| ((*game)->door_open && (*game)->map->map[y_index][x_index] == 'D'))
 	{
 		(*game)->player_y = y;
 		(*game)->player_x = x;

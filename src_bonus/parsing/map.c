@@ -116,4 +116,5 @@ void	check_map(t_game **game)
 	check_first_last_wall(game);
 	check_surrounding_walls(game);
 	check_corners(game);
+	check_doors(game);
 }

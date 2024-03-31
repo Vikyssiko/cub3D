@@ -47,6 +47,10 @@ void	put_color(t_game **game, int x, int y)
 			(*game)->west_img->img_pixels_ptr, (*game)->west_img);
 	(*game)->e_pixels[y][x] = get_pixel_color(x, y,
 			(*game)->east_img->img_pixels_ptr, (*game)->east_img);
+	(*game)->d_pixels[y][x] = get_pixel_color(x, y,
+			(*game)->door_img->img_pixels_ptr, (*game)->door_img);
+	(*game)->od_pixels[y][x] = get_pixel_color(x, y,
+			(*game)->open_door_img->img_pixels_ptr, (*game)->open_door_img);
 }
 
 void	allocate_pixels_arrays(t_game **game)
@@ -55,6 +59,8 @@ void	allocate_pixels_arrays(t_game **game)
 	(*game)->e_pixels = malloc(sizeof(int *) * (TEXTURE_SIZE + 1));
 	(*game)->s_pixels = malloc(sizeof(int *) * (TEXTURE_SIZE + 1));
 	(*game)->n_pixels = malloc(sizeof(int *) * (TEXTURE_SIZE + 1));
+	(*game)->d_pixels = malloc(sizeof(int *) * (TEXTURE_SIZE + 1));
+	(*game)->od_pixels = malloc(sizeof(int *) * (TEXTURE_SIZE + 1));
 }
 
 void	create_array_of_pixels(t_game **game)
@@ -71,6 +77,8 @@ void	create_array_of_pixels(t_game **game)
 		(*game)->s_pixels[y] = malloc(sizeof(int) * (TEXTURE_SIZE + 1));
 		(*game)->w_pixels[y] = malloc(sizeof(int) * (TEXTURE_SIZE + 1));
 		(*game)->e_pixels[y] = malloc(sizeof(int) * (TEXTURE_SIZE + 1));
+		(*game)->d_pixels[y] = malloc(sizeof(int) * (TEXTURE_SIZE + 1));
+		(*game)->od_pixels[y] = malloc(sizeof(int) * (TEXTURE_SIZE + 1));
 		while (x < TEXTURE_SIZE)
 		{
 			put_color(game, x, y);

@@ -62,6 +62,8 @@ int	main(int args, char *argv[])
 	game->window_ptr = mlx_new_window(game->mlx_ptr, MAP_WIDTH,
 			MAP_HEIGHT, "cub3D");
 	mlx_put_image_to_window(game->mlx_ptr, game->window_ptr, img.img_ptr, 0, 0);
+	mlx_hook(game->window_ptr, MotionNotify, PointerMotionMask,
+		mouse_move_hook, &game);
 	mlx_hook(game->window_ptr, KeyPress, KeyPressMask,
 		handle_input, &game);
 	mlx_hook(game->window_ptr, KeyRelease, KeyReleaseMask,

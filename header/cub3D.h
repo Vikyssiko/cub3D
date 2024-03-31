@@ -39,7 +39,8 @@ typedef struct s_stack
 	struct s_stack	*prev;
 }	t_stack;
 
-typedef struct s_map {
+typedef struct s_map
+{
 	char	**map;
 	char	start;
 	int		length;
@@ -54,20 +55,23 @@ typedef struct s_img
 	int		line_len;
 }	t_img;
 
-typedef struct s_dist {
+typedef struct s_dist
+{
 	double	dist;
 	double	hit_point;
 	char	direction;
 }	t_dist;
 
-typedef struct s_ray {
+typedef struct s_ray
+{
 	double	x;
-	double 	y;
-	double 	x_diff;
-	double 	y_diff;
+	double	y;
+	double	x_diff;
+	double	y_diff;
 }	t_ray;
 
-typedef struct s_player {
+typedef struct s_player
+{
 	int	x;
 	int	y;
 	int	angle;
@@ -75,7 +79,8 @@ typedef struct s_player {
 	int	yd;
 }	t_player;
 
-typedef struct s_key_pressed {
+typedef struct s_key_pressed
+{
 	int	w_pressed;
 	int	s_pressed;
 	int	a_pressed;
@@ -84,7 +89,8 @@ typedef struct s_key_pressed {
 	int	right_pressed;
 }	t_key_pressed;
 
-typedef struct s_game {
+typedef struct s_game
+{
 	int				player_x;
 	int				player_y;
 	double			player_angle;
@@ -100,8 +106,8 @@ typedef struct s_game {
 	t_img			*east_img;
 	t_img			*door_img;
 	t_img			*open_door_img;
-	t_img 			**anim;
-	int 			***doors_pixels;
+	t_img			**anim;
+	int				***doors_pixels;
 	int				**n_pixels;
 	int				**s_pixels;
 	int				**w_pixels;
@@ -120,6 +126,7 @@ typedef struct s_game {
 	int				door_close_anim;
 	t_key_pressed	keys;
 	int				mouse_x;
+	int 			time;
 }	t_game;
 
 t_game	*parse_textures(char *map_name);
@@ -127,7 +134,7 @@ t_game	*create_game(int fd);
 int		ft_strcmp(const char *s1, const char *s2);
 void	check_cardinal_directions(t_game **game, char **instructions);
 void	check_floor_ceiling(t_game **game, char **instructions);
-void 	clean_and_exit(char *message, t_game **game);
+void	clean_and_exit(char *message, t_game **game);
 int		clean_and_exit_no_error(t_game **game);
 void	exit_with_error(char *message, int fd);
 void	parse_map(t_game **game);
@@ -138,35 +145,30 @@ void	ft_strcpy(char *dst, const char *src);
 void	check_surrounding_walls(t_game **game);
 void	check_corners(t_game **game);
 void	check_map(t_game **game);
-t_dist 	horizontal_hit_dist(t_game **game, double angle, int door);
-t_dist 	vertical_hit_dist(t_game **game, double angle, int door);
+t_dist	horizontal_hit_dist(t_game **game, double angle, int door);
+t_dist	vertical_hit_dist(t_game **game, double angle, int door);
 double	find_min(double a, double b);
-void	create_cos_array(t_game **game);
 t_dist	find_min_dist(t_dist vert, t_dist hor);
-int 	rgb_to_decimal(char *color_rgb, t_game **game);
+int		rgb_to_decimal(char *color_rgb, t_game **game);
 void	init_textures(t_game **game);
 void	create_array_of_pixels(t_game **game);
 void	check_corner_symbol(int *cnt, int *wall_cnt, char symbol);
 void	init_player_position(t_game **game, int i, int j);
 void	change_position(t_game **game, int x, int y);
-void	go_straight(t_game **game);
-void	go_back(t_game **game);
-void	go_left(t_game **game);
-void	go_right(t_game **game);
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 void	draw_map(t_game **game);
 void	draw_rays(t_game **game);
 int		draw(t_game **game);
 void	draw_doors(t_game **game);
-void	draw_black(t_game **game);
+void	draw_background(t_game **game);
 
-int 	get_pixel_color(int x, int y, char *data_addr, t_img *img);
+int		get_pixel_color(int x, int y, char *data_addr, t_img *img);
 
 t_stack	*ft_stcknew(char *content);
 void	ft_stckadd_back(t_stack **stack, t_stack *new);
 int		ft_stcksize(t_stack *stck);
 
-void		create_open_door_texture_img(t_game **game);
+void	create_open_door_texture_img(t_game **game);
 
 void	clean_instructions(char **instructions);
 void	free_string_array(char **str);
@@ -176,7 +178,7 @@ void	create_anim_array(t_game **game);
 void	create_door_list(t_game **game);
 t_img	create_door_texture(t_game **game, char *texture);
 void	create_door_texture_img(t_game **game);
-void 	create_anim_pixels_array(t_game **game);
+void	create_anim_pixels_array(t_game **game);
 void	put_color(t_game **game, int x, int y);
 
 void	open_doors(t_game **game, int i);
@@ -187,7 +189,6 @@ void	keys(t_game **game);
 
 void	free_game(t_game **game);
 void	free_map(t_game **game);
-void	free_card_dir_img(t_game **game);
 void	free_images(t_game **game);
 void	free_pixel_arrays(t_game **game);
 int		rgb_to_decimal(char *color_rgb, t_game **game);
