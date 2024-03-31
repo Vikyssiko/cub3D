@@ -126,7 +126,7 @@ typedef struct s_game
 	int				door_close_anim;
 	t_key_pressed	keys;
 	int				mouse_x;
-	int 			time;
+	int				time;
 }	t_game;
 
 t_game	*parse_textures(char *map_name);
