@@ -37,9 +37,14 @@ void	draw_background(t_game **game)
 t_game	*parse_check_map(int args, char *argv[])
 {
 	t_game	*game;
+	int		len;
 
 	if (args != 2)
 		exit_with_error("Specify one map", 0);
+	len = ft_strlen(argv[1]);
+	if (argv[1][len - 1] != 'b' || argv[1][len - 2] != 'u'
+		|| argv[1][len - 3] != 'c' || argv[1][len - 4] != '.')
+		exit_with_error("Map has to be in \".cub\" extension", 0);
 	game = parse_textures(argv[1]);
 	parse_map(&game);
 	check_map(&game);
