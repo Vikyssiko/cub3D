@@ -1,7 +1,7 @@
 # 42 cub3D
 Pseudo 3D game made with the help of raycasting algorithm
 
-![gif](minishell.gif)
+![screenshot](screenshot.png)
 
 Requirements:
 * The use of `miniLibX` library is mandatory.
