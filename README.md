@@ -67,7 +67,7 @@ C 225,30,0
  
 ## Launching the program
 
-To launch the program use command `make`. Then execute `./cub3D` with one argument, which is a map, for example `maps\map2.cub`
+To launch the program use command `make`. Then execute `./cub3D` with one argument, which is a map, for example `maps\map2.cub`. If you want to see the bonus part compile with `make bonus`
 
 
 ### Compatibility
